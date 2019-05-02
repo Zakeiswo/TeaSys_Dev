@@ -161,9 +161,10 @@ class PatternFinder(object):
         self.dictemper = dic_temp.copy()
 
     # use to save the pattern into json for future
-    def dicSaver(self):
+    def dicSaver(self,save_path):
         json_str = json.dumps(self.dictemper)
-        with open("/Users/syao/desktop/res/pattern_save/pattern_data" + str(self.times_span) + ".json",
+        # with open("/Users/syao/desktop/res/pattern_save/pattern_data" + str(self.times_span) + ".json",
+        with open(save_path + str(self.times_span) + ".json",
                   "w") as json_file:
             json_file.write(json_str)
 
