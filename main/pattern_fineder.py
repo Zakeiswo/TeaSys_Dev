@@ -11,7 +11,6 @@
 '''
 
 import os
-import sys
 import csv
 # import pysnooper
 import json
@@ -43,7 +42,6 @@ class PatternFinder(object):
         csv_file = csv.reader(open(self.csvpath))
         listoftemp = []
         for item in csv_file:
-            # print type(item[0])
             listoftemp.append(item[0])
         return listoftemp
 
