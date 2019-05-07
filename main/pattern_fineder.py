@@ -27,14 +27,12 @@ class PatternFinder(object):
         self.dictemper = {}
         self.all_action_list = []  # read list
         self.com_action_list = []  # compressed list
-        self.times_span = times_span # how many actions in one pattern
+        self.times_span = times_span  # how many actions in one pattern
 
-        #auto init
+        # auto init
         self.all_action_list = self.csvReader_pf()
-        self.com_action_list = self.compressList(self.all_action_list,2,4)
+        self.com_action_list = self.compressList(self.all_action_list, 2, 4)
         self.dicMaker(self.com_action_list)
-
-
 
     #  read csv and use list to save it
     #  return must be a list
@@ -159,7 +157,7 @@ class PatternFinder(object):
         self.dictemper = dic_temp.copy()
 
     # use to save the pattern into json for future
-    def dicSaver(self,save_path):
+    def dicSaver(self, save_path):
         json_str = json.dumps(self.dictemper)
         # with open("/Users/syao/desktop/res/pattern_save/pattern_data" + str(self.times_span) + ".json",
         with open(save_path + str(self.times_span) + ".json",
