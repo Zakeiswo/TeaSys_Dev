@@ -51,17 +51,17 @@ class PatternFinder(object):
         temp_ac = ""
         temp_ac_list = []
         for x in list_ac:
-            if (temp_ac == ""):  # to evaluate the initial value
+            if temp_ac == "":  # to evaluate the initial value
                 temp_ac = x
                 counter_ac = 1
                 continue
-            if (temp_ac != x):  # see the next is different
-                if (counter_ac < a):
+            if temp_ac != x:  # see the next is different
+                if counter_ac < a:
                     temp_ac = x  #
                     continue
-                if ((counter_ac <= b)):
+                if counter_ac <= b:
                     temp_ac_list.append(temp_ac)  # add the last one
-                if (counter_ac > b):
+                if counter_ac > b:
                     temp_conter_acs = counter_ac // b  # conclute how many times
                     for item in range(temp_conter_acs):
                         temp_ac_list.append(temp_ac)
@@ -70,8 +70,8 @@ class PatternFinder(object):
 
             else:
                 counter_ac += 1
-        if (counter_ac >= a):
-            if (counter_ac <= b):
+        if counter_ac >= a:
+            if counter_ac <= b:
                 temp_ac_list.append(temp_ac)
             else:
                 temp_conter_acs = counter_ac // b  # conclute how many times
@@ -152,7 +152,7 @@ class PatternFinder(object):
     def dicClear(self, k):
         dic_temp = self.dictemper.copy()
         for key in self.dictemper:
-            if (dic_temp[key] <= k):
+            if dic_temp[key] <= k:
                 dic_temp.pop(key)
         self.dictemper = dic_temp.copy()
 
@@ -171,7 +171,7 @@ class PatternFinder(object):
 
     # use to came back to the NO. of frame
     # though the Pattern to the frame
-    def dicBack():
+    def dicBack(self):
         pass
 
 
