@@ -18,9 +18,11 @@ import sys
 import json
 import string
 from main.pattern_fineder import PatternFinder
+import main.tools
 from main.teacher import Teacher
 from main.teacher import NewTeacher
 from main.teacher import ProTeacher
+
 
 # This is the teacher who is going to be tested
 class TestTeacher(object):
@@ -92,18 +94,6 @@ class TestTeacher(object):
         f.close()
         return temp_str
 
-    # use to clean the dic when the show time is less than show_times
-    # it is the regular method to delete the members,and the next one is for the test teacher
-    # return the new dic
-    def patterncleaner(self, dict, show_times):
-        dic_temp = dict.copy()
-        for key in dict:
-            if (dic_temp[key]) <= show_times:
-                if dic_temp[key] < show_times:
-                    print("Error! The times in score is less 1,and you can't minus 1")
-                if dic_temp[key] == show_times:
-                    dic_temp.pop(key)
-        return dic_temp
 
     # use to read the data that save the pattern in json
     # than return the dic of the json
@@ -476,7 +466,7 @@ class TestTeacher(object):
         temp_dic = self.dicMerger(temp_dic, temp_obj2.dictemper)
         # than delete the pattern less than 2
         if show_times != 0:
-            temp_dic = self.patterncleaner(temp_dic, show_times)
+            temp_dic = main.tools.patterncleaner(temp_dic, show_times)
 
         return temp_dic
 
@@ -545,7 +535,7 @@ class TestTeacher(object):
         temp_dic = self.dicMerger(temp_dic, self.pf_temp_saver_pro_5)
         temp_dic = self.dicMerger(temp_dic, self.pf_temp_saver_pro_6)
         if show_times != 0:
-            temp_dic = self.patterncleaner(temp_dic, show_times)
+            temp_dic = main.tools.patterncleaner(temp_dic, show_times)
         return temp_dic
 
     # use to merge all the New teacher dic
@@ -557,7 +547,7 @@ class TestTeacher(object):
         temp_dic = self.dicMerger(temp_dic, self.pf_temp_saver_new_5)
         temp_dic = self.dicMerger(temp_dic, self.pf_temp_saver_new_6)
         if show_times != 0:
-            temp_dic = self.patterncleaner(temp_dic, show_times)
+            temp_dic = main.tools.patterncleaner(temp_dic, show_times)
         return temp_dic
 
     # use to get the score from the data
@@ -571,10 +561,27 @@ class TestTeacher(object):
         # 大于0.5偏向pro，小于0.5偏向new
         dis = 1.0 - (dis_1 / (dis_1 + dis_2))  # Maybe need another　Equation
         return dis
-    # use to build a list of teacher objects
-    def teacherlist(self):
 
-        pass
+    # use to build a list of teacher objects
+    # all的data存在一个文件夹里
+    # to this function to calculate the tfidf
+    def teacherlist(self, in_path):  # 这个结构可以是 name ： dic
+        # eg.{name1:{pt1:sum_num,pt2:sum_num,...}, name2:{...}...}
+        # TODO（Zake Yao）: to prevent that two objs has the same name
+        # 读取数据
+        dict_temp = {}
+        json_files = os.listdir(in_path)
+        for file in json_files:
+            # 从文件名里面分割出名称
+            temp_name_1 = file.split(".")
+            temp_name_2 = temp_name_1[0].split("_")
+            if temp_name_2[1] == "all" and temp_name_2[0] not in dict_temp:
+                with open(in_path + file, 'r')as f:
+                    json_read = json.load(f)
+                    dict_temp[temp_name_2[0]] = json_read  # 放到一个大的字典里
+
+        return dict_temp  # 然后返回这个字典
+
     # use to get the score from the data
     # to use the TF-IDF
     def scorecalculater_TF(self):
@@ -609,6 +616,8 @@ if __name__ == '__main__':
     prot.pfdicSaver()
     newt = NewTeacher("Mike", "/Users/syao/desktop/res/kj_v2.csv", "/Users/syao/desktop/res/TeaSys_Dev")
     newt.pfdicSaver()
+    prot.pfdicSaver_all()  # save the whole data
+    newt.pfdicSaver_all()
     t = TestTeacher("Jimy", "/Users/syao/desktop/res/ny_test_4fornew.csv")
 
     t.jsonReader_pf("/Users/syao/desktop/res/TeaSys_Dev/Tom/2.json", 2, 1)  # 1 for pro
@@ -623,73 +632,73 @@ if __name__ == '__main__':
     t.jsonReader_pf("/Users/syao/desktop/res/TeaSys_Dev/Mike/5.json", 5, 0)
     t.jsonReader_pf("/Users/syao/desktop/res/TeaSys_Dev/Mike/6.json", 6, 0)
 
-
-    print("new size")
-    print(len(t.pf_temp_saver_new_2))
-    print(t.pf_temp_saver_new_2)
-    print(len(t.pf_temp_saver_new_3))
-    print(t.pf_temp_saver_new_3)
-    print(len(t.pf_temp_saver_new_4))
-    print(t.pf_temp_saver_new_4)
-    print(len(t.pf_temp_saver_new_5))
-    print(t.pf_temp_saver_new_5)
-    print(len(t.pf_temp_saver_new_6))
-    print(t.pf_temp_saver_new_6)
-    print("pro size")
-    print(len(t.pf_temp_saver_pro_2))
-    print(t.pf_temp_saver_pro_2)
-    print(len(t.pf_temp_saver_pro_3))
-    print(t.pf_temp_saver_pro_3)
-    print(len(t.pf_temp_saver_pro_4))
-    print(t.pf_temp_saver_pro_4)
-    print(len(t.pf_temp_saver_pro_5))
-    print(t.pf_temp_saver_pro_5)
-    print(len(t.pf_temp_saver_pro_6))
-    print(t.pf_temp_saver_pro_6)
-    print("**********************")
-    t.dicCommenShowerOnetime()  # 展示共通的set
-
-    t.dicCommonDeleteOnetime()  # 删除共通的部分
-
-    t.compressList_id_t(t.ac_list_ori, 2, 4)
-    print(len(t.ac_list_ori))  # 1001
-
-    t.patternCheeker()
-    print("new size")
-    print(len(t.pf_temp_saver_new_2))
-    print(len(t.pf_temp_saver_new_3))
-    print(len(t.pf_temp_saver_new_4))
-    print(len(t.pf_temp_saver_new_5))
-    print(len(t.pf_temp_saver_new_6))
-    print("pro size")
-    print(len(t.pf_temp_saver_pro_2))
-    print(len(t.pf_temp_saver_pro_3))
-    print(len(t.pf_temp_saver_pro_4))
-    print(len(t.pf_temp_saver_pro_5))
-    print(len(t.pf_temp_saver_pro_6))
-    print("Ori:")
-    print("pro:")
-    print(t.class_keeper_pro)  # 为啥这个的4最大，也没有压缩啊
-    print(t.score_keeper_pro)  # 为啥这个这么少
-    print("New:")
-    print(t.class_keeper_new)
-    print(t.score_keeper_new)  # 为啥这么少
-    # t.patterncleanerfortesttea(1)  # use to delete the pattern which only show one time
-    print("After delete the one time action:")
-    print("pro:")
-    print(t.class_keeper_pro)
-    print(t.score_keeper_pro)
-    print("New:")
-    print(t.class_keeper_new)
-    print(t.score_keeper_new)
-    print("wrong:")
-    print(t.dic_action_wrong)
-    t.dicPatternReviser()
-    print("right:")
-    print(t.dic_action_right)#没有对应的修改就是一个空的字符串
-    print("Done!")
-    print(t.dic_com_ori)
-    print(len(t.ac_list_com))
-    print(t.dicFramegeter(t.dic_action_wrong))
-    print("Score:")
-    print(t.scorecalculater_jd(1))
+    # print("new size")
+    # print(len(t.pf_temp_saver_new_2))
+    # print(t.pf_temp_saver_new_2)
+    # print(len(t.pf_temp_saver_new_3))
+    # print(t.pf_temp_saver_new_3)
+    # print(len(t.pf_temp_saver_new_4))
+    # print(t.pf_temp_saver_new_4)
+    # print(len(t.pf_temp_saver_new_5))
+    # print(t.pf_temp_saver_new_5)
+    # print(len(t.pf_temp_saver_new_6))
+    # print(t.pf_temp_saver_new_6)
+    # print("pro size")
+    # print(len(t.pf_temp_saver_pro_2))
+    # print(t.pf_temp_saver_pro_2)
+    # print(len(t.pf_temp_saver_pro_3))
+    # print(t.pf_temp_saver_pro_3)
+    # print(len(t.pf_temp_saver_pro_4))
+    # print(t.pf_temp_saver_pro_4)
+    # print(len(t.pf_temp_saver_pro_5))
+    # print(t.pf_temp_saver_pro_5)
+    # print(len(t.pf_temp_saver_pro_6))
+    # print(t.pf_temp_saver_pro_6)
+    # print("**********************")
+    # t.dicCommenShowerOnetime()  # 展示共通的set
+    #
+    # t.dicCommonDeleteOnetime()  # 删除共通的部分
+    #
+    # t.compressList_id_t(t.ac_list_ori, 2, 4)
+    # print(len(t.ac_list_ori))  # 1001
+    #
+    # t.patternCheeker()
+    # print("new size")
+    # print(len(t.pf_temp_saver_new_2))
+    # print(len(t.pf_temp_saver_new_3))
+    # print(len(t.pf_temp_saver_new_4))
+    # print(len(t.pf_temp_saver_new_5))
+    # print(len(t.pf_temp_saver_new_6))
+    # print("pro size")
+    # print(len(t.pf_temp_saver_pro_2))
+    # print(len(t.pf_temp_saver_pro_3))
+    # print(len(t.pf_temp_saver_pro_4))
+    # print(len(t.pf_temp_saver_pro_5))
+    # print(len(t.pf_temp_saver_pro_6))
+    # print("Ori:")
+    # print("pro:")
+    # print(t.class_keeper_pro)  # 为啥这个的4最大，也没有压缩啊
+    # print(t.score_keeper_pro)  # 为啥这个这么少
+    # print("New:")
+    # print(t.class_keeper_new)
+    # print(t.score_keeper_new)  # 为啥这么少
+    # # t.patterncleanerfortesttea(1)  # use to delete the pattern which only show one time
+    # print("After delete the one time action:")
+    # print("pro:")
+    # print(t.class_keeper_pro)
+    # print(t.score_keeper_pro)
+    # print("New:")
+    # print(t.class_keeper_new)
+    # print(t.score_keeper_new)
+    # print("wrong:")
+    # print(t.dic_action_wrong)
+    # t.dicPatternReviser()
+    # print("right:")
+    # print(t.dic_action_right)  # 没有对应的修改就是一个空的字符串
+    # print("Done!")
+    # print(t.dic_com_ori)
+    # print(len(t.ac_list_com))
+    # print(t.dicFramegeter(t.dic_action_wrong))
+    print("Score:") # tfidf和cheeker无关
+    print(main.tools.TF_IDF_Compute(t.teacherlist("/Users/syao/desktop/res/TeaSys_Dev/all_pattern/"),t.testpfFinder(1)))
+    # print(t.scorecalculater_jd(1))

@@ -105,7 +105,7 @@ class PatternFinder(object):
             for temp_item in f.readlines():
                 temp_item = temp_item.strip('\n')
                 sp_temp_item = temp_item.split(",")
-                if (str(char) == sp_temp_item[2]):
+                if str(char) == sp_temp_item[2]:
                     list_t.append(sp_temp_item[0])
             f.close()
         return list_t
@@ -138,7 +138,7 @@ class PatternFinder(object):
     # use to show the dic contents
     # return the whole dic of actions
     def dicShower(self):
-        return self.dictemper
+        return self.dictemper.copy()
 
     # use to put the pattern in to she dic
     def dicPuter(self, str_ac):
@@ -157,12 +157,15 @@ class PatternFinder(object):
         self.dictemper = dic_temp.copy()
 
     # use to save the pattern into json for future
+    # only save the data in the dictemper
     def dicSaver(self, save_path):
         json_str = json.dumps(self.dictemper)
         # with open("/Users/syao/desktop/res/pattern_save/pattern_data" + str(self.times_span) + ".json",
         with open(save_path + str(self.times_span) + ".json",
                   "w") as json_file:
             json_file.write(json_str)
+
+
 
     # use to save the whole pattern ID of video
     # return the list
