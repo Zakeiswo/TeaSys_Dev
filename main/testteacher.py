@@ -616,8 +616,8 @@ if __name__ == '__main__':
     prot.pfdicSaver()
     newt = NewTeacher("Mike", "/Users/syao/desktop/res/kj_v2.csv", "/Users/syao/desktop/res/TeaSys_Dev")
     newt.pfdicSaver()
-    prot.pfdicSaver_all()  # save the whole data
-    newt.pfdicSaver_all()
+    prot.pfdicSaver_all(1)  # save the whole data
+    newt.pfdicSaver_all(1)
     t = TestTeacher("Jimy", "/Users/syao/desktop/res/ny_test_4fornew.csv")
 
     t.jsonReader_pf("/Users/syao/desktop/res/TeaSys_Dev/Tom/2.json", 2, 1)  # 1 for pro

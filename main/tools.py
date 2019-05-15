@@ -17,7 +17,7 @@ from functools import reduce
 
 
 # eg.{name1:{pt1:sum_num,pt2:sum_num,...}, name2:{...}...}
-def TF_IDF_Compute(input_sets,words): # 这个word是用来判断是不是关键字的
+def TF_IDF_Compute(input_sets,words,if_weight = True): # 这个word是用来判断是不是关键字的
 
     word_in_afile_stat = {}
     word_in_allfiles_stat = {}
@@ -63,6 +63,8 @@ def TF_IDF_Compute(input_sets,words): # 这个word是用来判断是不是关键
                 with_word_sum = word_in_allfiles_stat[word]  # 这个词语出现的次数
                 # 这里log后面的值太小了，但是如果样本的数量变大的话就没事了
                 TF_IDF_result[filename][word] = ((word_n / word_sum)) * (math.log10(files_num /(with_word_sum+1)))  # tfidf的公式
+                if if_weight:
+                    TF_IDF_result[filename][word] *= words[word]  # multiply the times in the test set
         TF_IDF_total = {}
         for filename in TF_IDF_result.keys():
             print(TF_IDF_result[filename].values())
