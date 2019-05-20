@@ -97,3 +97,4 @@ def patterncleaner(dict, show_times):
             if dic_temp[key] == show_times:
                 dic_temp.pop(key)
     return dic_temp
+

@@ -33,7 +33,7 @@ class TestTeacher(object):
         self.name = name
         self.dic_com_ori = {}  # 压缩后下标：占了几个frame，注意补上被省略的,由于还原真正错的地方是哪一个帧数
         self.test_csvpath = test_csvpath
-        # for proteacher data to calculate the score
+        # for proteacher data to calculate the score 分别是test做出老手老师的各个pattern的次数，和每种长度pattern的数量，下面是新手的
         self.score_keeper_pro = {}
         self.class_keeper_pro = {}
         # for newteacher data to calculate the score
@@ -44,7 +44,7 @@ class TestTeacher(object):
 
         self.dic_action_wrong = {}  # 这里记录的只是 动作数：错的是啥，但是可以和dic_com_ori一起还原出哪里错了
         self.dic_action_wrong_fra = {}  # 记录帧数:错的是啥
-        self.dic_action_right = {}
+        self.dic_action_right = {} # TODO(Zake Yao)这里好像没用，把没用的成员变量删了
         self.dic_action_right_fra = {}
 
         # use to keep the json data
@@ -591,6 +591,28 @@ class TestTeacher(object):
     # version : to use the DP matching
     def scorecalculater_dp(self):
         pass
+    #use the average score and sum the matching times to get the score
+    def scorecalculater_ave(self):
+        # 引入
+        # 让程序在外层删除吧,记住删除程序在外层
+        # 先看在不在，有没有数据
+        sum_new = 0
+        sum_pro = 0
+        for x in range(2, 7):
+            if x in self.score_keeper_new:
+                sum_new += self.score_keeper_new[x]
+
+        for x in range(2, 7):
+            if x in self.score_keeper_pro:
+                sum_pro += self.score_keeper_pro[x]
+
+        # 然后计算
+        score = 0
+        if sum_new!=0 or sum_pro!=0:
+            score = (sum_pro/(sum_pro+sum_new)-sum_new/(sum_pro+sum_new))*50+50  # 如果两个都不为0
+            print(score)
+
+        return score
 
     # jaccard distance
     def jaccard_dist(self, tp, tq):  # 这种方法没有考虑元素的重复性吧
@@ -603,6 +625,40 @@ class TestTeacher(object):
         dis: float = float(len((set_p | set_q) - (set_p & set_q))) / len(set_p | set_q)
         # dis = pdist([p, q],'jaccard')
         return dis
+    # use to delete the pattern when in the situation that have longer pattern include the shorter ones
+    # this function will change the value of score_keeper and class_keeper, so it have to be the member function
+    def shortptdeleter(self):
+        temp_class_keeper_pro = self.class_keeper_pro.copy()
+        temp_score_keeper_pro = self.score_keeper_pro.copy()
+        temp_class_keeper_new = self.class_keeper_new.copy()
+        temp_score_keeper_new = self.score_keeper_new.copy()
+
+        for x in self.class_keeper_pro:
+            if x[0:-1] in temp_class_keeper_pro:
+                (temp_class_keeper_pro,temp_score_keeper_pro) = self.eachsmallpt(x,temp_class_keeper_pro,temp_score_keeper_pro)
+        for x in self.class_keeper_new:
+            if x[0:-1] in temp_class_keeper_new:
+                (temp_class_keeper_new,temp_score_keeper_new) = self.eachsmallpt(x,temp_class_keeper_new,temp_score_keeper_new)
+        self.class_keeper_pro = temp_class_keeper_pro.copy()
+        self.score_keeper_pro = temp_score_keeper_pro.copy()
+        self.class_keeper_new = temp_class_keeper_new.copy()
+        self.score_keeper_new = temp_score_keeper_new.copy()
+
+    def eachsmallpt(self,key_t,dic_class,dic_score):
+        dic_class_t = dic_class.copy()
+        dic_score_t = dic_score.copy()
+
+        if key_t[0:-1] in dic_class:
+            (dic_class_t, dic_score_t) = self.eachsmallpt(key_t[0:-1],dic_class_t,dic_score_t)
+        else:
+            if dic_score[len(key_t)] == 1:
+                dic_class_t.pop(key_t)
+                dic_score_t.pop(len(key_t))
+            else:
+                dic_class_t.pop(key_t)
+                dic_score_t[len(key_t)] -=1
+        return (dic_class_t.copy(), dic_score_t.copy())
+
 
 
 if __name__ == '__main__':
@@ -703,3 +759,15 @@ if __name__ == '__main__':
     print(main.tools.TF_IDF_Compute(t.teacherlist("/Users/syao/desktop/res/TeaSys_Dev/all_pattern/"),t.testpfFinder(1)))
     print()
     print(t.scorecalculater_jd(1))
+    print("score:ave:")
+    print(t.scorecalculater_ave())
+    print("longer:")
+    t.shortptdeleter()# 删除包括的部分
+    print("score:ave:")
+    print(t.scorecalculater_ave())
+    print("pro:")
+    print(t.class_keeper_pro)
+    print(t.score_keeper_pro)
+    print("New:")
+    print(t.class_keeper_new)
+    print(t.score_keeper_new)
