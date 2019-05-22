@@ -126,6 +126,11 @@ class TestTeacher(object):
                 self.pf_temp_saver_new_5 = self.dicMerger(self.pf_temp_saver_new_5.copy(), json_file.copy())
             elif span == 6:
                 self.pf_temp_saver_new_6 = self.dicMerger(self.pf_temp_saver_new_6.copy(), json_file.copy())
+    # use read the pf in one time
+    def jsonReader_pf_onetime(self, json_path, name, which_teacher):
+        for x in range(2,7):
+            path_final = os.path.join(json_path,name,str(x)+".json")
+            self.jsonReader_pf(path_final, x, which_teacher)
 
     # use to update the dic
     # when the key is existed,add 1 to the value
@@ -367,6 +372,7 @@ class TestTeacher(object):
     # use to forecast the next action witch one is best
     # input the pattern of now and return the best next action
     # if no next patern in the dic return ""
+    # 用于预测是否有更好的下一个动作的预测系统，现在只是通过对不同的长度的pt库里面看有没有刚好可以修改的
     def patternForecaster(self, pattern_temp):  # TODO(Zake Yao):需不需要添加一个flag用来判断有没有清楚共通的部分
         if len(pattern_temp) > 5:
             print("Error! The length of the pattern can't longer than 5.")
@@ -422,6 +428,7 @@ class TestTeacher(object):
 
     # use to change the wrong pattern to the right pattern
     # by cheek the first some action of the pattern to use the function patternForecaster to get the right action
+    # 这个是用来吧错的list里面的动作进行修改，如果老手的数据里面有对应的就可以输出到right的数组里
     def dicPatternReviser(self):  # 如果是这个动作老手里面没有对应的修改怎么办
         for item in self.dic_action_wrong:
             if len(self.dic_action_wrong[item][0:-1]) < 1:
@@ -435,6 +442,7 @@ class TestTeacher(object):
 
     # use to get frame instead of action number in the dic
     # to rewrite the dic，return a new dic with frame
+    # also assign the dic_action_wrong_fra to save the value
     def dicFramegeter(self, dic_temp):
         new_dic = {}
         for item in dic_temp:
@@ -446,6 +454,7 @@ class TestTeacher(object):
                     break
                 # then add
                 sum_temp += self.dic_com_ori[x]
+        self.dic_action_wrong_fra = new_dic.copy()
         return new_dic
 
     # use to find the patterns that have displayed in the test teacher
@@ -662,112 +671,210 @@ class TestTeacher(object):
 
 
 if __name__ == '__main__':
+    # 为了提高速度 可以 之前就通过老手和新手库的程序获取老手和新手的数据并对比
     # prot = ProTeacher("Tom", "/Users/syao/desktop/res/test_ori_1.csv", "/Users/syao/desktop/res/TeaSys_Dev")
     # prot.pfdicSaver()
     # newt = NewTeacher("Mike", "/Users/syao/desktop/res/test_ori_2.csv", "/Users/syao/desktop/res/TeaSys_Dev")
     # newt.pfdicSaver()
     # t = TestTeacher("Jimy", "/Users/syao/desktop/res/test_ori_4.csv")
+    # 如何处理同名的情况
+    # newt_1 = NewTeacher("AkiOkubo", "/Users/syao/desktop/res/csvdata/01_Rookie_AkiOkubo_English_all.csv", "/Users/syao/desktop/res/TeaSys_Dev")
+    # newt_1.pfdicSaver()
+    # newt_2 = NewTeacher("KotaroHosoi", "/Users/syao/desktop/res/csvdata/02_Rookie_KotaroHosoi_Mathematics_all.csv", "/Users/syao/desktop/res/TeaSys_Dev")
+    # newt_2.pfdicSaver()
+    # newt_3 = NewTeacher("ShioriMasuko", "/Users/syao/desktop/res/csvdata/03_Rookie_ShioriMasuko_English_all.csv", "/Users/syao/desktop/res/TeaSys_Dev")
+    # newt_3.pfdicSaver()
+    # newt_4 = NewTeacher("YukinaHachisu", "/Users/syao/desktop/res/csvdata/04_Rookie_YukinaHachisu_English_all.csv", "/Users/syao/desktop/res/TeaSys_Dev")
+    # newt_4.pfdicSaver()
+    # newt_5 = NewTeacher("YusukeHachisu", "/Users/syao/desktop/res/csvdata/05_Rookie_YusukeHachisu_Japanese_all.csv", "/Users/syao/desktop/res/TeaSys_Dev")
+    # newt_5.pfdicSaver()
+    # newt_6 = NewTeacher("Kojima1", "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Kojima_01_all.csv", "/Users/syao/desktop/res/TeaSys_Dev")
+    # newt_6.pfdicSaver()
+    # newt_7 = NewTeacher("Kojima2", "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Kojima_02_all.csv", "/Users/syao/desktop/res/TeaSys_Dev")
+    # newt_7.pfdicSaver()
+    # newt_8 = NewTeacher("Kojima3", "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Kojima_03_all.csv", "/Users/syao/desktop/res/TeaSys_Dev")
+    # newt_8.pfdicSaver()
+    # newt_9 = NewTeacher("Kojima4", "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Kojima_04_all.csv",
+    #                     "/Users/syao/desktop/res/TeaSys_Dev")
+    # newt_9.pfdicSaver()
+    # newt_10 = NewTeacher("Kojima5", "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Kojima_05_all.csv",
+    #                     "/Users/syao/desktop/res/TeaSys_Dev")
+    # newt_10.pfdicSaver()
+    # newt_11 = NewTeacher("Kojima6", "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Kojima_06_all.csv",
+    #                     "/Users/syao/desktop/res/TeaSys_Dev")
+    # newt_11.pfdicSaver()
+    # newt_12 = NewTeacher("Kojima7", "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Kojima_07_all.csv",
+    #                     "/Users/syao/desktop/res/TeaSys_Dev")
+    # newt_12.pfdicSaver()
 
-    prot = ProTeacher("Tom", "/Users/syao/desktop/res/ny_v2.csv", "/Users/syao/desktop/res/TeaSys_Dev")
-    prot.pfdicSaver()
-    newt = NewTeacher("Mike", "/Users/syao/desktop/res/kj_v2.csv", "/Users/syao/desktop/res/TeaSys_Dev")
-    newt.pfdicSaver()
-    prot.pfdicSaver_all(1)  # save the whole data
-    newt.pfdicSaver_all(1)
-    t = TestTeacher("Jimy", "/Users/syao/desktop/res/ny_test_4fornew.csv")
+    #prot_1.pfdicSaver_all(1)  # save the whole data 在后面算tfidf的时候用了
 
-    t.jsonReader_pf("/Users/syao/desktop/res/TeaSys_Dev/Tom/2.json", 2, 1)  # 1 for pro
-    t.jsonReader_pf("/Users/syao/desktop/res/TeaSys_Dev/Tom/3.json", 3, 1)
-    t.jsonReader_pf("/Users/syao/desktop/res/TeaSys_Dev/Tom/4.json", 4, 1)
-    t.jsonReader_pf("/Users/syao/desktop/res/TeaSys_Dev/Tom/5.json", 5, 1)
-    t.jsonReader_pf("/Users/syao/desktop/res/TeaSys_Dev/Tom/6.json", 6, 1)
+    # prot_1 = ProTeacher("YoshimitauHamada", "/Users/syao/desktop/res/csvdata/06_Expert_YoshimitauHamada_Mathematics_all.csv", "/Users/syao/desktop/res/TeaSys_Dev")
+    # prot_1.pfdicSaver()
+    # prot_2 = ProTeacher("ShotaYoshida", "/Users/syao/desktop/res/csvdata/07_Expert_ShotaYoshida_Mathematics_NOFULL_all.csv", "/Users/syao/desktop/res/TeaSys_Dev")
+    # prot_2.pfdicSaver()
+    # prot_3 = ProTeacher("TakashiMajima", "/Users/syao/desktop/res/csvdata/08_Expert_TakashiMajima_Mathematics_NOFULL_all.csv", "/Users/syao/desktop/res/TeaSys_Dev")
+    # prot_3.pfdicSaver()
+    # prot_4 = ProTeacher("KunihiroSato", "/Users/syao/desktop/res/csvdata/09_Expert_KunihiroSato_Mathematics_all.csv", "/Users/syao/desktop/res/TeaSys_Dev")
+    # prot_4.pfdicSaver()
+    # prot_5 = ProTeacher("AyakoYamamoto", "/Users/syao/desktop/res/csvdata/10_Expert_AyakoYamamoto_Japanese_all.csv", "/Users/syao/desktop/res/TeaSys_Dev")
+    # prot_5.pfdicSaver()
+    # prot_6 = ProTeacher("SakiWatanabe", "/Users/syao/desktop/res/csvdata/11_Expert_SakiWatanabe_English_Champion_all.csv", "/Users/syao/desktop/res/TeaSys_Dev")
+    # prot_6.pfdicSaver()
+    # prot_7 = ProTeacher("RinaAndo", "/Users/syao/desktop/res/csvdata/12_Expert_RinaAndo_Civics_all.csv", "/Users/syao/desktop/res/TeaSys_Dev")
+    # prot_7.pfdicSaver()
+    # prot_8 = ProTeacher("NaokiSaiba", "/Users/syao/desktop/res/csvdata/13_Expert_NaokiSaiba_Science_all.csv", "/Users/syao/desktop/res/TeaSys_Dev")
+    # prot_8.pfdicSaver()
+    # prot_9 = ProTeacher("Nishiyama1", "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Nishiyama_01_all.csv",
+    #                     "/Users/syao/desktop/res/TeaSys_Dev")
+    # prot_9.pfdicSaver()
+    # prot_7 = ProTeacher("Nishiyama2", "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Nishiyama_02_all.csv",
+    #                     "/Users/syao/desktop/res/TeaSys_Dev")
+    # prot_7.pfdicSaver()
+    # prot_8 = ProTeacher("Nishiyama3", "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Nishiyama_03_all.csv",
+    #                     "/Users/syao/desktop/res/TeaSys_Dev")
+    # prot_8.pfdicSaver()
 
-    t.jsonReader_pf("/Users/syao/desktop/res/TeaSys_Dev/Mike/2.json", 2, 0)  # 0 for new
-    t.jsonReader_pf("/Users/syao/desktop/res/TeaSys_Dev/Mike/3.json", 3, 0)
-    t.jsonReader_pf("/Users/syao/desktop/res/TeaSys_Dev/Mike/4.json", 4, 0)
-    t.jsonReader_pf("/Users/syao/desktop/res/TeaSys_Dev/Mike/5.json", 5, 0)
-    t.jsonReader_pf("/Users/syao/desktop/res/TeaSys_Dev/Mike/6.json", 6, 0)
 
-    print("new size")
-    print(len(t.pf_temp_saver_new_2))
-    print(t.pf_temp_saver_new_2)
-    print(len(t.pf_temp_saver_new_3))
-    print(t.pf_temp_saver_new_3)
-    print(len(t.pf_temp_saver_new_4))
-    print(t.pf_temp_saver_new_4)
-    print(len(t.pf_temp_saver_new_5))
-    print(t.pf_temp_saver_new_5)
-    print(len(t.pf_temp_saver_new_6))
-    print(t.pf_temp_saver_new_6)
-    print("pro size")
-    print(len(t.pf_temp_saver_pro_2))
-    print(t.pf_temp_saver_pro_2)
-    print(len(t.pf_temp_saver_pro_3))
-    print(t.pf_temp_saver_pro_3)
-    print(len(t.pf_temp_saver_pro_4))
-    print(t.pf_temp_saver_pro_4)
-    print(len(t.pf_temp_saver_pro_5))
-    print(t.pf_temp_saver_pro_5)
-    print(len(t.pf_temp_saver_pro_6))
-    print(t.pf_temp_saver_pro_6)
-    print("**********************")
-    t.dicCommenShowerOnetime()  # 展示共通的set
+    # ----------------------------------------------------前处理分界线-------------------------------------------------------
+
+    # 这个以后的数据一定会变成100 或者是0 表明还是记住了用户的特征的
+    # 在ny和kj当中 他们的分数变化也正明了是会学习的，那么重要的地方就是数据量了
+    # t = TestTeacher("YusukeHachisu", "/Users/syao/desktop/res/csvdata/06_Expert_YoshimitauHamada_Mathematics_all.csv") #100
+    # t = TestTeacher("AyakoYamamoto", "/Users/syao/desktop/res/csvdata/10_Expert_AyakoYamamoto_Japanese_all.csv") # 100
+    # t = TestTeacher("YukinaHachisu", "/Users/syao/desktop/res/csvdata/04_Rookie_YukinaHachisu_English_all.csv") # 0
+    # t = TestTeacher("KunihiroSato", "/Users/syao/desktop/res/csvdata/09_Expert_KunihiroSato_Mathematics_all.csv") # 100
+    # t = TestTeacher("YoshimitauHamada", "/Users/syao/desktop/res/csvdata/09_Expert_KunihiroSato_Mathematics_all.csv") # 100 ?
+    # t = TestTeacher("AkiOkubo", "/Users/syao/desktop/res/csvdata/01_Rookie_AkiOkubo_English_all.csv") # 0 ?
+    # t = TestTeacher("NaokiSaiba", "/Users/syao/desktop/res/csvdata/13_Expert_NaokiSaiba_Science_all.csv") # 24
+    # t = TestTeacher("RinaAndo", "/Users/syao/desktop/res/csvdata/12_Expert_RinaAndo_Civics_all.csv") # 32
+    # t = TestTeacher("SakiWatanabe", "/Users/syao/desktop/res/csvdata/11_Expert_SakiWatanabe_English_Champion_all.csv") # 53
+    # t = TestTeacher("Kojima", "/Users/syao/desktop/res/kj_v2.csv") # 30
+    # t = TestTeacher("Nishiyama", "/Users/syao/desktop/res/ny_v2.csv") # 71
+    # t = TestTeacher("Kojima7", "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Kojima_07_all.csv") # 16
+    t = TestTeacher("Nishiyama3", "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Nishiyama_03_all.csv") # 58
+
+
+    path_tttt="/Users/syao/desktop/res/TeaSys_Dev/"
+    # new
+    t.jsonReader_pf_onetime(path_tttt,"AkiOkubo",0)
+    t.jsonReader_pf_onetime(path_tttt,"KotaroHosoi",0)#需要命名来识别
+    t.jsonReader_pf_onetime(path_tttt,"ShioriMasuko",0)
+    t.jsonReader_pf_onetime(path_tttt,"YukinaHachisu",0)
+    t.jsonReader_pf_onetime(path_tttt,"YusukeHachisu",0)
+    t.jsonReader_pf_onetime(path_tttt,"Kojima1",0)
+    t.jsonReader_pf_onetime(path_tttt,"Kojima2",0)
+    t.jsonReader_pf_onetime(path_tttt,"Kojima3",0)
+    t.jsonReader_pf_onetime(path_tttt,"Kojima4",0)
+    t.jsonReader_pf_onetime(path_tttt,"Kojima5",0)
+    t.jsonReader_pf_onetime(path_tttt,"Kojima6",0)
+    # t.jsonReader_pf_onetime(path_tttt,"Kojima7",0)
+    # pro
+    t.jsonReader_pf_onetime(path_tttt, "YoshimitauHamada", 1) # 1 = pro
+    t.jsonReader_pf_onetime(path_tttt, "ShotaYoshida", 1)
+    t.jsonReader_pf_onetime(path_tttt, "TakashiMajima", 1)
+    t.jsonReader_pf_onetime(path_tttt, "KunihiroSato", 1)
+    t.jsonReader_pf_onetime(path_tttt, "AyakoYamamoto", 1)
+    t.jsonReader_pf_onetime(path_tttt, "Nishiyama1", 1)
+    t.jsonReader_pf_onetime(path_tttt, "Nishiyama2", 1)
+    # t.jsonReader_pf_onetime(path_tttt, "Nishiyama3", 1)
+
+    # t.jsonReader_pf("/Users/syao/desktop/res/TeaSys_Dev/Tom/2.json", 2, 1)  # 1 for pro TODO(Zake Yao):这个能不能简化一下
+    # t.jsonReader_pf("/Users/syao/desktop/res/TeaSys_Dev/Tom/3.json", 3, 1)
+    # t.jsonReader_pf("/Users/syao/desktop/res/TeaSys_Dev/Tom/4.json", 4, 1)
+    # t.jsonReader_pf("/Users/syao/desktop/res/TeaSys_Dev/Tom/5.json", 5, 1)
+    # t.jsonReader_pf("/Users/syao/desktop/res/TeaSys_Dev/Tom/6.json", 6, 1)
+    #
+    # t.jsonReader_pf("/Users/syao/desktop/res/TeaSys_Dev/Mike/2.json", 2, 0)  # 0 for new
+    # t.jsonReader_pf("/Users/syao/desktop/res/TeaSys_Dev/Mike/3.json", 3, 0)
+    # t.jsonReader_pf("/Users/syao/desktop/res/TeaSys_Dev/Mike/4.json", 4, 0)
+    # t.jsonReader_pf("/Users/syao/desktop/res/TeaSys_Dev/Mike/5.json", 5, 0)
+    # t.jsonReader_pf("/Users/syao/desktop/res/TeaSys_Dev/Mike/6.json", 6, 0)
+
+    # print("new size")
+    # print(len(t.pf_temp_saver_new_2))
+    # print(t.pf_temp_saver_new_2)
+    # print(len(t.pf_temp_saver_new_3))
+    # print(t.pf_temp_saver_new_3)
+    # print(len(t.pf_temp_saver_new_4))
+    # print(t.pf_temp_saver_new_4)
+    # print(len(t.pf_temp_saver_new_5))
+    # print(t.pf_temp_saver_new_5)
+    # print(len(t.pf_temp_saver_new_6))
+    # print(t.pf_temp_saver_new_6)
+    # print("pro size")
+    # print(len(t.pf_temp_saver_pro_2))
+    # print(t.pf_temp_saver_pro_2)
+    # print(len(t.pf_temp_saver_pro_3))
+    # print(t.pf_temp_saver_pro_3)
+    # print(len(t.pf_temp_saver_pro_4))
+    # print(t.pf_temp_saver_pro_4)
+    # print(len(t.pf_temp_saver_pro_5))
+    # print(t.pf_temp_saver_pro_5)
+    # print(len(t.pf_temp_saver_pro_6))
+    # print(t.pf_temp_saver_pro_6)
+    # print("**********************")
+    # t.dicCommenShowerOnetime()  # 展示共通的set
 
     t.dicCommonDeleteOnetime()  # 删除共通的部分
 
-    t.compressList_id_t(t.ac_list_ori, 2, 4)
-    print(len(t.ac_list_ori))  # 1001
+    t.compressList_id_t(t.ac_list_ori, 2, 4) # 这一步是压缩 原始数据，但是为什么写在外面 # TODO（Zake Yao）:把他写到程序里面去封装起来
+    # print(len(t.ac_list_ori))  # 1001
 
-    t.patternCheeker()
-    print("new size")
-    print(len(t.pf_temp_saver_new_2))
-    print(len(t.pf_temp_saver_new_3))
-    print(len(t.pf_temp_saver_new_4))
-    print(len(t.pf_temp_saver_new_5))
-    print(len(t.pf_temp_saver_new_6))
-    print("pro size")
-    print(len(t.pf_temp_saver_pro_2))
-    print(len(t.pf_temp_saver_pro_3))
-    print(len(t.pf_temp_saver_pro_4))
-    print(len(t.pf_temp_saver_pro_5))
-    print(len(t.pf_temp_saver_pro_6))
-    print("Ori:")
-    print("pro:")
-    print(t.class_keeper_pro)  # 为啥这个的4最大，也没有压缩啊
-    print(t.score_keeper_pro)  # 为啥这个这么少
-    print("New:")
-    print(t.class_keeper_new)
-    print(t.score_keeper_new)  # 为啥这么少
-    # t.patterncleanerfortesttea(1)  # use to delete the pattern which only show one time
-    print("After delete the one time action:")
-    print("pro:")
-    print(t.class_keeper_pro)
-    print(t.score_keeper_pro)
-    print("New:")
-    print(t.class_keeper_new)
-    print(t.score_keeper_new)
-    print("wrong:")
-    print(t.dic_action_wrong)
-    t.dicPatternReviser()
-    print("right:")
-    print(t.dic_action_right)  # 没有对应的修改就是一个空的字符串
-    print("Done!")
-    print(t.dic_com_ori)
-    print(len(t.ac_list_com))
-    print(t.dicFramegeter(t.dic_action_wrong))
+    t.patternCheeker()  # 这个是主要步骤的用sliping window 来cheek，和直接用pf解析不同的是，只能获取统计已有的pattern出现了多少
+    # print("new size")
+    # print(len(t.pf_temp_saver_new_2))
+    # print(len(t.pf_temp_saver_new_3))
+    # print(len(t.pf_temp_saver_new_4))
+    # print(len(t.pf_temp_saver_new_5))
+    # print(len(t.pf_temp_saver_new_6))
+    # print("pro size")
+    # print(len(t.pf_temp_saver_pro_2))
+    # print(len(t.pf_temp_saver_pro_3))
+    # print(len(t.pf_temp_saver_pro_4))
+    # print(len(t.pf_temp_saver_pro_5))
+    # print(len(t.pf_temp_saver_pro_6))
+    # print("Ori:")
+    # print("pro:")
+    # print(t.class_keeper_pro)  # 为啥这个的4最大，也没有压缩啊 这个是老手老师的刚刚cheek过得各种动作的对应的pattern是啥，然后其出现次数
+    # print(t.score_keeper_pro)  # 为啥这个这么少，这个是每种长度的出现次数的总和
+    # print("New:")
+    # print(t.class_keeper_new)
+    # print(t.score_keeper_new)  # 为啥这么少
+    t.patterncleanerfortesttea(1)  # use to delete the pattern which only show one time ，这个是用来删除只出现1次的情况，而且class和score都会更新
+    # print("After delete the one time action:")
+    # print("pro:")
+    # print(t.class_keeper_pro)
+    # print(t.score_keeper_pro)
+    # print("New:")
+    # print(t.class_keeper_new)
+    # print(t.score_keeper_new)
+    # 查错系列
+    # print("wrong:")
+    # print(t.dic_action_wrong)   # 动作数：错的是啥
+    # t.dicPatternReviser()
+    # print("right:")
+    # print(t.dic_action_right)  # 没有对应的修改就是一个空的字符串
+    # print("Done!")
+    # print(t.dic_com_ori)
+    # print(len(t.ac_list_com))
+    # print(t.dicFramegeter(t.dic_action_wrong))
+    # 算分系列
     print("Score:") # tfidf和cheeker无关
-    print(main.tools.TF_IDF_Compute(t.teacherlist("/Users/syao/desktop/res/TeaSys_Dev/all_pattern/"),t.testpfFinder(1)))
-    print()
-    print(t.scorecalculater_jd(1))
+    # print(main.tools.TF_IDF_Compute(t.teacherlist("/Users/syao/desktop/res/TeaSys_Dev/all_pattern/"), t.testpfFinder(1)))
+    # print()
+    # print(t.scorecalculater_jd(1))
     print("score:ave:")
     print(t.scorecalculater_ave())
     print("longer:")
     t.shortptdeleter()# 删除包括的部分
     print("score:ave:")
     print(t.scorecalculater_ave())
-    print("pro:")
-    print(t.class_keeper_pro)
-    print(t.score_keeper_pro)
-    print("New:")
-    print(t.class_keeper_new)
-    print(t.score_keeper_new)
+    # print("pro:")
+    # print(t.class_keeper_pro)
+    # print(t.score_keeper_pro)
+    # print("New:")
+    # print(t.class_keeper_new)
+    # print(t.score_keeper_new)
+
+    # to find out how long for the pattern is best

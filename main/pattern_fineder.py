@@ -179,21 +179,22 @@ class PatternFinder(object):
 
 
 if __name__ == '__main__':
+    pass
     # 先建立对象
     # 再压缩
     # 再做字典
-    pf = PatternFinder(3, "/Users/syao/desktop/res/kj.csv")  # build the object with the span of 4 times
-    listofaction = []
-    listofaction = pf.csvReader_pf()  # read the csv
-    com_list = []
-    com_list = pf.compressList(listofaction, 2, 4)  # 4rame~16frame,compress the csv list
-    print(com_list)
-    print(len(com_list))
-    pf.dicMaker(com_list)  # to build the dic
-    print(pf.dicFinder("AABD"))
-    print(pf.dicShower())  # to show the sum of the dic
-    pf.dicClear(1)  # clear the action when the time is less than 2(<=1)
-    print(pf.dicShower())  # to show the sum of the new dic
-    # ttt=['Point to the students', 'Standing and talking', 'Write on the blackboard']
-    # print(pf.IDgeter(ttt))
-    pf.dicSaver()  # save to the json
+    # pf = PatternFinder(3, "/Users/syao/desktop/res/kj.csv")  # build the object with the span of 4 times
+    # listofaction = []
+    # listofaction = pf.csvReader_pf()  # read the csv
+    # com_list = []
+    # com_list = pf.compressList(listofaction, 2, 4)  # 4rame~16frame,compress the csv list
+    # print(com_list)
+    # print(len(com_list))
+    # pf.dicMaker(com_list)  # to build the dic
+    # print(pf.dicFinder("AABD"))
+    # print(pf.dicShower())  # to show the sum of the dic
+    # pf.dicClear(1)  # clear the action when the time is less than 2(<=1)
+    # print(pf.dicShower())  # to show the sum of the new dic
+    # # ttt=['Point to the students', 'Standing and talking', 'Write on the blackboard']
+    # # print(pf.IDgeter(ttt))
+    # pf.dicSaver()  # save to the json
