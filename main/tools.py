@@ -98,3 +98,53 @@ def patterncleaner(dict, show_times):
                 dic_temp.pop(key)
     return dic_temp
 
+# use to sum the length : times of the pattern dic
+def timecounter(dic_t):
+    dic_count ={}
+    for item in dic_t:
+        if int(dic_t[item]) == 2:
+            if 2 not in dic_count:
+                dic_count[2] = 1
+            else:
+                dic_count[2] +=1
+        elif int(dic_t[item]) == 3:
+            if 3 not in dic_count:
+                dic_count[3] = 1
+            else:
+                dic_count[3] +=1
+        elif int(dic_t[item]) == 4:
+            if 4 not in dic_count:
+                dic_count[4] = 1
+            else:
+                dic_count[4] +=1
+        elif int(dic_t[item]) == 5:
+            if 5 not in dic_count:
+                dic_count[5] = 1
+            else:
+                dic_count[5] +=1
+        elif int(dic_t[item]) == 6:
+            if 6 not in dic_count:
+                dic_count[6] = 1
+            else:
+                dic_count[6] +=1
+        elif int(dic_t[item]) == 7:
+            if 7 not in dic_count:
+                dic_count[7] = 1
+            else:
+                dic_count[7] +=1
+        elif int(dic_t[item]) == 8:
+            if 8 not in dic_count:
+                dic_count[8] = 1
+            else:
+                dic_count[8] +=1
+        else:
+            if 10 not in dic_count:
+                dic_count[10] = 1
+            else:
+                dic_count[10] +=1
+
+# use to do the cross validation in
+# 感觉可以设定成，两个文件夹里，分别打开进行赋值然后和测试的结果对比
+def cross_validation_onetime(pos_path,neg_path):
+    pass
+
