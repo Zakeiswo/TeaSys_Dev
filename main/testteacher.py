@@ -943,3 +943,4 @@ if __name__ == '__main__':
     print(main.tools.order_dic(main.tools.timecounter(main.tools.shortptdeleter_rel(t.dicMergerforPro(1)))))
     print("New time")
     print(main.tools.order_dic(main.tools.timecounter(main.tools.shortptdeleter_rel(t.dicMergerforNew(1)))))
+    # do a test
