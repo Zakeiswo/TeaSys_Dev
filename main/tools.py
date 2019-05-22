@@ -13,7 +13,9 @@ __author__ = 'Zake Yao'
 
 import math
 import json
+import collections
 from functools import reduce
+
 
 
 # eg.{name1:{pt1:sum_num,pt2:sum_num,...}, name2:{...}...}
@@ -142,6 +144,33 @@ def timecounter(dic_t):
                 dic_count[10] = 1
             else:
                 dic_count[10] +=1
+    return dic_count
+
+# use to delete the include shorter pattern
+# it's for the normal dic instead of another eachsmallpt
+def shortptdeleter_rel(dic_t):
+    dic_tempt = dic_t.copy()
+    for key_t in dic_t:
+        if key_t[0:-1] in dic_tempt:
+            dic_tempt = eachsmallpt_rel(key_t[0:-1],dic_tempt)
+    return dic_tempt.copy()
+
+
+# 用于递归
+def eachsmallpt_rel(key_t,dic_t):
+    dic_temp = dic_t.copy()
+    if key_t[0:-1] in dic_temp:
+            dic_temp = eachsmallpt_rel(key_t[0:-1],dic_t)
+    else:
+        dic_temp.pop(key_t)
+    return dic_temp.copy()
+
+# use to sort the dic
+def order_dic(dic_t):
+    dic_temp = dic_t.copy()
+    dic_sort = {}
+    dic_sort = collections.OrderedDict(sorted(dic_temp.items(), key=lambda t: t[0]))
+    return dic_sort
 
 # use to do the cross validation in
 # 感觉可以设定成，两个文件夹里，分别打开进行赋值然后和测试的结果对比

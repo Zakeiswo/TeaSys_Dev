@@ -54,12 +54,20 @@ class TestTeacher(object):
         self.pf_temp_saver_pro_4 = {}
         self.pf_temp_saver_pro_5 = {}
         self.pf_temp_saver_pro_6 = {}
+        self.pf_temp_saver_pro_7 = {}
+        self.pf_temp_saver_pro_8 = {}
+        self.pf_temp_saver_pro_9 = {}
+        self.pf_temp_saver_pro_10 = {}
         # second is the new patterns
         self.pf_temp_saver_new_2 = {}
         self.pf_temp_saver_new_3 = {}
         self.pf_temp_saver_new_4 = {}
         self.pf_temp_saver_new_5 = {}
         self.pf_temp_saver_new_6 = {}
+        self.pf_temp_saver_new_7 = {}
+        self.pf_temp_saver_new_8 = {}
+        self.pf_temp_saver_new_9 = {}
+        self.pf_temp_saver_new_10 = {}
 
         csv_file = csv.reader(open(test_csvpath))  # use to read the test date
         for item in csv_file:
@@ -113,7 +121,15 @@ class TestTeacher(object):
             elif span == 5:
                 self.pf_temp_saver_pro_5 = self.dicMerger(self.pf_temp_saver_pro_5.copy(), json_file.copy())
             elif span == 6:
-                self.pf_temp_saver_pro_6 = self.dicMerger(self.pf_temp_saver_pro_6.copy(), json_file.copy())
+                self.pf_temp_saver_pro_6 = self.dicMerger(self.pf_temp_saver_pro_6.copy(), json_file.copy())# GAI
+            elif span == 7:
+                self.pf_temp_saver_pro_7 = self.dicMerger(self.pf_temp_saver_pro_7.copy(), json_file.copy())
+            elif span == 8:
+                self.pf_temp_saver_pro_8 = self.dicMerger(self.pf_temp_saver_pro_8.copy(), json_file.copy())
+            elif span == 9:
+                self.pf_temp_saver_pro_9 = self.dicMerger(self.pf_temp_saver_pro_9.copy(), json_file.copy())
+            elif span == 10:
+                self.pf_temp_saver_pro_10 = self.dicMerger(self.pf_temp_saver_pro_10.copy(), json_file.copy())
 
         elif which_teacher == 0:
             if span == 2:
@@ -125,10 +141,18 @@ class TestTeacher(object):
             elif span == 5:
                 self.pf_temp_saver_new_5 = self.dicMerger(self.pf_temp_saver_new_5.copy(), json_file.copy())
             elif span == 6:
-                self.pf_temp_saver_new_6 = self.dicMerger(self.pf_temp_saver_new_6.copy(), json_file.copy())
+                self.pf_temp_saver_new_6 = self.dicMerger(self.pf_temp_saver_new_6.copy(), json_file.copy())# GA
+            elif span == 7:
+                self.pf_temp_saver_new_7 = self.dicMerger(self.pf_temp_saver_new_7.copy(), json_file.copy())
+            elif span == 8:
+                self.pf_temp_saver_new_8 = self.dicMerger(self.pf_temp_saver_new_8.copy(), json_file.copy())
+            elif span == 9:
+                self.pf_temp_saver_new_9 = self.dicMerger(self.pf_temp_saver_new_9.copy(), json_file.copy())
+            elif span == 10:
+                self.pf_temp_saver_new_10 = self.dicMerger(self.pf_temp_saver_new_10.copy(), json_file.copy())
     # use read the pf in one time
     def jsonReader_pf_onetime(self, json_path, name, which_teacher):
-        for x in range(2,7):
+        for x in range(2,11):
             path_final = os.path.join(json_path,name,str(x)+".json")
             self.jsonReader_pf(path_final, x, which_teacher)
 
@@ -167,6 +191,14 @@ class TestTeacher(object):
                                                                                    self.pf_temp_saver_new_5)
         self.pf_temp_saver_pro_6, self.pf_temp_saver_new_6 = self.dicCommonDeleter(self.pf_temp_saver_pro_6,
                                                                                    self.pf_temp_saver_new_6)
+        self.pf_temp_saver_pro_7, self.pf_temp_saver_new_7 = self.dicCommonDeleter(self.pf_temp_saver_pro_7,
+                                                                                   self.pf_temp_saver_new_7)
+        self.pf_temp_saver_pro_8, self.pf_temp_saver_new_8 = self.dicCommonDeleter(self.pf_temp_saver_pro_8,
+                                                                                   self.pf_temp_saver_new_8)
+        self.pf_temp_saver_pro_9, self.pf_temp_saver_new_9 = self.dicCommonDeleter(self.pf_temp_saver_pro_9,
+                                                                                   self.pf_temp_saver_new_9)
+        self.pf_temp_saver_pro_10, self.pf_temp_saver_new_10 = self.dicCommonDeleter(self.pf_temp_saver_pro_10,
+                                                                                   self.pf_temp_saver_new_10)
 
     # use to show the common pattern in the dic
     # return the same keys in a list
@@ -247,7 +279,7 @@ class TestTeacher(object):
         temp_score_keeper_new = {}
         temp_class_keeper_new = {}
         for item in range(len(self.ac_list_com)):
-            for x in range(6):
+            for x in range(10):# GAI
                 if item + x < len(self.ac_list_com):
                     pattern_temp.append(self.ac_list_com[item + x])
                     if len(pattern_temp) == 2:  # 这里还需要更大的判断来判别是符合加分还是减分的字典了
@@ -543,6 +575,11 @@ class TestTeacher(object):
         temp_dic = self.dicMerger(temp_dic, self.pf_temp_saver_pro_4)
         temp_dic = self.dicMerger(temp_dic, self.pf_temp_saver_pro_5)
         temp_dic = self.dicMerger(temp_dic, self.pf_temp_saver_pro_6)
+        temp_dic = self.dicMerger(temp_dic, self.pf_temp_saver_pro_7)
+        temp_dic = self.dicMerger(temp_dic, self.pf_temp_saver_pro_8)
+        temp_dic = self.dicMerger(temp_dic, self.pf_temp_saver_pro_9)
+        temp_dic = self.dicMerger(temp_dic, self.pf_temp_saver_pro_10)
+
         if show_times != 0:
             temp_dic = main.tools.patterncleaner(temp_dic, show_times)
         return temp_dic
@@ -555,6 +592,10 @@ class TestTeacher(object):
         temp_dic = self.dicMerger(temp_dic, self.pf_temp_saver_new_4)
         temp_dic = self.dicMerger(temp_dic, self.pf_temp_saver_new_5)
         temp_dic = self.dicMerger(temp_dic, self.pf_temp_saver_new_6)
+        temp_dic = self.dicMerger(temp_dic, self.pf_temp_saver_new_7)
+        temp_dic = self.dicMerger(temp_dic, self.pf_temp_saver_new_8)
+        temp_dic = self.dicMerger(temp_dic, self.pf_temp_saver_new_9)
+        temp_dic = self.dicMerger(temp_dic, self.pf_temp_saver_new_10)
         if show_times != 0:
             temp_dic = main.tools.patterncleaner(temp_dic, show_times)
         return temp_dic
@@ -706,9 +747,9 @@ if __name__ == '__main__':
     # newt_12 = NewTeacher("Kojima7", "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Kojima_07_all.csv",
     #                     "/Users/syao/desktop/res/TeaSys_Dev")
     # newt_12.pfdicSaver()
-
-    #prot_1.pfdicSaver_all(1)  # save the whole data 在后面算tfidf的时候用了
-
+    #
+    # #prot_1.pfdicSaver_all(1)  # save the whole data 在后面算tfidf的时候用了
+    #
     # prot_1 = ProTeacher("YoshimitauHamada", "/Users/syao/desktop/res/csvdata/06_Expert_YoshimitauHamada_Mathematics_all.csv", "/Users/syao/desktop/res/TeaSys_Dev")
     # prot_1.pfdicSaver()
     # prot_2 = ProTeacher("ShotaYoshida", "/Users/syao/desktop/res/csvdata/07_Expert_ShotaYoshida_Mathematics_NOFULL_all.csv", "/Users/syao/desktop/res/TeaSys_Dev")
@@ -802,6 +843,14 @@ if __name__ == '__main__':
     # print(t.pf_temp_saver_new_5)
     # print(len(t.pf_temp_saver_new_6))
     # print(t.pf_temp_saver_new_6)
+    # print(len(t.pf_temp_saver_new_7))
+    # print(t.pf_temp_saver_new_7)
+    # print(len(t.pf_temp_saver_new_8))
+    # print(t.pf_temp_saver_new_8)
+    # print(len(t.pf_temp_saver_new_9))
+    # print(t.pf_temp_saver_new_9)
+    # print(len(t.pf_temp_saver_new_10))
+    # print(t.pf_temp_saver_new_10)
     # print("pro size")
     # print(len(t.pf_temp_saver_pro_2))
     # print(t.pf_temp_saver_pro_2)
@@ -814,6 +863,12 @@ if __name__ == '__main__':
     # print(len(t.pf_temp_saver_pro_6))
     # print(t.pf_temp_saver_pro_6)
     # print("**********************")
+    # 看次数呢
+    print("pro time")
+    print(main.tools.order_dic((main.tools.timecounter(t.dicMergerforPro(1))))) #这个是没删除共通的部分
+    print("New time")
+    print(main.tools.order_dic((main.tools.timecounter(t.dicMergerforNew(1)))))
+
     # t.dicCommenShowerOnetime()  # 展示共通的set
 
     t.dicCommonDeleteOnetime()  # 删除共通的部分
@@ -878,3 +933,13 @@ if __name__ == '__main__':
     # print(t.score_keeper_new)
 
     # to find out how long for the pattern is best
+    print("pro time")#删了共通的部分
+    print(main.tools.order_dic(main.tools.timecounter(t.dicMergerforPro(1))))
+    print("New time")
+    print(main.tools.order_dic(main.tools.timecounter(t.dicMergerforNew(1))))
+
+    #删除包含的部分
+    print("pro time")
+    print(main.tools.order_dic(main.tools.timecounter(main.tools.shortptdeleter_rel(t.dicMergerforPro(1)))))
+    print("New time")
+    print(main.tools.order_dic(main.tools.timecounter(main.tools.shortptdeleter_rel(t.dicMergerforNew(1)))))
