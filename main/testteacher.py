@@ -752,13 +752,13 @@ if __name__ == '__main__':
     # t = TestTeacher("Kojima", "/Users/syao/desktop/res/kj_v2.csv") # 30
     # t = TestTeacher("Nishiyama", "/Users/syao/desktop/res/ny_v2.csv") # 71
     # t = TestTeacher("Kojima7", "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Kojima_07_all.csv") # 16
-    t = TestTeacher("Nishiyama3", "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Nishiyama_03_all.csv") # 58
+    t = TestTeacher("KotaroHosoi", "/Users/syao/desktop/res/csvdata/02_Rookie_KotaroHosoi_Mathematics_all.csv") # 58
 
 
     path_tttt="/Users/syao/desktop/res/TeaSys_Dev/"
     # new
     t.jsonReader_pf_onetime(path_tttt,"AkiOkubo",0)
-    t.jsonReader_pf_onetime(path_tttt,"KotaroHosoi",0)#需要命名来识别
+    #t.jsonReader_pf_onetime(path_tttt,"KotaroHosoi",0)#需要命名来识别
     t.jsonReader_pf_onetime(path_tttt,"ShioriMasuko",0)
     t.jsonReader_pf_onetime(path_tttt,"YukinaHachisu",0)
     t.jsonReader_pf_onetime(path_tttt,"YusukeHachisu",0)
