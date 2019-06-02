@@ -660,7 +660,7 @@ class TestTeacher(object):
         score = 0
         if sum_new!=0 or sum_pro!=0:
             score = (sum_pro/(sum_pro+sum_new)-sum_new/(sum_pro+sum_new))*50+50  # 如果两个都不为0
-            print(score)
+            # print(score)
 
         return score
 
