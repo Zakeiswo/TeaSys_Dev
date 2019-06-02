@@ -13,6 +13,7 @@ __author__ = 'Zake Yao'
 
 import math
 import json
+import collections
 from functools import reduce
 
 
