@@ -784,7 +784,14 @@ if __name__ == '__main__':
     t.jsonReader_pf_onetime(path_tttt, "Nishiyama1", 1)
     t.jsonReader_pf_onetime(path_tttt, "Nishiyama2", 1)
     t.jsonReader_pf_onetime(path_tttt, "Nishiyama3", 1)
-
+    t.jsonReader_pf_onetime(path_tttt, "MasahiroWatanabe2", 1)
+    t.jsonReader_pf_onetime(path_tttt, "MasahiroWatanabe1", 1)
+    t.jsonReader_pf_onetime(path_tttt, "MasahiroWatanabe3", 1)
+    t.jsonReader_pf_onetime(path_tttt, "YusukeKimura", 1)
+    t.jsonReader_pf_onetime(path_tttt, "IppeiTakahira1", 1)
+    t.jsonReader_pf_onetime(path_tttt, "IppeiTakahira2", 1)
+    t.jsonReader_pf_onetime(path_tttt, "IkuTadame", 1)
+    t.jsonReader_pf_onetime(path_tttt, "SatoshiIkeuchi", 1)
 
     # t.jsonReader_pf("/Users/syao/desktop/res/TeaSys_Dev/Tom/2.json", 2, 1)  # 1 for pro TODO(Zake Yao):这个能不能简化一下
     # t.jsonReader_pf("/Users/syao/desktop/res/TeaSys_Dev/Tom/3.json", 3, 1)
