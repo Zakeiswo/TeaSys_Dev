@@ -768,7 +768,13 @@ if __name__ == '__main__':
     t.jsonReader_pf_onetime(path_tttt,"Kojima4",0)
     t.jsonReader_pf_onetime(path_tttt,"Kojima5",0)
     t.jsonReader_pf_onetime(path_tttt,"Kojima6",0)
-    # t.jsonReader_pf_onetime(path_tttt,"Kojima7",0)
+    t.jsonReader_pf_onetime(path_tttt,"Kojima7",0)
+    t.jsonReader_pf_onetime(path_tttt, "KiyoshiMori", 0)
+    t.jsonReader_pf_onetime(path_tttt, "RyotaTakahashi", 0)
+    t.jsonReader_pf_onetime(path_tttt, "KenjiShiraishi", 0)
+    t.jsonReader_pf_onetime(path_tttt, "HiroyukiKama", 0)
+    t.jsonReader_pf_onetime(path_tttt, "SatoshiNomuri", 0)
+    t.jsonReader_pf_onetime(path_tttt, "ShioriMashiko", 0)
     # pro
     t.jsonReader_pf_onetime(path_tttt, "YoshimitauHamada", 1) # 1 = pro
     t.jsonReader_pf_onetime(path_tttt, "ShotaYoshida", 1)
@@ -777,7 +783,8 @@ if __name__ == '__main__':
     t.jsonReader_pf_onetime(path_tttt, "AyakoYamamoto", 1)
     t.jsonReader_pf_onetime(path_tttt, "Nishiyama1", 1)
     t.jsonReader_pf_onetime(path_tttt, "Nishiyama2", 1)
-    # t.jsonReader_pf_onetime(path_tttt, "Nishiyama3", 1)
+    t.jsonReader_pf_onetime(path_tttt, "Nishiyama3", 1)
+
 
     # t.jsonReader_pf("/Users/syao/desktop/res/TeaSys_Dev/Tom/2.json", 2, 1)  # 1 for pro TODO(Zake Yao):这个能不能简化一下
     # t.jsonReader_pf("/Users/syao/desktop/res/TeaSys_Dev/Tom/3.json", 3, 1)
