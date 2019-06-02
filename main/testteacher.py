@@ -671,6 +671,7 @@ class TestTeacher(object):
 
 
 if __name__ == '__main__':
+    path_tttt2 ="/Users/syao/desktop/res/TeaSys_Dev6"
     # 为了提高速度 可以 之前就通过老手和新手库的程序获取老手和新手的数据并对比
     # prot = ProTeacher("Tom", "/Users/syao/desktop/res/test_ori_1.csv", "/Users/syao/desktop/res/TeaSys_Dev")
     # prot.pfdicSaver()
@@ -678,62 +679,117 @@ if __name__ == '__main__':
     # newt.pfdicSaver()
     # t = TestTeacher("Jimy", "/Users/syao/desktop/res/test_ori_4.csv")
     # 如何处理同名的情况
-    # newt_1 = NewTeacher("AkiOkubo", "/Users/syao/desktop/res/csvdata/01_Rookie_AkiOkubo_English_all.csv", "/Users/syao/desktop/res/TeaSys_Dev")
+    # newt_1 = NewTeacher("AkiOkubo", "/Users/syao/desktop/res/csvdata/01_Rookie_AkiOkubo_English_all.csv", path_tttt2)
     # newt_1.pfdicSaver()
-    # newt_2 = NewTeacher("KotaroHosoi", "/Users/syao/desktop/res/csvdata/02_Rookie_KotaroHosoi_Mathematics_all.csv", "/Users/syao/desktop/res/TeaSys_Dev")
+    # newt_2 = NewTeacher("KotaroHosoi", "/Users/syao/desktop/res/csvdata/02_Rookie_KotaroHosoi_Mathematics_all.csv", path_tttt2)
     # newt_2.pfdicSaver()
-    # newt_3 = NewTeacher("ShioriMasuko", "/Users/syao/desktop/res/csvdata/03_Rookie_ShioriMasuko_English_all.csv", "/Users/syao/desktop/res/TeaSys_Dev")
+    # newt_3 = NewTeacher("ShioriMasuko", "/Users/syao/desktop/res/csvdata/03_Rookie_ShioriMasuko_English_all.csv", path_tttt2)
     # newt_3.pfdicSaver()
-    # newt_4 = NewTeacher("YukinaHachisu", "/Users/syao/desktop/res/csvdata/04_Rookie_YukinaHachisu_English_all.csv", "/Users/syao/desktop/res/TeaSys_Dev")
+    # newt_4 = NewTeacher("YukinaHachisu", "/Users/syao/desktop/res/csvdata/04_Rookie_YukinaHachisu_English_all.csv", path_tttt2)
     # newt_4.pfdicSaver()
-    # newt_5 = NewTeacher("YusukeHachisu", "/Users/syao/desktop/res/csvdata/05_Rookie_YusukeHachisu_Japanese_all.csv", "/Users/syao/desktop/res/TeaSys_Dev")
+    # newt_5 = NewTeacher("YusukeHachisu", "/Users/syao/desktop/res/csvdata/05_Rookie_YusukeHachisu_Japanese_all.csv", path_tttt2)
     # newt_5.pfdicSaver()
-    # newt_6 = NewTeacher("Kojima1", "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Kojima_01_all.csv", "/Users/syao/desktop/res/TeaSys_Dev")
+    # newt_6 = NewTeacher("Kojima1", "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Kojima_01_all.csv", path_tttt2)
     # newt_6.pfdicSaver()
-    # newt_7 = NewTeacher("Kojima2", "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Kojima_02_all.csv", "/Users/syao/desktop/res/TeaSys_Dev")
+    # newt_7 = NewTeacher("Kojima2", "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Kojima_02_all.csv", path_tttt2)
     # newt_7.pfdicSaver()
-    # newt_8 = NewTeacher("Kojima3", "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Kojima_03_all.csv", "/Users/syao/desktop/res/TeaSys_Dev")
+    # newt_8 = NewTeacher("Kojima3", "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Kojima_03_all.csv", path_tttt2)
     # newt_8.pfdicSaver()
     # newt_9 = NewTeacher("Kojima4", "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Kojima_04_all.csv",
-    #                     "/Users/syao/desktop/res/TeaSys_Dev")
+    #                     path_tttt2)
     # newt_9.pfdicSaver()
     # newt_10 = NewTeacher("Kojima5", "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Kojima_05_all.csv",
-    #                     "/Users/syao/desktop/res/TeaSys_Dev")
+    #                     path_tttt2)
     # newt_10.pfdicSaver()
     # newt_11 = NewTeacher("Kojima6", "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Kojima_06_all.csv",
-    #                     "/Users/syao/desktop/res/TeaSys_Dev")
+    #                     path_tttt2)
     # newt_11.pfdicSaver()
     # newt_12 = NewTeacher("Kojima7", "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Kojima_07_all.csv",
-    #                     "/Users/syao/desktop/res/TeaSys_Dev")
+    #                     path_tttt2)
     # newt_12.pfdicSaver()
+    # newt_13 = NewTeacher("KiyoshiMori", "/Users/syao/desktop/res/csv_teaching_cont_2/01_Pf_KiyoshiMori_Mathematics_all.csv",
+    #                     path_tttt2)
+    # newt_13.pfdicSaver()
+    # newt_14 = NewTeacher("RyotaTakahashi",
+    #                      "/Users/syao/desktop/res/csv_teaching_cont_2/03_Pre_RyotaTakahashi_Mathematics_all.csv",
+    #                      path_tttt2)
+    # newt_14.pfdicSaver()
+    # newt_15 = NewTeacher("KenjiShiraishi",
+    #                      "/Users/syao/desktop/res/csv_teaching_cont_2/05_Pre_KenjiShiraishi_Mathematics_all.csv",
+    #                      path_tttt2)
+    # newt_15.pfdicSaver()
+    # newt_16 = NewTeacher("HiroyukiKama",
+    #                      "/Users/syao/desktop/res/csv_teaching_cont_2/06_Pre_HiroyukiKama_Mathematics_all.csv",
+    #                      path_tttt2)
+    # newt_16.pfdicSaver()
+    # newt_17 = NewTeacher("SatoshiNomuri",
+    #                      "/Users/syao/desktop/res/csv_teaching_cont_2/07_Pf_SatoshiNomuri_Mathematics_all.csv",
+    #                      path_tttt2)
+    # newt_17.pfdicSaver()
+    # newt_17 = NewTeacher("ShioriMashiko",
+    #                      "/Users/syao/desktop/res/csv_teaching_cont_2/23_Pf_ShioriMashiko_English_all.csv",
+    #                      path_tttt2)
+    # newt_17.pfdicSaver()
 
     #prot_1.pfdicSaver_all(1)  # save the whole data 在后面算tfidf的时候用了
 
-    # prot_1 = ProTeacher("YoshimitauHamada", "/Users/syao/desktop/res/csvdata/06_Expert_YoshimitauHamada_Mathematics_all.csv", "/Users/syao/desktop/res/TeaSys_Dev")
+    # prot_1 = ProTeacher("YoshimitauHamada", "/Users/syao/desktop/res/csvdata/06_Expert_YoshimitauHamada_Mathematics_all.csv", path_tttt2)
     # prot_1.pfdicSaver()
-    # prot_2 = ProTeacher("ShotaYoshida", "/Users/syao/desktop/res/csvdata/07_Expert_ShotaYoshida_Mathematics_NOFULL_all.csv", "/Users/syao/desktop/res/TeaSys_Dev")
+    # prot_2 = ProTeacher("ShotaYoshida", "/Users/syao/desktop/res/csvdata/07_Expert_ShotaYoshida_Mathematics_NOFULL_all.csv", path_tttt2)
     # prot_2.pfdicSaver()
-    # prot_3 = ProTeacher("TakashiMajima", "/Users/syao/desktop/res/csvdata/08_Expert_TakashiMajima_Mathematics_NOFULL_all.csv", "/Users/syao/desktop/res/TeaSys_Dev")
+    # prot_3 = ProTeacher("TakashiMajima", "/Users/syao/desktop/res/csvdata/08_Expert_TakashiMajima_Mathematics_NOFULL_all.csv", path_tttt2)
     # prot_3.pfdicSaver()
-    # prot_4 = ProTeacher("KunihiroSato", "/Users/syao/desktop/res/csvdata/09_Expert_KunihiroSato_Mathematics_all.csv", "/Users/syao/desktop/res/TeaSys_Dev")
+    # prot_4 = ProTeacher("KunihiroSato", "/Users/syao/desktop/res/csvdata/09_Expert_KunihiroSato_Mathematics_all.csv",path_tttt2)
     # prot_4.pfdicSaver()
-    # prot_5 = ProTeacher("AyakoYamamoto", "/Users/syao/desktop/res/csvdata/10_Expert_AyakoYamamoto_Japanese_all.csv", "/Users/syao/desktop/res/TeaSys_Dev")
+    # prot_5 = ProTeacher("AyakoYamamoto", "/Users/syao/desktop/res/csvdata/10_Expert_AyakoYamamoto_Japanese_all.csv", path_tttt2)
     # prot_5.pfdicSaver()
-    # prot_6 = ProTeacher("SakiWatanabe", "/Users/syao/desktop/res/csvdata/11_Expert_SakiWatanabe_English_Champion_all.csv", "/Users/syao/desktop/res/TeaSys_Dev")
+    # prot_6 = ProTeacher("SakiWatanabe", "/Users/syao/desktop/res/csvdata/11_Expert_SakiWatanabe_English_Champion_all.csv", path_tttt2)
     # prot_6.pfdicSaver()
-    # prot_7 = ProTeacher("RinaAndo", "/Users/syao/desktop/res/csvdata/12_Expert_RinaAndo_Civics_all.csv", "/Users/syao/desktop/res/TeaSys_Dev")
+    # prot_7 = ProTeacher("RinaAndo", "/Users/syao/desktop/res/csvdata/12_Expert_RinaAndo_Civics_all.csv", path_tttt2)
     # prot_7.pfdicSaver()
-    # prot_8 = ProTeacher("NaokiSaiba", "/Users/syao/desktop/res/csvdata/13_Expert_NaokiSaiba_Science_all.csv", "/Users/syao/desktop/res/TeaSys_Dev")
+    # prot_8 = ProTeacher("NaokiSaiba", "/Users/syao/desktop/res/csvdata/13_Expert_NaokiSaiba_Science_all.csv", path_tttt2)
     # prot_8.pfdicSaver()
     # prot_9 = ProTeacher("Nishiyama1", "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Nishiyama_01_all.csv",
-    #                     "/Users/syao/desktop/res/TeaSys_Dev")
+    #                     path_tttt2)
     # prot_9.pfdicSaver()
     # prot_7 = ProTeacher("Nishiyama2", "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Nishiyama_02_all.csv",
-    #                     "/Users/syao/desktop/res/TeaSys_Dev")
+    #                     path_tttt2)
     # prot_7.pfdicSaver()
     # prot_8 = ProTeacher("Nishiyama3", "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Nishiyama_03_all.csv",
-    #                     "/Users/syao/desktop/res/TeaSys_Dev")
+    #                     path_tttt2)
     # prot_8.pfdicSaver()
+    # prot_9 = ProTeacher("MasahiroWatanabe2",
+    #                      "/Users/syao/desktop/res/csv_teaching_cont_2/08_Pf_MasahiroWatanabe_Mathematics_all.csv",
+    #                      path_tttt2)
+    # prot_9.pfdicSaver()
+    # prot_10 = ProTeacher("MasahiroWatanabe1",
+    #                     "/Users/syao/desktop/res/csv_teaching_cont_2/04_Pre_MasahiroWatanabe_Mathematics_all.csv",
+    #                     path_tttt2)
+    # prot_10.pfdicSaver()
+    # prot_11 = ProTeacher("MasahiroWatanabe3",
+    #                      "/Users/syao/desktop/res/csv_teaching_cont_2/18_Fin_MasahiroWatanabe_Mathematics_all.csv",
+    #                      path_tttt2)
+    # prot_11.pfdicSaver()
+    # prot_12 = ProTeacher("YusukeKimura",
+    #                      "/Users/syao/desktop/res/csv_teaching_cont_2/09_Fin_YusukeKimura_Science_all.csv",
+    #                      path_tttt2)
+    # prot_12.pfdicSaver()
+    # prot_13 = ProTeacher("IppeiTakahira1",
+    #                      "/Users/syao/desktop/res/csv_teaching_cont_2/17_Pf_IppeiTakahira_English_all.csv",
+    #                      path_tttt2)
+    # prot_13.pfdicSaver()
+    # prot_14 = ProTeacher("IppeiTakahira2",
+    #                      "/Users/syao/desktop/res/csv_teaching_cont_2/20_Fin_IppeiTakahira_English_all.csv",
+    #                      path_tttt2)
+    # prot_14.pfdicSaver()
+    # prot_15 = ProTeacher("IkuTadame",
+    #                      "/Users/syao/desktop/res/csv_teaching_cont_2/19_Fin_IkuTadame_Japanese_all.csv",
+    #                      path_tttt2)
+    # prot_15.pfdicSaver()
+    # prot_16 = ProTeacher("SatoshiIkeuchi",
+    #                      "/Users/syao/desktop/res/csv_teaching_cont_2/21_Fin_SatoshiIkeuchi_Society_all.csv",
+    #                      path_tttt2)
+    # prot_16.pfdicSaver()
 
 
     # ----------------------------------------------------前处理分界线-------------------------------------------------------
@@ -755,7 +811,7 @@ if __name__ == '__main__':
     t = TestTeacher("KotaroHosoi", "/Users/syao/desktop/res/csvdata/02_Rookie_KotaroHosoi_Mathematics_all.csv") # 58
 
 
-    path_tttt="/Users/syao/desktop/res/TeaSys_Dev/"
+    path_tttt="/Users/syao/desktop/res/TeaSys_Dev6/"
     # new
     t.jsonReader_pf_onetime(path_tttt,"AkiOkubo",0)
     #t.jsonReader_pf_onetime(path_tttt,"KotaroHosoi",0)#需要命名来识别

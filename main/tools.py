@@ -143,7 +143,7 @@ def timecounter(dic_t):
                 dic_count[10] = 1
             else:
                 dic_count[10] +=1
-
+    return dic_count
 
 # use to delete the include shorter pattern
 # it's for the normal dic instead of another eachsmallpt
