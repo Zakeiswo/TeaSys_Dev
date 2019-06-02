@@ -808,13 +808,13 @@ if __name__ == '__main__':
     # t = TestTeacher("Kojima", "/Users/syao/desktop/res/kj_v2.csv") # 30
     # t = TestTeacher("Nishiyama", "/Users/syao/desktop/res/ny_v2.csv") # 71
     # t = TestTeacher("Kojima7", "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Kojima_07_all.csv") # 16
-    t = TestTeacher("KotaroHosoi", "/Users/syao/desktop/res/csvdata/02_Rookie_KotaroHosoi_Mathematics_all.csv") # 58
+    t = TestTeacher("AkiOkubo", "/Users/syao/desktop/res/csvdata/01_Rookie_AkiOkubo_English_all.csv") # 58
 
 
     path_tttt="/Users/syao/desktop/res/TeaSys_Dev6/"
     # new
-    t.jsonReader_pf_onetime(path_tttt,"AkiOkubo",0)
-    #t.jsonReader_pf_onetime(path_tttt,"KotaroHosoi",0)#需要命名来识别
+    #t.jsonReader_pf_onetime(path_tttt,"AkiOkubo",0)
+    t.jsonReader_pf_onetime(path_tttt,"KotaroHosoi",0)#需要命名来识别
     t.jsonReader_pf_onetime(path_tttt,"ShioriMasuko",0)
     t.jsonReader_pf_onetime(path_tttt,"YukinaHachisu",0)
     t.jsonReader_pf_onetime(path_tttt,"YusukeHachisu",0)
@@ -892,33 +892,33 @@ if __name__ == '__main__':
     # print(len(t.ac_list_ori))  # 1001
 
     t.patternCheeker()  # 这个是主要步骤的用sliping window 来cheek，和直接用pf解析不同的是，只能获取统计已有的pattern出现了多少
-    # print("new size")
-    # print(len(t.pf_temp_saver_new_2))
-    # print(len(t.pf_temp_saver_new_3))
-    # print(len(t.pf_temp_saver_new_4))
-    # print(len(t.pf_temp_saver_new_5))
-    # print(len(t.pf_temp_saver_new_6))
-    # print("pro size")
-    # print(len(t.pf_temp_saver_pro_2))
-    # print(len(t.pf_temp_saver_pro_3))
-    # print(len(t.pf_temp_saver_pro_4))
-    # print(len(t.pf_temp_saver_pro_5))
-    # print(len(t.pf_temp_saver_pro_6))
-    # print("Ori:")
-    # print("pro:")
-    # print(t.class_keeper_pro)  # 为啥这个的4最大，也没有压缩啊 这个是老手老师的刚刚cheek过得各种动作的对应的pattern是啥，然后其出现次数
-    # print(t.score_keeper_pro)  # 为啥这个这么少，这个是每种长度的出现次数的总和
-    # print("New:")
-    # print(t.class_keeper_new)
-    # print(t.score_keeper_new)  # 为啥这么少
+    print("new size")
+    print(len(t.pf_temp_saver_new_2))
+    print(len(t.pf_temp_saver_new_3))
+    print(len(t.pf_temp_saver_new_4))
+    print(len(t.pf_temp_saver_new_5))
+    print(len(t.pf_temp_saver_new_6))
+    print("pro size")
+    print(len(t.pf_temp_saver_pro_2))
+    print(len(t.pf_temp_saver_pro_3))
+    print(len(t.pf_temp_saver_pro_4))
+    print(len(t.pf_temp_saver_pro_5))
+    print(len(t.pf_temp_saver_pro_6))
+    print("Ori:")
+    print("pro:")
+    print(t.class_keeper_pro)  # 为啥这个的4最大，也没有压缩啊 这个是老手老师的刚刚cheek过得各种动作的对应的pattern是啥，然后其出现次数
+    print(t.score_keeper_pro)  # 为啥这个这么少，这个是每种长度的出现次数的总和
+    print("New:")
+    print(t.class_keeper_new)
+    print(t.score_keeper_new)  # 为啥这么少
     t.patterncleanerfortesttea(1)  # use to delete the pattern which only show one time ，这个是用来删除只出现1次的情况，而且class和score都会更新
-    # print("After delete the one time action:")
-    # print("pro:")
-    # print(t.class_keeper_pro)
-    # print(t.score_keeper_pro)
-    # print("New:")
-    # print(t.class_keeper_new)
-    # print(t.score_keeper_new)
+    print("After delete the one time action:")
+    print("pro:")
+    print(t.class_keeper_pro)
+    print(t.score_keeper_pro)
+    print("New:")
+    print(t.class_keeper_new)
+    print(t.score_keeper_new)
     # 查错系列
     # print("wrong:")
     # print(t.dic_action_wrong)   # 动作数：错的是啥
@@ -949,12 +949,12 @@ if __name__ == '__main__':
 
     # to find out how long for the pattern is best
     print("pro time")  # 删了共通的部分
-    print(main.tools.order_dic(main.tools.timecounter(t.dicMergerforPro(1))))
+    print(main.tools.order_dic(main.tools.timecounter_v2(t.dicMergerforPro(1))))
     print("New time")
-    print(main.tools.order_dic(main.tools.timecounter(t.dicMergerforNew(1))))
+    print(main.tools.order_dic(main.tools.timecounter_v2(t.dicMergerforNew(1))))
 
     # 删除包含的部分
     print("pro time")
-    print(main.tools.order_dic(main.tools.timecounter(main.tools.shortptdeleter_rel(t.dicMergerforPro(1)))))
+    print(main.tools.order_dic(main.tools.timecounter_v2(main.tools.shortptdeleter_rel(t.dicMergerforPro(1)))))
     print("New time")
-    print(main.tools.order_dic(main.tools.timecounter(main.tools.shortptdeleter_rel(t.dicMergerforNew(1)))))
+    print(main.tools.order_dic(main.tools.timecounter_v2(main.tools.shortptdeleter_rel(t.dicMergerforNew(1)))))
