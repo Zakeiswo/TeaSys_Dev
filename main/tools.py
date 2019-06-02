@@ -145,7 +145,51 @@ def timecounter(dic_t):
             else:
                 dic_count[10] +=1
     return dic_count
-
+#count
+def timecounter_v2(dic_t):
+    dic_count ={}
+    for item in dic_t:
+        if len(item) == 2:
+            if 2 not in dic_count:
+                dic_count[2] = 1
+            else:
+                dic_count[2] +=1
+        elif len(item) == 3:
+            if 3 not in dic_count:
+                dic_count[3] = 1
+            else:
+                dic_count[3] +=1
+        elif len(item) == 4:
+            if 4 not in dic_count:
+                dic_count[4] = 1
+            else:
+                dic_count[4] +=1
+        elif len(item) == 5:
+            if 5 not in dic_count:
+                dic_count[5] = 1
+            else:
+                dic_count[5] +=1
+        elif len(item)== 6:
+            if 6 not in dic_count:
+                dic_count[6] = 1
+            else:
+                dic_count[6] +=1
+        elif len(item) == 7:
+            if 7 not in dic_count:
+                dic_count[7] = 1
+            else:
+                dic_count[7] +=1
+        elif len(item) == 8:
+            if 8 not in dic_count:
+                dic_count[8] = 1
+            else:
+                dic_count[8] +=1
+        else:
+            if 10 not in dic_count:
+                dic_count[10] = 1
+            else:
+                dic_count[10] +=1
+    return dic_count
 # use to delete the include shorter pattern
 # it's for the normal dic instead of another eachsmallpt
 def shortptdeleter_rel(dic_t):

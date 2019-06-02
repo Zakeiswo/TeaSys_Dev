@@ -395,6 +395,95 @@ class TestTeacher(object):
                                 temp_score_keeper_new[6] += 1
                             else:
                                 temp_score_keeper_new[6] = 1
+                    elif len(pattern_temp) == 7:
+                        pattern_str = (''.join(pattern_temp))
+                        if pattern_str in self.pf_temp_saver_pro_7:
+                            if pattern_str in temp_class_keeper_pro:
+                                temp_class_keeper_pro[pattern_str] += 1  # 添加一个字典用来记录每个种类的出现了几次
+                            else:
+                                temp_class_keeper_pro[pattern_str] = 1
+                            if 7 in temp_score_keeper_pro:
+                                temp_score_keeper_pro[7] += 1
+                            else:
+                                temp_score_keeper_pro[7] = 1
+                        elif pattern_str in self.pf_temp_saver_new_7:
+                            # Here to know the pattern is in the new group
+                            self.dic_action_wrong[item] = pattern_str
+                            if pattern_str in temp_class_keeper_new:
+                                temp_class_keeper_new[pattern_str] += 1  # 添加一个字典用来记录每个种类的出现了几次
+                            else:
+                                temp_class_keeper_new[pattern_str] = 1
+                            if 7 in temp_score_keeper_new:
+                                temp_score_keeper_new[7] += 1
+                            else:
+                                temp_score_keeper_new[7] = 1
+                    elif len(pattern_temp) == 8:
+                        pattern_str = (''.join(pattern_temp))
+                        if pattern_str in self.pf_temp_saver_pro_8:
+                            if pattern_str in temp_class_keeper_pro:
+                                temp_class_keeper_pro[pattern_str] += 1  # 添加一个字典用来记录每个种类的出现了几次
+                            else:
+                                temp_class_keeper_pro[pattern_str] = 1
+                            if 8 in temp_score_keeper_pro:
+                                temp_score_keeper_pro[8] += 1
+                            else:
+                                temp_score_keeper_pro[8] = 1
+                        elif pattern_str in self.pf_temp_saver_new_8:
+                            # Here to know the pattern is in the new group
+                            self.dic_action_wrong[item] = pattern_str
+                            if pattern_str in temp_class_keeper_new:
+                                temp_class_keeper_new[pattern_str] += 1  # 添加一个字典用来记录每个种类的出现了几次
+                            else:
+                                temp_class_keeper_new[pattern_str] = 1
+                            if 8 in temp_score_keeper_new:
+                                temp_score_keeper_new[8] += 1
+                            else:
+                                temp_score_keeper_new[8] = 1
+                    elif len(pattern_temp) == 9:
+                        pattern_str = (''.join(pattern_temp))
+                        if pattern_str in self.pf_temp_saver_pro_9:
+                            if pattern_str in temp_class_keeper_pro:
+                                temp_class_keeper_pro[pattern_str] += 1  # 添加一个字典用来记录每个种类的出现了几次
+                            else:
+                                temp_class_keeper_pro[pattern_str] = 1
+                            if 9 in temp_score_keeper_pro:
+                                temp_score_keeper_pro[9] += 1
+                            else:
+                                temp_score_keeper_pro[9] = 1
+                        elif pattern_str in self.pf_temp_saver_new_9:
+                            # Here to know the pattern is in the new group
+                            self.dic_action_wrong[item] = pattern_str
+                            if pattern_str in temp_class_keeper_new:
+                                temp_class_keeper_new[pattern_str] += 1  # 添加一个字典用来记录每个种类的出现了几次
+                            else:
+                                temp_class_keeper_new[pattern_str] = 1
+                            if 9 in temp_score_keeper_new:
+                                temp_score_keeper_new[9] += 1
+                            else:
+                                temp_score_keeper_new[9] = 1
+                    # elif len(pattern_temp) == 10:
+                    #     pattern_str = (''.join(pattern_temp))
+                    #     if pattern_str in self.pf_temp_saver_pro_10:
+                    #         if pattern_str in temp_class_keeper_pro:
+                    #             temp_class_keeper_pro[pattern_str] += 1  # 添加一个字典用来记录每个种类的出现了几次
+                    #         else:
+                    #             temp_class_keeper_pro[pattern_str] = 1
+                    #         if 10 in temp_score_keeper_pro:
+                    #             temp_score_keeper_pro[10] += 1
+                    #         else:
+                    #             temp_score_keeper_pro[10] = 1
+                    #     elif pattern_str in self.pf_temp_saver_new_10:
+                    #         # Here to know the pattern is in the new group
+                    #         self.dic_action_wrong[item] = pattern_str
+                    #         if pattern_str in temp_class_keeper_new:
+                    #             temp_class_keeper_new[pattern_str] += 1  # 添加一个字典用来记录每个种类的出现了几次
+                    #         else:
+                    #             temp_class_keeper_new[pattern_str] = 1
+                    #         if 10 in temp_score_keeper_new:
+                    #             temp_score_keeper_new[10] += 1
+                    #         else:
+                    #             temp_score_keeper_new[10] = 1
+
             pattern_temp.clear()  # clear the list for new pattern to cheek
         self.score_keeper_pro = temp_score_keeper_pro.copy()
         self.class_keeper_pro = temp_class_keeper_pro.copy()
@@ -648,11 +737,11 @@ class TestTeacher(object):
         # 先看在不在，有没有数据
         sum_new = 0
         sum_pro = 0
-        for x in range(2, 7):
+        for x in range(2, 11):
             if x in self.score_keeper_new:
                 sum_new += self.score_keeper_new[x]
 
-        for x in range(2, 7):
+        for x in range(2, 11):
             if x in self.score_keeper_pro:
                 sum_pro += self.score_keeper_pro[x]
 
@@ -720,135 +809,170 @@ if __name__ == '__main__':
     # newt.pfdicSaver()
     # t = TestTeacher("Jimy", "/Users/syao/desktop/res/test_ori_4.csv")
     # 如何处理同名的情况
-    newt_1 = NewTeacher("AkiOkubo", "/Users/syao/desktop/res/csvdata/01_Rookie_AkiOkubo_English_all.csv", path_tttt2)
-    newt_1.pfdicSaver()
-    newt_2 = NewTeacher("KotaroHosoi", "/Users/syao/desktop/res/csvdata/02_Rookie_KotaroHosoi_Mathematics_all.csv", path_tttt2)
-    newt_2.pfdicSaver()
-    newt_3 = NewTeacher("ShioriMasuko", "/Users/syao/desktop/res/csvdata/03_Rookie_ShioriMasuko_English_all.csv", path_tttt2)
-    newt_3.pfdicSaver()
-    newt_4 = NewTeacher("YukinaHachisu", "/Users/syao/desktop/res/csvdata/04_Rookie_YukinaHachisu_English_all.csv", path_tttt2)
-    newt_4.pfdicSaver()
-    newt_5 = NewTeacher("YusukeHachisu", "/Users/syao/desktop/res/csvdata/05_Rookie_YusukeHachisu_Japanese_all.csv", path_tttt2)
-    newt_5.pfdicSaver()
-    newt_6 = NewTeacher("Kojima1", "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Kojima_01_all.csv", path_tttt2)
-    newt_6.pfdicSaver()
-    newt_7 = NewTeacher("Kojima2", "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Kojima_02_all.csv", path_tttt2)
-    newt_7.pfdicSaver()
-    newt_8 = NewTeacher("Kojima3", "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Kojima_03_all.csv", path_tttt2)
-    newt_8.pfdicSaver()
-    newt_9 = NewTeacher("Kojima4", "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Kojima_04_all.csv",
-                        path_tttt2)
-    newt_9.pfdicSaver()
-    newt_10 = NewTeacher("Kojima5", "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Kojima_05_all.csv",
-                        path_tttt2)
-    newt_10.pfdicSaver()
-    newt_11 = NewTeacher("Kojima6", "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Kojima_06_all.csv",
-                        path_tttt2)
-    newt_11.pfdicSaver()
-    newt_12 = NewTeacher("Kojima7", "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Kojima_07_all.csv",
-                        path_tttt2)
-    newt_12.pfdicSaver()
-
-    newt_13 = NewTeacher("KiyoshiMori", "/Users/syao/desktop/res/csv_teaching_cont_2/01_Pf_KiyoshiMori_Mathematics_all.csv",
-                        path_tttt2)
-    newt_13.pfdicSaver()
-    newt_14 = NewTeacher("RyotaTakahashi",
-                         "/Users/syao/desktop/res/csv_teaching_cont_2/03_Pre_RyotaTakahashi_Mathematics_all.csv",
-                         path_tttt2)
-    newt_14.pfdicSaver()
-    newt_15 = NewTeacher("KenjiShiraishi",
-                         "/Users/syao/desktop/res/csv_teaching_cont_2/05_Pre_KenjiShiraishi_Mathematics_all.csv",
-                         path_tttt2)
-    newt_15.pfdicSaver()
-    newt_16 = NewTeacher("HiroyukiKama",
-                         "/Users/syao/desktop/res/csv_teaching_cont_2/06_Pre_HiroyukiKama_Mathematics_all.csv",
-                         path_tttt2)
-    newt_16.pfdicSaver()
-    newt_17 = NewTeacher("SatoshiNomuri",
-                         "/Users/syao/desktop/res/csv_teaching_cont_2/07_Pf_SatoshiNomuri_Mathematics_all.csv",
-                         path_tttt2)
-    newt_17.pfdicSaver()
-    newt_17 = NewTeacher("ShioriMashiko",
-                         "/Users/syao/desktop/res/csv_teaching_cont_2/23_Pf_ShioriMashiko_English_all.csv",
-                         path_tttt2)
-    newt_17.pfdicSaver()
+    # newt_1 = NewTeacher("AkiOkubo", "/Users/syao/desktop/res/csvdata/01_Rookie_AkiOkubo_English_all.csv", path_tttt2)
+    # newt_1.pfdicSaver()
+    # newt_2 = NewTeacher("KotaroHosoi", "/Users/syao/desktop/res/csvdata/02_Rookie_KotaroHosoi_Mathematics_all.csv", path_tttt2)
+    # newt_2.pfdicSaver()
+    # newt_3 = NewTeacher("ShioriMasuko", "/Users/syao/desktop/res/csvdata/03_Rookie_ShioriMasuko_English_all.csv", path_tttt2)
+    # newt_3.pfdicSaver()
+    # newt_4 = NewTeacher("YukinaHachisu", "/Users/syao/desktop/res/csvdata/04_Rookie_YukinaHachisu_English_all.csv", path_tttt2)
+    # newt_4.pfdicSaver()
+    # newt_5 = NewTeacher("YusukeHachisu", "/Users/syao/desktop/res/csvdata/05_Rookie_YusukeHachisu_Japanese_all.csv", path_tttt2)
+    # newt_5.pfdicSaver()
+    # newt_6 = NewTeacher("Kojima1", "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Kojima_01_all.csv", path_tttt2)
+    # newt_6.pfdicSaver()
+    # newt_7 = NewTeacher("Kojima2", "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Kojima_02_all.csv", path_tttt2)
+    # newt_7.pfdicSaver()
+    # newt_8 = NewTeacher("Kojima3", "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Kojima_03_all.csv", path_tttt2)
+    # newt_8.pfdicSaver()
+    # newt_9 = NewTeacher("Kojima4", "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Kojima_04_all.csv",
+    #                     path_tttt2)
+    # newt_9.pfdicSaver()
+    # newt_10 = NewTeacher("Kojima5", "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Kojima_05_all.csv",
+    #                     path_tttt2)
+    # newt_10.pfdicSaver()
+    # newt_11 = NewTeacher("Kojima6", "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Kojima_06_all.csv",
+    #                     path_tttt2)
+    # newt_11.pfdicSaver()
+    # newt_12 = NewTeacher("Kojima7", "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Kojima_07_all.csv",
+    #                     path_tttt2)
+    # newt_12.pfdicSaver()
+    #
+    # newt_13 = NewTeacher("KiyoshiMori", "/Users/syao/desktop/res/csv_teaching_cont_2/01_Pf_KiyoshiMori_Mathematics_all.csv",
+    #                     path_tttt2)
+    # newt_13.pfdicSaver()
+    # newt_14 = NewTeacher("RyotaTakahashi",
+    #                      "/Users/syao/desktop/res/csv_teaching_cont_2/03_Pre_RyotaTakahashi_Mathematics_all.csv",
+    #                      path_tttt2)
+    # newt_14.pfdicSaver()
+    # newt_15 = NewTeacher("KenjiShiraishi",
+    #                      "/Users/syao/desktop/res/csv_teaching_cont_2/05_Pre_KenjiShiraishi_Mathematics_all.csv",
+    #                      path_tttt2)
+    # newt_15.pfdicSaver()
+    # newt_16 = NewTeacher("HiroyukiKama",
+    #                      "/Users/syao/desktop/res/csv_teaching_cont_2/06_Pre_HiroyukiKama_Mathematics_all.csv",
+    #                      path_tttt2)
+    # newt_16.pfdicSaver()
+    # newt_17 = NewTeacher("SatoshiNomuri",
+    #                      "/Users/syao/desktop/res/csv_teaching_cont_2/07_Pf_SatoshiNomuri_Mathematics_all.csv",
+    #                      path_tttt2)
+    # newt_17.pfdicSaver()
+    # newt_17 = NewTeacher("ShioriMashiko",
+    #                      "/Users/syao/desktop/res/csv_teaching_cont_2/23_Pf_ShioriMashiko_English_all.csv",
+    #                      path_tttt2)
+    # newt_17.pfdicSaver()
     #prot_1.pfdicSaver_all(1)  # save the whole data 在后面算tfidf的时候用了
 
-    prot_1 = ProTeacher("YoshimitauHamada", "/Users/syao/desktop/res/csvdata/06_Expert_YoshimitauHamada_Mathematics_all.csv", path_tttt2)
-    prot_1.pfdicSaver()
-    prot_2 = ProTeacher("ShotaYoshida", "/Users/syao/desktop/res/csvdata/07_Expert_ShotaYoshida_Mathematics_NOFULL_all.csv", path_tttt2)
-    prot_2.pfdicSaver()
-    prot_3 = ProTeacher("TakashiMajima", "/Users/syao/desktop/res/csvdata/08_Expert_TakashiMajima_Mathematics_NOFULL_all.csv", path_tttt2)
-    prot_3.pfdicSaver()
-    prot_4 = ProTeacher("KunihiroSato", "/Users/syao/desktop/res/csvdata/09_Expert_KunihiroSato_Mathematics_all.csv", path_tttt2)
-    prot_4.pfdicSaver()
-    prot_5 = ProTeacher("AyakoYamamoto", "/Users/syao/desktop/res/csvdata/10_Expert_AyakoYamamoto_Japanese_all.csv", path_tttt2)
-    prot_5.pfdicSaver()
-    prot_6 = ProTeacher("SakiWatanabe", "/Users/syao/desktop/res/csvdata/11_Expert_SakiWatanabe_English_Champion_all.csv", path_tttt2)
-    prot_6.pfdicSaver()
-    prot_7 = ProTeacher("RinaAndo", "/Users/syao/desktop/res/csvdata/12_Expert_RinaAndo_Civics_all.csv", path_tttt2)
-    prot_7.pfdicSaver()
-    prot_8 = ProTeacher("NaokiSaiba", "/Users/syao/desktop/res/csvdata/13_Expert_NaokiSaiba_Science_all.csv", path_tttt2)
-    prot_8.pfdicSaver()
-    prot_9 = ProTeacher("Nishiyama1", "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Nishiyama_01_all.csv",
-                        path_tttt2)
-    prot_9.pfdicSaver()
-    prot_7 = ProTeacher("Nishiyama2", "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Nishiyama_02_all.csv",
-                        path_tttt2)
-    prot_7.pfdicSaver()
-    prot_8 = ProTeacher("Nishiyama3", "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Nishiyama_03_all.csv",
-                        path_tttt2)
-    prot_8.pfdicSaver()
-    prot_9 = ProTeacher("MasahiroWatanabe2",
-                         "/Users/syao/desktop/res/csv_teaching_cont_2/08_Pf_MasahiroWatanabe_Mathematics_all.csv",
-                         path_tttt2)
-    prot_9.pfdicSaver()
-    prot_10 = ProTeacher("MasahiroWatanabe1",
-                        "/Users/syao/desktop/res/csv_teaching_cont_2/04_Pre_MasahiroWatanabe_Mathematics_all.csv",
-                        path_tttt2)
-    prot_10.pfdicSaver()
-    prot_11 = ProTeacher("MasahiroWatanabe3",
-                         "/Users/syao/desktop/res/csv_teaching_cont_2/18_Fin_MasahiroWatanabe_Mathematics_all.csv",
-                         path_tttt2)
-    prot_11.pfdicSaver()
-    prot_12 = ProTeacher("YusukeKimura",
-                         "/Users/syao/desktop/res/csv_teaching_cont_2/09_Fin_YusukeKimura_Science_all.csv",
-                         path_tttt2)
-    prot_12.pfdicSaver()
-    prot_13 = ProTeacher("IppeiTakahira1",
-                         "/Users/syao/desktop/res/csv_teaching_cont_2/17_Pf_IppeiTakahira_English_all.csv",
-                         path_tttt2)
-    prot_13.pfdicSaver()
-    prot_14 = ProTeacher("IppeiTakahira2",
-                         "/Users/syao/desktop/res/csv_teaching_cont_2/20_Fin_IppeiTakahira_English_all.csv",
-                         path_tttt2)
-    prot_14.pfdicSaver()
-    prot_15 = ProTeacher("IkuTadame",
-                         "/Users/syao/desktop/res/csv_teaching_cont_2/19_Fin_IkuTadame_Japanese_all.csv",
-                         path_tttt2)
-    prot_15.pfdicSaver()
-    prot_16 = ProTeacher("SatoshiIkeuchi",
-                         "/Users/syao/desktop/res/csv_teaching_cont_2/21_Fin_SatoshiIkeuchi_Society_all.csv",
-                         path_tttt2)
-    prot_16.pfdicSaver()
+    # prot_1 = ProTeacher("YoshimitauHamada", "/Users/syao/desktop/res/csvdata/06_Expert_YoshimitauHamada_Mathematics_all.csv", path_tttt2)
+    # prot_1.pfdicSaver()
+    # prot_2 = ProTeacher("ShotaYoshida", "/Users/syao/desktop/res/csvdata/07_Expert_ShotaYoshida_Mathematics_NOFULL_all.csv", path_tttt2)
+    # prot_2.pfdicSaver()
+    # prot_3 = ProTeacher("TakashiMajima", "/Users/syao/desktop/res/csvdata/08_Expert_TakashiMajima_Mathematics_NOFULL_all.csv", path_tttt2)
+    # prot_3.pfdicSaver()
+    # prot_4 = ProTeacher("KunihiroSato", "/Users/syao/desktop/res/csvdata/09_Expert_KunihiroSato_Mathematics_all.csv", path_tttt2)
+    # prot_4.pfdicSaver()
+    # prot_5 = ProTeacher("AyakoYamamoto", "/Users/syao/desktop/res/csvdata/10_Expert_AyakoYamamoto_Japanese_all.csv", path_tttt2)
+    # prot_5.pfdicSaver()
+    # prot_6 = ProTeacher("SakiWatanabe", "/Users/syao/desktop/res/csvdata/11_Expert_SakiWatanabe_English_Champion_all.csv", path_tttt2)
+    # prot_6.pfdicSaver()
+    # prot_7 = ProTeacher("RinaAndo", "/Users/syao/desktop/res/csvdata/12_Expert_RinaAndo_Civics_all.csv", path_tttt2)
+    # prot_7.pfdicSaver()
+    # prot_8 = ProTeacher("NaokiSaiba", "/Users/syao/desktop/res/csvdata/13_Expert_NaokiSaiba_Science_all.csv", path_tttt2)
+    # prot_8.pfdicSaver()
+    # prot_9 = ProTeacher("Nishiyama1", "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Nishiyama_01_all.csv",
+    #                     path_tttt2)
+    # prot_9.pfdicSaver()
+    # prot_7 = ProTeacher("Nishiyama2", "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Nishiyama_02_all.csv",
+    #                     path_tttt2)
+    # prot_7.pfdicSaver()
+    # prot_8 = ProTeacher("Nishiyama3", "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Nishiyama_03_all.csv",
+    #                     path_tttt2)
+    # prot_8.pfdicSaver()
+    # prot_9 = ProTeacher("MasahiroWatanabe2",
+    #                      "/Users/syao/desktop/res/csv_teaching_cont_2/08_Pf_MasahiroWatanabe_Mathematics_all.csv",
+    #                      path_tttt2)
+    # prot_9.pfdicSaver()
+    # prot_10 = ProTeacher("MasahiroWatanabe1",
+    #                     "/Users/syao/desktop/res/csv_teaching_cont_2/04_Pre_MasahiroWatanabe_Mathematics_all.csv",
+    #                     path_tttt2)
+    # prot_10.pfdicSaver()
+    # prot_11 = ProTeacher("MasahiroWatanabe3",
+    #                      "/Users/syao/desktop/res/csv_teaching_cont_2/18_Fin_MasahiroWatanabe_Mathematics_all.csv",
+    #                      path_tttt2)
+    # prot_11.pfdicSaver()
+    # prot_12 = ProTeacher("YusukeKimura",
+    #                      "/Users/syao/desktop/res/csv_teaching_cont_2/09_Fin_YusukeKimura_Science_all.csv",
+    #                      path_tttt2)
+    # prot_12.pfdicSaver()
+    # prot_13 = ProTeacher("IppeiTakahira1",
+    #                      "/Users/syao/desktop/res/csv_teaching_cont_2/17_Pf_IppeiTakahira_English_all.csv",
+    #                      path_tttt2)
+    # prot_13.pfdicSaver()
+    # prot_14 = ProTeacher("IppeiTakahira2",
+    #                      "/Users/syao/desktop/res/csv_teaching_cont_2/20_Fin_IppeiTakahira_English_all.csv",
+    #                      path_tttt2)
+    # prot_14.pfdicSaver()
+    # prot_15 = ProTeacher("IkuTadame",
+    #                      "/Users/syao/desktop/res/csv_teaching_cont_2/19_Fin_IkuTadame_Japanese_all.csv",
+    #                      path_tttt2)
+    # prot_15.pfdicSaver()
+    # prot_16 = ProTeacher("SatoshiIkeuchi",
+    #                      "/Users/syao/desktop/res/csv_teaching_cont_2/21_Fin_SatoshiIkeuchi_Society_all.csv",
+    #                      path_tttt2)
+    # prot_16.pfdicSaver()
 
     # ----------------------------------------------------前处理分界线-------------------------------------------------------
 
     # 这个以后的数据一定会变成100 或者是0 表明还是记住了用户的特征的
     # 在ny和kj当中 他们的分数变化也正明了是会学习的，那么重要的地方就是数据量了
-    # t = TestTeacher("YusukeHachisu", "/Users/syao/desktop/res/csvdata/06_Expert_YoshimitauHamada_Mathematics_all.csv") #100
-    # t = TestTeacher("AyakoYamamoto", "/Users/syao/desktop/res/csvdata/10_Expert_AyakoYamamoto_Japanese_all.csv") # 100
-    # t = TestTeacher("YukinaHachisu", "/Users/syao/desktop/res/csvdata/04_Rookie_YukinaHachisu_English_all.csv") # 0
-    # t = TestTeacher("KunihiroSato", "/Users/syao/desktop/res/csvdata/09_Expert_KunihiroSato_Mathematics_all.csv") # 100
-    # t = TestTeacher("YoshimitauHamada", "/Users/syao/desktop/res/csvdata/09_Expert_KunihiroSato_Mathematics_all.csv") # 100 ?
-    # t = TestTeacher("AkiOkubo", "/Users/syao/desktop/res/csvdata/01_Rookie_AkiOkubo_English_all.csv") # 0 ?
-    # t = TestTeacher("NaokiSaiba", "/Users/syao/desktop/res/csvdata/13_Expert_NaokiSaiba_Science_all.csv") # 24
-    # t = TestTeacher("RinaAndo", "/Users/syao/desktop/res/csvdata/12_Expert_RinaAndo_Civics_all.csv") # 32
-    # t = TestTeacher("SakiWatanabe", "/Users/syao/desktop/res/csvdata/11_Expert_SakiWatanabe_English_Champion_all.csv") # 53
-    # t = TestTeacher("Kojima", "/Users/syao/desktop/res/kj_v2.csv") # 30
-    # t = TestTeacher("Nishiyama", "/Users/syao/desktop/res/ny_v2.csv") # 71
-    # t = TestTeacher("Kojima7", "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Kojima_07_all.csv") # 16
-    t = TestTeacher("Nishiyama3", "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Nishiyama_03_all.csv") # 58
+    # t = TestTeacher("AyakoYamamoto", "/Users/syao/desktop/res/csvdata/10_Expert_AyakoYamamoto_Japanese_all.csv")
+    # t = TestTeacher("KunihiroSato", "/Users/syao/desktop/res/csvdata/09_Expert_KunihiroSato_Mathematics_all.csv")
+    # t = TestTeacher("NaokiSaiba", "/Users/syao/desktop/res/csvdata/13_Expert_NaokiSaiba_Science_all.csv")
+    # t = TestTeacher("RinaAndo", "/Users/syao/desktop/res/csvdata/12_Expert_RinaAndo_Civics_all.csv")
+    # t = TestTeacher("SakiWatanabe", "/Users/syao/desktop/res/csvdata/11_Expert_SakiWatanabe_English_Champion_all.csv")
+    # t = TestTeacher("Kojima", "/Users/syao/desktop/res/kj_v2.csv")
+    # t = TestTeacher("Nishiyama", "/Users/syao/desktop/res/ny_v2.csv")
+
+
+
+    # t = TestTeacher("AkiOkubo", "/Users/syao/desktop/res/csvdata/01_Rookie_AkiOkubo_English_all.csv") #1
+    # t = TestTeacher("KotaroHosoi", "/Users/syao/desktop/res/csvdata/02_Rookie_KotaroHosoi_Mathematics_all.csv") #2
+    # t = TestTeacher("ShioriMasuko", "/Users/syao/desktop/res/csvdata/03_Rookie_ShioriMasuko_English_all.csv") #3
+    # t = TestTeacher("YukinaHachisu", "/Users/syao/desktop/res/csvdata/04_Rookie_YukinaHachisu_English_all.csv") #4
+    # t = TestTeacher("YusukeHachisu", "/Users/syao/desktop/res/csvdata/05_Rookie_YusukeHachisu_Japanese_all.csv") #5
+    # t = TestTeacher("Kojima1", "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Kojima_01_all.csv") #6
+    # t = TestTeacher("Kojima2", "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Kojima_02_all.csv") #7
+    # t = TestTeacher("Kojima3", "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Kojima_03_all.csv") #8
+    # t = TestTeacher("Kojima4", "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Kojima_04_all.csv") #9
+    # t = TestTeacher("Kojima5", "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Kojima_05_all.csv") #10
+    # t = TestTeacher("Kojima6", "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Kojima_06_all.csv") #11
+    # t = TestTeacher("Kojima7", "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Kojima_07_all.csv") #12
+    # t = TestTeacher("KiyoshiMori", "/Users/syao/desktop/res/csv_teaching_cont_2/01_Pf_KiyoshiMori_Mathematics_all.csv") #13
+    # t = TestTeacher("RyotaTakahashi", "/Users/syao/desktop/res/csv_teaching_cont_2/03_Pre_RyotaTakahashi_Mathematics_all.csv") #14
+    # t = TestTeacher("KenjiShiraishi", "/Users/syao/desktop/res/csv_teaching_cont_2/05_Pre_KenjiShiraishi_Mathematics_all.csv") #15
+    # t = TestTeacher("HiroyukiKama", "/Users/syao/desktop/res/csv_teaching_cont_2/06_Pre_HiroyukiKama_Mathematics_all.csv") #16
+    # t = TestTeacher("SatoshiNomuri", "/Users/syao/desktop/res/csv_teaching_cont_2/07_Pf_SatoshiNomuri_Mathematics_all.csv") #17
+    # t = TestTeacher("ShioriMashiko", "/Users/syao/desktop/res/csv_teaching_cont_2/23_Pf_ShioriMashiko_English_all.csv") #18
+
+    # t = TestTeacher("YoshimitauHamada", "/Users/syao/desktop/res/csvdata/06_Expert_YoshimitauHamada_Mathematics_all.csv") #19
+    # t = TestTeacher("ShotaYoshida", "/Users/syao/desktop/res/csvdata/07_Expert_ShotaYoshida_Mathematics_NOFULL_all.csv") #20
+    # t = TestTeacher("TakashiMajima", "/Users/syao/desktop/res/csvdata/08_Expert_TakashiMajima_Mathematics_NOFULL_all.csv") #21
+    # t = TestTeacher("KunihiroSato", "/Users/syao/desktop/res/csvdata/09_Expert_KunihiroSato_Mathematics_all.csv") #22
+    # t = TestTeacher("AyakoYamamoto", "/Users/syao/desktop/res/csvdata/10_Expert_AyakoYamamoto_Japanese_all.csv") #23
+    # t = TestTeacher("Nishiyama1", "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Nishiyama_01_all.csv") #24
+    # t = TestTeacher("Nishiyama2", "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Nishiyama_02_all.csv") #25
+    # t = TestTeacher("MasahiroWatanabe2", "/Users/syao/desktop/res/csv_teaching_cont_2/08_Pf_MasahiroWatanabe_Mathematics_all.csv") #26
+    # t = TestTeacher("MasahiroWatanabe1", "/Users/syao/desktop/res/csv_teaching_cont_2/04_Pre_MasahiroWatanabe_Mathematics_all.csv") #27
+    # t = TestTeacher("MasahiroWatanabe3", "/Users/syao/desktop/res/csv_teaching_cont_2/18_Fin_MasahiroWatanabe_Mathematics_all.csv") #28
+    # t = TestTeacher("YusukeKimura", "/Users/syao/desktop/res/csv_teaching_cont_2/09_Fin_YusukeKimura_Science_all.csv") #29
+    # t = TestTeacher("IppeiTakahira1", "/Users/syao/desktop/res/csv_teaching_cont_2/17_Pf_IppeiTakahira_English_all.csv") #30
+    # t = TestTeacher("IppeiTakahira2", "/Users/syao/desktop/res/csv_teaching_cont_2/20_Fin_IppeiTakahira_English_all.csv") #31
+    # t = TestTeacher("IkuTadame", "/Users/syao/desktop/res/csv_teaching_cont_2/19_Fin_IkuTadame_Japanese_all.csv") #32
+    # t = TestTeacher("SatoshiIkeuchi", "/Users/syao/desktop/res/csv_teaching_cont_2/21_Fin_SatoshiIkeuchi_Society_all.csv") #33
+    t = TestTeacher("Nishiyama3", "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Nishiyama_03_all.csv") #34
+
+
+
 
 
     path_tttt="/Users/syao/desktop/res/TeaSys_Dev/"
@@ -881,7 +1005,6 @@ if __name__ == '__main__':
     t.jsonReader_pf_onetime(path_tttt, "AyakoYamamoto", 1)
     t.jsonReader_pf_onetime(path_tttt, "Nishiyama1", 1)
     t.jsonReader_pf_onetime(path_tttt, "Nishiyama2", 1)
-    t.jsonReader_pf_onetime(path_tttt, "Nishiyama3", 1)
     t.jsonReader_pf_onetime(path_tttt, "MasahiroWatanabe2", 1)
     t.jsonReader_pf_onetime(path_tttt, "MasahiroWatanabe1", 1)
     t.jsonReader_pf_onetime(path_tttt, "MasahiroWatanabe3", 1)
@@ -890,6 +1013,7 @@ if __name__ == '__main__':
     t.jsonReader_pf_onetime(path_tttt, "IppeiTakahira2", 1)
     t.jsonReader_pf_onetime(path_tttt, "IkuTadame", 1)
     t.jsonReader_pf_onetime(path_tttt, "SatoshiIkeuchi", 1)
+    #t.jsonReader_pf_onetime(path_tttt, "Nishiyama3", 1)
 
 
     # t.jsonReader_pf("/Users/syao/desktop/res/TeaSys_Dev/Tom/2.json", 2, 1)  # 1 for pro TODO(Zake Yao):这个能不能简化一下
@@ -961,21 +1085,21 @@ if __name__ == '__main__':
     # print(len(t.pf_temp_saver_pro_4))
     # print(len(t.pf_temp_saver_pro_5))
     # print(len(t.pf_temp_saver_pro_6))
-    # print("Ori:")
-    # print("pro:")
-    # print(t.class_keeper_pro)  # 为啥这个的4最大，也没有压缩啊 这个是老手老师的刚刚cheek过得各种动作的对应的pattern是啥，然后其出现次数
-    # print(t.score_keeper_pro)  # 为啥这个这么少，这个是每种长度的出现次数的总和
-    # print("New:")
-    # print(t.class_keeper_new)
-    # print(t.score_keeper_new)  # 为啥这么少
+    print("Ori:")
+    print("pro:")
+    print(t.class_keeper_pro)  # 为啥这个的4最大，也没有压缩啊 这个是老手老师的刚刚cheek过得各种动作的对应的pattern是啥，然后其出现次数
+    print(t.score_keeper_pro)  # 为啥这个这么少，这个是每种长度的出现次数的总和
+    print("New:")
+    print(t.class_keeper_new)
+    print(t.score_keeper_new)  # 为啥这么少
     t.patterncleanerfortesttea(1)  # use to delete the pattern which only show one time ，这个是用来删除只出现1次的情况，而且class和score都会更新
-    # print("After delete the one time action:")
-    # print("pro:")
-    # print(t.class_keeper_pro)
-    # print(t.score_keeper_pro)
-    # print("New:")
-    # print(t.class_keeper_new)
-    # print(t.score_keeper_new)
+    print("After delete the one time action:")
+    print("pro:")
+    print(t.class_keeper_pro)
+    print(t.score_keeper_pro)
+    print("New:")
+    print(t.class_keeper_new)
+    print(t.score_keeper_new)
     # 查错系列
     # print("wrong:")
     # print(t.dic_action_wrong)   # 动作数：错的是啥
@@ -1006,12 +1130,12 @@ if __name__ == '__main__':
 
     # to find out how long for the pattern is best
     print("pro time")#删了共通的部分
-    print(main.tools.order_dic(main.tools.timecounter(t.dicMergerforPro(1))))
+    print(main.tools.order_dic(main.tools.timecounter_v2(t.dicMergerforPro(1))))
     print("New time")
-    print(main.tools.order_dic(main.tools.timecounter(t.dicMergerforNew(1))))
+    print(main.tools.order_dic(main.tools.timecounter_v2(t.dicMergerforNew(1))))
 
     #删除包含的部分
     print("pro time")
-    print(main.tools.order_dic(main.tools.timecounter(main.tools.shortptdeleter_rel(t.dicMergerforPro(1)))))
+    print(main.tools.order_dic(main.tools.timecounter_v2(main.tools.shortptdeleter_rel(t.dicMergerforPro(1)))))
     print("New time")
-    print(main.tools.order_dic(main.tools.timecounter(main.tools.shortptdeleter_rel(t.dicMergerforNew(1)))))
+    print(main.tools.order_dic(main.tools.timecounter_v2(main.tools.shortptdeleter_rel(t.dicMergerforNew(1)))))
