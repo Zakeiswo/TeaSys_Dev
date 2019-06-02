@@ -892,3 +892,13 @@ if __name__ == '__main__':
     # print(t.score_keeper_new)
 
     # to find out how long for the pattern is best
+    print("pro time")  # 删了共通的部分
+    print(main.tools.order_dic(main.tools.timecounter(t.dicMergerforPro(1))))
+    print("New time")
+    print(main.tools.order_dic(main.tools.timecounter(t.dicMergerforNew(1))))
+
+    # 删除包含的部分
+    print("pro time")
+    print(main.tools.order_dic(main.tools.timecounter(main.tools.shortptdeleter_rel(t.dicMergerforPro(1)))))
+    print("New time")
+    print(main.tools.order_dic(main.tools.timecounter(main.tools.shortptdeleter_rel(t.dicMergerforNew(1)))))
