@@ -270,15 +270,15 @@ class TestTeacher(object):
     # save the pattern and which frame, another function will deal with it to find the better choice
     # @pysnooper.snoop()
 
-    def patternCheeker(self):  # 只运行一次，再运行会刷新dict的
-        # TODO(Zake Yao): add a function to find where is wrong
+    def patternCheeker(self,flagofptlength):  # 只运行一次，再运行会刷新dict的
         # 统计每种出现了多少次
+        flagconunt = 0
         pattern_temp = []
         temp_score_keeper_pro = {}
         temp_class_keeper_pro = {}
         temp_score_keeper_new = {}
         temp_class_keeper_new = {}
-        for item in range(len(self.ac_list_com)):
+        for item in range(len(self.ac_list_com)): # 查看list里面全部的元素
             for x in range(10):# GAI
                 if item + x < len(self.ac_list_com):
                     pattern_temp.append(self.ac_list_com[item + x])
@@ -395,72 +395,72 @@ class TestTeacher(object):
                                 temp_score_keeper_new[6] += 1
                             else:
                                 temp_score_keeper_new[6] = 1
-                    elif len(pattern_temp) == 7:
-                        pattern_str = (''.join(pattern_temp))
-                        if pattern_str in self.pf_temp_saver_pro_7:
-                            if pattern_str in temp_class_keeper_pro:
-                                temp_class_keeper_pro[pattern_str] += 1  # 添加一个字典用来记录每个种类的出现了几次
-                            else:
-                                temp_class_keeper_pro[pattern_str] = 1
-                            if 7 in temp_score_keeper_pro:
-                                temp_score_keeper_pro[7] += 1
-                            else:
-                                temp_score_keeper_pro[7] = 1
-                        elif pattern_str in self.pf_temp_saver_new_7:
-                            # Here to know the pattern is in the new group
-                            self.dic_action_wrong[item] = pattern_str
-                            if pattern_str in temp_class_keeper_new:
-                                temp_class_keeper_new[pattern_str] += 1  # 添加一个字典用来记录每个种类的出现了几次
-                            else:
-                                temp_class_keeper_new[pattern_str] = 1
-                            if 7 in temp_score_keeper_new:
-                                temp_score_keeper_new[7] += 1
-                            else:
-                                temp_score_keeper_new[7] = 1
-                    elif len(pattern_temp) == 8:
-                        pattern_str = (''.join(pattern_temp))
-                        if pattern_str in self.pf_temp_saver_pro_8:
-                            if pattern_str in temp_class_keeper_pro:
-                                temp_class_keeper_pro[pattern_str] += 1  # 添加一个字典用来记录每个种类的出现了几次
-                            else:
-                                temp_class_keeper_pro[pattern_str] = 1
-                            if 8 in temp_score_keeper_pro:
-                                temp_score_keeper_pro[8] += 1
-                            else:
-                                temp_score_keeper_pro[8] = 1
-                        elif pattern_str in self.pf_temp_saver_new_8:
-                            # Here to know the pattern is in the new group
-                            self.dic_action_wrong[item] = pattern_str
-                            if pattern_str in temp_class_keeper_new:
-                                temp_class_keeper_new[pattern_str] += 1  # 添加一个字典用来记录每个种类的出现了几次
-                            else:
-                                temp_class_keeper_new[pattern_str] = 1
-                            if 8 in temp_score_keeper_new:
-                                temp_score_keeper_new[8] += 1
-                            else:
-                                temp_score_keeper_new[8] = 1
-                    elif len(pattern_temp) == 9:
-                        pattern_str = (''.join(pattern_temp))
-                        if pattern_str in self.pf_temp_saver_pro_9:
-                            if pattern_str in temp_class_keeper_pro:
-                                temp_class_keeper_pro[pattern_str] += 1  # 添加一个字典用来记录每个种类的出现了几次
-                            else:
-                                temp_class_keeper_pro[pattern_str] = 1
-                            if 9 in temp_score_keeper_pro:
-                                temp_score_keeper_pro[9] += 1
-                            else:
-                                temp_score_keeper_pro[9] = 1
-                        elif pattern_str in self.pf_temp_saver_new_9:
-                            # Here to know the pattern is in the new group
-                            self.dic_action_wrong[item] = pattern_str
-                            if pattern_str in temp_class_keeper_new:
-                                temp_class_keeper_new[pattern_str] += 1  # 添加一个字典用来记录每个种类的出现了几次
-                            else:
-                                temp_class_keeper_new[pattern_str] = 1
-                            if 9 in temp_score_keeper_new:
-                                temp_score_keeper_new[9] += 1
-                            else:
-                                temp_score_keeper_new[9] = 1
+                    # elif len(pattern_temp) == 7:
+                    #     pattern_str = (''.join(pattern_temp))
+                    #     if pattern_str in self.pf_temp_saver_pro_7:
+                    #         if pattern_str in temp_class_keeper_pro:
+                    #             temp_class_keeper_pro[pattern_str] += 1  # 添加一个字典用来记录每个种类的出现了几次
+                    #         else:
+                    #             temp_class_keeper_pro[pattern_str] = 1
+                    #         if 7 in temp_score_keeper_pro:
+                    #             temp_score_keeper_pro[7] += 1
+                    #         else:
+                    #             temp_score_keeper_pro[7] = 1
+                    #     elif pattern_str in self.pf_temp_saver_new_7:
+                    #         # Here to know the pattern is in the new group
+                    #         self.dic_action_wrong[item] = pattern_str
+                    #         if pattern_str in temp_class_keeper_new:
+                    #             temp_class_keeper_new[pattern_str] += 1  # 添加一个字典用来记录每个种类的出现了几次
+                    #         else:
+                    #             temp_class_keeper_new[pattern_str] = 1
+                    #         if 7 in temp_score_keeper_new:
+                    #             temp_score_keeper_new[7] += 1
+                    #         else:
+                    #             temp_score_keeper_new[7] = 1
+                    # elif len(pattern_temp) == 8:
+                    #     pattern_str = (''.join(pattern_temp))
+                    #     if pattern_str in self.pf_temp_saver_pro_8:
+                    #         if pattern_str in temp_class_keeper_pro:
+                    #             temp_class_keeper_pro[pattern_str] += 1  # 添加一个字典用来记录每个种类的出现了几次
+                    #         else:
+                    #             temp_class_keeper_pro[pattern_str] = 1
+                    #         if 8 in temp_score_keeper_pro:
+                    #             temp_score_keeper_pro[8] += 1
+                    #         else:
+                    #             temp_score_keeper_pro[8] = 1
+                    #     elif pattern_str in self.pf_temp_saver_new_8:
+                    #         # Here to know the pattern is in the new group
+                    #         self.dic_action_wrong[item] = pattern_str
+                    #         if pattern_str in temp_class_keeper_new:
+                    #             temp_class_keeper_new[pattern_str] += 1  # 添加一个字典用来记录每个种类的出现了几次
+                    #         else:
+                    #             temp_class_keeper_new[pattern_str] = 1
+                    #         if 8 in temp_score_keeper_new:
+                    #             temp_score_keeper_new[8] += 1
+                    #         else:
+                    #             temp_score_keeper_new[8] = 1
+                    # elif len(pattern_temp) == 9:
+                    #     pattern_str = (''.join(pattern_temp))
+                    #     if pattern_str in self.pf_temp_saver_pro_9:
+                    #         if pattern_str in temp_class_keeper_pro:
+                    #             temp_class_keeper_pro[pattern_str] += 1  # 添加一个字典用来记录每个种类的出现了几次
+                    #         else:
+                    #             temp_class_keeper_pro[pattern_str] = 1
+                    #         if 9 in temp_score_keeper_pro:
+                    #             temp_score_keeper_pro[9] += 1
+                    #         else:
+                    #             temp_score_keeper_pro[9] = 1
+                    #     elif pattern_str in self.pf_temp_saver_new_9:
+                    #         # Here to know the pattern is in the new group
+                    #         self.dic_action_wrong[item] = pattern_str
+                    #         if pattern_str in temp_class_keeper_new:
+                    #             temp_class_keeper_new[pattern_str] += 1  # 添加一个字典用来记录每个种类的出现了几次
+                    #         else:
+                    #             temp_class_keeper_new[pattern_str] = 1
+                    #         if 9 in temp_score_keeper_new:
+                    #             temp_score_keeper_new[9] += 1
+                    #         else:
+                    #             temp_score_keeper_new[9] = 1
                     # elif len(pattern_temp) == 10:
                     #     pattern_str = (''.join(pattern_temp))
                     #     if pattern_str in self.pf_temp_saver_pro_10:
@@ -603,9 +603,9 @@ class TestTeacher(object):
     # use to compress the list to the ID
     # and build the dic to contact the 2 list
     # return the list of the action list
-    def compressList_id_t(self, list_ac, a, b):  # 不看被省略的,应该是2~7
+    def compressList_id_t(self, list_ac, a, b):  # 不看被省略的,应该是2~7 4+8+1 = 14???
         counter_ac = 0
-        counter_recover = 0
+        counter_recover = 0 # 这个是用来干嘛的# TODO(Zake Yao):这个是干嘛的我忘了，你等会记得看看
         temp_ac = ""
         temp_ac_list = []
         for x in list_ac:  # 没有加上最后一次
@@ -620,6 +620,7 @@ class TestTeacher(object):
                     temp_ac = x
                     if (counter_recover > 9):
                         print("Attention:Maybe error.It's hard for counter_recover to be over than 9!")
+                        print(counter_recover)
                     continue
                 elif counter_ac <= b:
                     temp_ac_list.append(self.IDgeterforsingel_t(temp_ac))  # add the last one
@@ -801,7 +802,7 @@ class TestTeacher(object):
 
 
 if __name__ == '__main__':
-    path_tttt2 = "/Users/syao/desktop/res/TeaSys_Dev/"
+    path_tttt2 = "/Users/syao/desktop/res/TeaSys_Dev_new_action48_10/"
     # 为了提高速度 可以 之前就通过老手和新手库的程序获取老手和新手的数据并对比
     # prot = ProTeacher("Tom", "/Users/syao/desktop/res/test_ori_1.csv", "/Users/syao/desktop/res/TeaSys_Dev")
     # prot.pfdicSaver()
@@ -857,10 +858,10 @@ if __name__ == '__main__':
     #                      "/Users/syao/desktop/res/csv_teaching_cont_2/07_Pf_SatoshiNomuri_Mathematics_all.csv",
     #                      path_tttt2)
     # newt_17.pfdicSaver()
-    # newt_17 = NewTeacher("ShioriMashiko",
+    # newt_18 = NewTeacher("ShioriMashiko",
     #                      "/Users/syao/desktop/res/csv_teaching_cont_2/23_Pf_ShioriMashiko_English_all.csv",
     #                      path_tttt2)
-    # newt_17.pfdicSaver()
+    # newt_18.pfdicSaver()
     #prot_1.pfdicSaver_all(1)  # save the whole data 在后面算tfidf的时候用了
 
     # prot_1 = ProTeacher("YoshimitauHamada", "/Users/syao/desktop/res/csvdata/06_Expert_YoshimitauHamada_Mathematics_all.csv", path_tttt2)
@@ -975,7 +976,7 @@ if __name__ == '__main__':
 
 
 
-    path_tttt="/Users/syao/desktop/res/TeaSys_Dev/"
+    path_tttt="/Users/syao/desktop/res/TeaSys_Dev_new_action48_10/"
     # new
     t.jsonReader_pf_onetime(path_tttt,"AkiOkubo",0)
     t.jsonReader_pf_onetime(path_tttt,"KotaroHosoi",0)#需要命名来识别
@@ -1069,10 +1070,10 @@ if __name__ == '__main__':
 
     t.dicCommonDeleteOnetime()  # 删除共通的部分
 
-    t.compressList_id_t(t.ac_list_ori, 2, 4) # 这一步是压缩 原始数据，但是为什么写在外面 # TODO（Zake Yao）:把他写到程序里面去封装起来
+    t.compressList_id_t(t.ac_list_ori, 4, 8) # 这一步是压缩 原始数据，但是为什么写在外面 # TODO（Zake Yao）:把他写到程序里面去封装起来
     # print(len(t.ac_list_ori))  # 1001
 
-    t.patternCheeker()  # 这个是主要步骤的用sliping window 来cheek，和直接用pf解析不同的是，只能获取统计已有的pattern出现了多少
+    t.patternCheeker(6)  # 这个是主要步骤的用sliping window 来cheek，和直接用pf解析不同的是，只能获取统计已有的pattern出现了多少
     # print("new size")
     # print(len(t.pf_temp_saver_new_2))
     # print(len(t.pf_temp_saver_new_3))
@@ -1085,13 +1086,13 @@ if __name__ == '__main__':
     # print(len(t.pf_temp_saver_pro_4))
     # print(len(t.pf_temp_saver_pro_5))
     # print(len(t.pf_temp_saver_pro_6))
-    print("Ori:")
-    print("pro:")
-    print(t.class_keeper_pro)  # 为啥这个的4最大，也没有压缩啊 这个是老手老师的刚刚cheek过得各种动作的对应的pattern是啥，然后其出现次数
-    print(t.score_keeper_pro)  # 为啥这个这么少，这个是每种长度的出现次数的总和
-    print("New:")
-    print(t.class_keeper_new)
-    print(t.score_keeper_new)  # 为啥这么少
+    # print("Ori:")
+    # print("pro:")
+    # print(t.class_keeper_pro)  # 为啥这个的4最大，也没有压缩啊 这个是老手老师的刚刚cheek过得各种动作的对应的pattern是啥，然后其出现次数
+    # print(t.score_keeper_pro)  # 为啥这个这么少，这个是每种长度的出现次数的总和
+    # print("New:")
+    # print(t.class_keeper_new)
+    # print(t.score_keeper_new)  # 为啥这么少
     t.patterncleanerfortesttea(1)  # use to delete the pattern which only show one time ，这个是用来删除只出现1次的情况，而且class和score都会更新
     print("After delete the one time action:")
     print("pro:")
@@ -1118,7 +1119,9 @@ if __name__ == '__main__':
     print("score:ave:")
     print(t.scorecalculater_ave())
     print("longer:")
-    t.shortptdeleter()# 删除包括的部分
+    t.shortptdeleter()# 删除包括的部分，他直接删除了成员函数里面的数据
+
+
     print("score:ave:")
     print(t.scorecalculater_ave())
     # print("pro:")

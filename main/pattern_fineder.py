@@ -31,7 +31,7 @@ class PatternFinder(object):
 
         # auto init
         self.all_action_list = self.csvReader_pf()
-        self.com_action_list = self.compressList(self.all_action_list, 2, 4)
+        self.com_action_list = self.compressList(self.all_action_list, 4, 8)
         self.dicMaker(self.com_action_list)
 
     #  read csv and use list to save it
