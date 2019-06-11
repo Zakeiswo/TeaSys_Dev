@@ -209,11 +209,17 @@ def eachsmallpt_rel(key_t,dic_t):
         dic_temp.pop(key_t)
     return dic_temp.copy()
 
-# use to sort the dic
+# use to sort the dic#这个只能按照可以的排序
 def order_dic(dic_t):
     dic_temp = dic_t.copy()
     dic_sort = {}
     dic_sort = collections.OrderedDict(sorted(dic_temp.items(), key=lambda t: t[0]))
+    return dic_sort
+# use to sort the dic use value#这个只能按照可以的排序,从大到小
+def order_dic_val(dic_t):
+    dic_temp = dic_t.copy()
+    dic_sort = {}
+    dic_sort = collections.OrderedDict(sorted(dic_temp.items(), key=lambda t: t[1],reverse = True))
     return dic_sort
 
 # use to do the cross validation in

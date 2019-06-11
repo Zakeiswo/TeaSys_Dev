@@ -212,6 +212,41 @@ class TestTeacher(object):
         print(self.dicCommonShower(self.pf_temp_saver_pro_4, self.pf_temp_saver_new_4))
         print(self.dicCommonShower(self.pf_temp_saver_pro_5, self.pf_temp_saver_new_5))
         print(self.dicCommonShower(self.pf_temp_saver_pro_6, self.pf_temp_saver_new_6))
+        print(self.dicCommonShower(self.pf_temp_saver_pro_6, self.pf_temp_saver_new_7))
+        print(self.dicCommonShower(self.pf_temp_saver_pro_6, self.pf_temp_saver_new_8))
+        #v2 use to show the times
+    def dicCommenShowerOnetime_v2(self):
+        temp2 = self.dicMerger(self.pf_temp_saver_pro_2, self.pf_temp_saver_new_2)
+        temp3 = self.dicMerger(self.pf_temp_saver_pro_3, self.pf_temp_saver_new_3)
+        temp4 = self.dicMerger(self.pf_temp_saver_pro_4, self.pf_temp_saver_new_4)
+        temp5 = self.dicMerger(self.pf_temp_saver_pro_5, self.pf_temp_saver_new_5)
+        temp6 = self.dicMerger(self.pf_temp_saver_pro_6, self.pf_temp_saver_new_6)
+        temp7 = self.dicMerger(self.pf_temp_saver_pro_7, self.pf_temp_saver_new_7)
+        temp8 = self.dicMerger(self.pf_temp_saver_pro_8, self.pf_temp_saver_new_8)
+        temp2 = self.dicMerger(temp2, temp3)
+        temp4 = self.dicMerger(temp4, temp5)
+        temp6 = self.dicMerger(temp6, temp7)
+        temp8 = self.dicMerger(temp8, temp2)
+        temp4 = self.dicMerger(temp4, temp6)
+        temp8 = self.dicMerger(temp8,temp4)
+        return main.tools.order_dic_val(temp8)
+        # v3 use to show the times，and del the include situation
+    def dicCommenShowerOnetime_v3(self):
+        temp2 = self.dicMerger(self.pf_temp_saver_pro_2, self.pf_temp_saver_new_2)
+        temp3 = self.dicMerger(self.pf_temp_saver_pro_3, self.pf_temp_saver_new_3)
+        temp4 = self.dicMerger(self.pf_temp_saver_pro_4, self.pf_temp_saver_new_4)
+        temp5 = self.dicMerger(self.pf_temp_saver_pro_5, self.pf_temp_saver_new_5)
+        temp6 = self.dicMerger(self.pf_temp_saver_pro_6, self.pf_temp_saver_new_6)
+        temp7 = self.dicMerger(self.pf_temp_saver_pro_7, self.pf_temp_saver_new_7)
+        temp8 = self.dicMerger(self.pf_temp_saver_pro_8, self.pf_temp_saver_new_8)
+        temp2 = self.dicMerger(temp2, temp3)
+        temp4 = self.dicMerger(temp4, temp5)
+        temp6 = self.dicMerger(temp6, temp7)
+        temp8 = self.dicMerger(temp8, temp2)
+        temp4 = self.dicMerger(temp4, temp6)
+        temp8 = self.dicMerger(temp8,temp4)
+        return main.tools.order_dic_val(main.tools.shortptdeleter_rel(temp8))
+
 
     # read csv and use list to save it
     # reflesh the list to the new csv
@@ -755,7 +790,8 @@ class TestTeacher(object):
         if sum_new!=0 or sum_pro!=0:
             score = (sum_pro/(sum_pro+sum_new)-sum_new/(sum_pro+sum_new))*50+50  # 如果两个都不为0
             # print(score)
-
+        else:
+            score = 50 #两个都为空的时候，会变成50分
         return score
 
     # jaccard distance
@@ -940,7 +976,7 @@ if __name__ == '__main__':
 
 
 
-    # t = TestTeacher("AkiOkubo", "/Users/syao/desktop/res/csvdata/01_Rookie_AkiOkubo_English_all.csv") #1
+    t = TestTeacher("AkiOkubo", "/Users/syao/desktop/res/csvdata/01_Rookie_AkiOkubo_English_all.csv") #1
     # t = TestTeacher("KotaroHosoi", "/Users/syao/desktop/res/csvdata/02_Rookie_KotaroHosoi_Mathematics_all.csv") #2
     # t = TestTeacher("ShioriMasuko", "/Users/syao/desktop/res/csvdata/03_Rookie_ShioriMasuko_English_all.csv") #3
     # t = TestTeacher("YukinaHachisu", "/Users/syao/desktop/res/csvdata/04_Rookie_YukinaHachisu_English_all.csv") #4
@@ -978,58 +1014,46 @@ if __name__ == '__main__':
 
 
 
-    # path_tttt="/Users/syao/desktop/res/TeaSys_Dev_new_action48_10/"
+    path_tttt="/Users/syao/desktop/res/TeaSys_Dev_new_action48_10/"
     # # new
-    # t.jsonReader_pf_onetime(path_tttt,"AkiOkubo",0)
-    # t.jsonReader_pf_onetime(path_tttt,"KotaroHosoi",0)#需要命名来识别
-    # t.jsonReader_pf_onetime(path_tttt,"ShioriMasuko",0)
-    # t.jsonReader_pf_onetime(path_tttt,"YukinaHachisu",0)
-    # t.jsonReader_pf_onetime(path_tttt,"YusukeHachisu",0)
-    # t.jsonReader_pf_onetime(path_tttt,"Kojima1",0)
-    # t.jsonReader_pf_onetime(path_tttt,"Kojima2",0)
-    # t.jsonReader_pf_onetime(path_tttt,"Kojima3",0)
-    # t.jsonReader_pf_onetime(path_tttt,"Kojima4",0)
-    # t.jsonReader_pf_onetime(path_tttt,"Kojima5",0)
-    # t.jsonReader_pf_onetime(path_tttt,"Kojima6",0)
-    # t.jsonReader_pf_onetime(path_tttt, "Kojima7", 0)
-    # t.jsonReader_pf_onetime(path_tttt,"KiyoshiMori",0)
-    # t.jsonReader_pf_onetime(path_tttt,"RyotaTakahashi",0)
-    # t.jsonReader_pf_onetime(path_tttt,"KenjiShiraishi",0)
-    # t.jsonReader_pf_onetime(path_tttt,"HiroyukiKama",0)
-    # t.jsonReader_pf_onetime(path_tttt,"SatoshiNomuri",0)
-    # t.jsonReader_pf_onetime(path_tttt,"ShioriMashiko",0)
+    t.jsonReader_pf_onetime(path_tttt,"AkiOkubo",0)
+    t.jsonReader_pf_onetime(path_tttt,"KotaroHosoi",0)#需要命名来识别
+    t.jsonReader_pf_onetime(path_tttt,"ShioriMasuko",0)
+    t.jsonReader_pf_onetime(path_tttt,"YukinaHachisu",0)
+    t.jsonReader_pf_onetime(path_tttt,"YusukeHachisu",0)
+    t.jsonReader_pf_onetime(path_tttt,"Kojima1",0)
+    t.jsonReader_pf_onetime(path_tttt,"Kojima2",0)
+    t.jsonReader_pf_onetime(path_tttt,"Kojima3",0)
+    t.jsonReader_pf_onetime(path_tttt,"Kojima4",0)
+    t.jsonReader_pf_onetime(path_tttt,"Kojima5",0)
+    t.jsonReader_pf_onetime(path_tttt,"Kojima6",0)
+    t.jsonReader_pf_onetime(path_tttt, "Kojima7", 0)
+    t.jsonReader_pf_onetime(path_tttt,"KiyoshiMori",0)
+    t.jsonReader_pf_onetime(path_tttt,"RyotaTakahashi",0)
+    t.jsonReader_pf_onetime(path_tttt,"KenjiShiraishi",0)
+    t.jsonReader_pf_onetime(path_tttt,"HiroyukiKama",0)
+    t.jsonReader_pf_onetime(path_tttt,"SatoshiNomuri",0)
+    t.jsonReader_pf_onetime(path_tttt,"ShioriMashiko",0)
     #
     #
     # # pro
-    # t.jsonReader_pf_onetime(path_tttt, "YoshimitauHamada", 1) # 1 = pro
-    # t.jsonReader_pf_onetime(path_tttt, "ShotaYoshida", 1)
-    # t.jsonReader_pf_onetime(path_tttt, "TakashiMajima", 1)
-    # t.jsonReader_pf_onetime(path_tttt, "KunihiroSato", 1)
-    # t.jsonReader_pf_onetime(path_tttt, "AyakoYamamoto", 1)
-    # t.jsonReader_pf_onetime(path_tttt, "Nishiyama1", 1)
-    # t.jsonReader_pf_onetime(path_tttt, "Nishiyama2", 1)
-    # t.jsonReader_pf_onetime(path_tttt, "MasahiroWatanabe2", 1)
-    # t.jsonReader_pf_onetime(path_tttt, "MasahiroWatanabe1", 1)
-    # t.jsonReader_pf_onetime(path_tttt, "MasahiroWatanabe3", 1)
-    # t.jsonReader_pf_onetime(path_tttt, "YusukeKimura", 1)
-    # t.jsonReader_pf_onetime(path_tttt, "IppeiTakahira1", 1)
-    # t.jsonReader_pf_onetime(path_tttt, "IppeiTakahira2", 1)
-    # t.jsonReader_pf_onetime(path_tttt, "IkuTadame", 1)
-    # t.jsonReader_pf_onetime(path_tttt, "SatoshiIkeuchi", 1)
-    #t.jsonReader_pf_onetime(path_tttt, "Nishiyama3", 1)
+    t.jsonReader_pf_onetime(path_tttt, "YoshimitauHamada", 1) # 1 = pro
+    t.jsonReader_pf_onetime(path_tttt, "ShotaYoshida", 1)
+    t.jsonReader_pf_onetime(path_tttt, "TakashiMajima", 1)
+    t.jsonReader_pf_onetime(path_tttt, "KunihiroSato", 1)
+    t.jsonReader_pf_onetime(path_tttt, "AyakoYamamoto", 1)
+    t.jsonReader_pf_onetime(path_tttt, "Nishiyama1", 1)
+    t.jsonReader_pf_onetime(path_tttt, "Nishiyama2", 1)
+    t.jsonReader_pf_onetime(path_tttt, "MasahiroWatanabe2", 1)
+    t.jsonReader_pf_onetime(path_tttt, "MasahiroWatanabe1", 1)
+    t.jsonReader_pf_onetime(path_tttt, "MasahiroWatanabe3", 1)
+    t.jsonReader_pf_onetime(path_tttt, "YusukeKimura", 1)
+    t.jsonReader_pf_onetime(path_tttt, "IppeiTakahira1", 1)
+    t.jsonReader_pf_onetime(path_tttt, "IppeiTakahira2", 1)
+    t.jsonReader_pf_onetime(path_tttt, "IkuTadame", 1)
+    t.jsonReader_pf_onetime(path_tttt, "SatoshiIkeuchi", 1)
+    t.jsonReader_pf_onetime(path_tttt, "Nishiyama3", 1)
 
-
-    # t.jsonReader_pf("/Users/syao/desktop/res/TeaSys_Dev/Tom/2.json", 2, 1)  # 1 for pro TODO(Zake Yao):这个能不能简化一下
-    # t.jsonReader_pf("/Users/syao/desktop/res/TeaSys_Dev/Tom/3.json", 3, 1)
-    # t.jsonReader_pf("/Users/syao/desktop/res/TeaSys_Dev/Tom/4.json", 4, 1)
-    # t.jsonReader_pf("/Users/syao/desktop/res/TeaSys_Dev/Tom/5.json", 5, 1)
-    # t.jsonReader_pf("/Users/syao/desktop/res/TeaSys_Dev/Tom/6.json", 6, 1)
-    #
-    # t.jsonReader_pf("/Users/syao/desktop/res/TeaSys_Dev/Mike/2.json", 2, 0)  # 0 for new
-    # t.jsonReader_pf("/Users/syao/desktop/res/TeaSys_Dev/Mike/3.json", 3, 0)
-    # t.jsonReader_pf("/Users/syao/desktop/res/TeaSys_Dev/Mike/4.json", 4, 0)
-    # t.jsonReader_pf("/Users/syao/desktop/res/TeaSys_Dev/Mike/5.json", 5, 0)
-    # t.jsonReader_pf("/Users/syao/desktop/res/TeaSys_Dev/Mike/6.json", 6, 0)
 
     # print("new size")
     # print(len(t.pf_temp_saver_new_2))
@@ -1068,14 +1092,20 @@ if __name__ == '__main__':
     # print("New time")
     # print(main.tools.order_dic((main.tools.timecounter(t.dicMergerforNew(1)))))
     #
-    # # t.dicCommenShowerOnetime()  # 展示共通的set
+    # print(t.dicCommenShowerOnetime_v2() ) # 展示共通的set
+    # print(t.dicCommenShowerOnetime_v3() ) # 展示共通的set
+
     #
-    # t.dicCommonDeleteOnetime()  # 删除共通的部分
-    #
-    # t.compressList_id_t(t.ac_list_ori, 4, 8) # 这一步是压缩 原始数据，但是为什么写在外面 # TODO（Zake Yao）:把他写到程序里面去封装起来
+    t.dicCommonDeleteOnetime()  # 删除共通的部分
+    print("pro time")
+    print(main.tools.order_dic_val(t.dicMergerforPro(1)))  # 这个是没删除共通的部分
+    print("New time")
+    print(main.tools.order_dic_val(t.dicMergerforNew(1)))
+
+    t.compressList_id_t(t.ac_list_ori, 4, 8) # 这一步是压缩 原始数据，但是为什么写在外面 # TODO（Zake Yao）:把他写到程序里面去封装起来
     # # print(len(t.ac_list_ori))  # 1001
     #
-    # t.patternCheeker(6)  # 这个是主要步骤的用sliping window 来cheek，和直接用pf解析不同的是，只能获取统计已有的pattern出现了多少
+    t.patternCheeker(7)  # 这个是主要步骤的用sliping window 来cheek，和直接用pf解析不同的是，只能获取统计已有的pattern出现了多少
     # print("new size")
     # print(len(t.pf_temp_saver_new_2))
     # print(len(t.pf_temp_saver_new_3))
@@ -1095,7 +1125,7 @@ if __name__ == '__main__':
     # print("New:")
     # print(t.class_keeper_new)
     # print(t.score_keeper_new)  # 为啥这么少
-    # t.patterncleanerfortesttea(1)  # use to delete the pattern which only show one time ，这个是用来删除只出现1次的情况，而且class和score都会更新
+    t.patterncleanerfortesttea(1)  # use to delete the pattern which only show one time ，这个是用来删除只出现1次的情况，而且class和score都会更新
     # print("After delete the one time action:")
     # print("pro:")
     # print(t.class_keeper_pro)
@@ -1121,11 +1151,11 @@ if __name__ == '__main__':
     # print("score:ave:")
     # print(t.scorecalculater_ave())
     # print("longer:")
-    # t.shortptdeleter()# 删除包括的部分，他直接删除了成员函数里面的数据
+    t.shortptdeleter()# 删除包括的部分，他直接删除了成员函数里面的数据
     #
     #
-    # print("score:ave:")
-    # print(t.scorecalculater_ave())
+    print("score:ave:")
+    print(t.scorecalculater_ave())
     # # print("pro:")
     # print(t.class_keeper_pro)
     # print(t.score_keeper_pro)
@@ -1144,107 +1174,111 @@ if __name__ == '__main__':
     # print(main.tools.order_dic(main.tools.timecounter_v2(main.tools.shortptdeleter_rel(t.dicMergerforPro(1)))))
     # print("New time")
     # print(main.tools.order_dic(main.tools.timecounter_v2(main.tools.shortptdeleter_rel(t.dicMergerforNew(1)))))
+
+
+
     #----------------------------------------------自动写入分数的部分--------------------------------------------------
-    teacher_dics = {"AkiOkubo": "/Users/syao/desktop/res/csvdata/01_Rookie_AkiOkubo_English_all.csv",  # new
-                    "KotaroHosoi": "/Users/syao/desktop/res/csvdata/02_Rookie_KotaroHosoi_Mathematics_all.csv",
-                    "ShioriMasuko": "/Users/syao/desktop/res/csvdata/03_Rookie_ShioriMasuko_English_all.csv",
-                    "YukinaHachisu": "/Users/syao/desktop/res/csvdata/04_Rookie_YukinaHachisu_English_all.csv",
-                    "YusukeHachisu": "/Users/syao/desktop/res/csvdata/05_Rookie_YusukeHachisu_Japanese_all.csv",
-                    "Kojima1": "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Kojima_01_all.csv",
-                    "Kojima2": "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Kojima_02_all.csv",
-                    "Kojima3": "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Kojima_03_all.csv",
-                    "Kojima4": "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Kojima_04_all.csv",
-                    "Kojima5": "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Kojima_05_all.csv",
-                    "Kojima6": "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Kojima_06_all.csv",
-                    "Kojima7": "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Kojima_07_all.csv",
-                    "KiyoshiMori": "/Users/syao/desktop/res/csv_teaching_cont_2/01_Pf_KiyoshiMori_Mathematics_all.csv",
-                    "RyotaTakahashi": "/Users/syao/desktop/res/csv_teaching_cont_2/03_Pre_RyotaTakahashi_Mathematics_all.csv",
-                    "KenjiShiraishi": "/Users/syao/desktop/res/csv_teaching_cont_2/05_Pre_KenjiShiraishi_Mathematics_all.csv",
-                    "HiroyukiKama": "/Users/syao/desktop/res/csv_teaching_cont_2/06_Pre_HiroyukiKama_Mathematics_all.csv",
-                    "SatoshiNomuri": "/Users/syao/desktop/res/csv_teaching_cont_2/07_Pf_SatoshiNomuri_Mathematics_all.csv",
-                    "ShioriMashiko": "/Users/syao/desktop/res/csv_teaching_cont_2/23_Pf_ShioriMashiko_English_all.csv",
-                    "YoshimitauHamada": "/Users/syao/desktop/res/csvdata/06_Expert_YoshimitauHamada_Mathematics_all.csv",
-                    # pro
-                    "ShotaYoshida": "/Users/syao/desktop/res/csvdata/07_Expert_ShotaYoshida_Mathematics_NOFULL_all.csv",
-                    "TakashiMajima": "/Users/syao/desktop/res/csvdata/08_Expert_TakashiMajima_Mathematics_NOFULL_all.csv",
-                    "KunihiroSato": "/Users/syao/desktop/res/csvdata/09_Expert_KunihiroSato_Mathematics_all.csv",
-                    "AyakoYamamoto": "/Users/syao/desktop/res/csvdata/10_Expert_AyakoYamamoto_Japanese_all.csv",
-                    "Nishiyama1": "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Nishiyama_01_all.csv",
-                    "Nishiyama2": "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Nishiyama_02_all.csv",
-                    "MasahiroWatanabe2": "/Users/syao/desktop/res/csv_teaching_cont_2/08_Pf_MasahiroWatanabe_Mathematics_all.csv",
-                    "MasahiroWatanabe1": "/Users/syao/desktop/res/csv_teaching_cont_2/04_Pre_MasahiroWatanabe_Mathematics_all.csv",
-                    "MasahiroWatanabe3": "/Users/syao/desktop/res/csv_teaching_cont_2/18_Fin_MasahiroWatanabe_Mathematics_all.csv",
-                    "YusukeKimura": "/Users/syao/desktop/res/csv_teaching_cont_2/09_Fin_YusukeKimura_Science_all.csv",
-                    "IppeiTakahira1": "/Users/syao/desktop/res/csv_teaching_cont_2/17_Pf_IppeiTakahira_English_all.csv",
-                    "IppeiTakahira2": "/Users/syao/desktop/res/csv_teaching_cont_2/20_Fin_IppeiTakahira_English_all.csv",
-                    "IkuTadame": "/Users/syao/desktop/res/csv_teaching_cont_2/19_Fin_IkuTadame_Japanese_all.csv",
-                    "SatoshiIkeuchi": "/Users/syao/desktop/res/csv_teaching_cont_2/21_Fin_SatoshiIkeuchi_Society_all.csv",
-                    "Nishiyama3": "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Nishiyama_03_all.csv"
-                    }
-
-    newteacher_list = ["AkiOkubo", "KotaroHosoi", "ShioriMasuko", "YukinaHachisu", "YusukeHachisu", "Kojima1",
-                       "Kojima2", "Kojima3", "Kojima4", "Kojima5", "Kojima6", "Kojima7", "KiyoshiMori",
-                       "RyotaTakahashi", "KenjiShiraishi", "HiroyukiKama", "SatoshiNomuri", "ShioriMashiko"]
-    proteacher_list = ["YoshimitauHamada", "ShotaYoshida", "TakashiMajima", "KunihiroSato", "AyakoYamamoto",
-                       "Nishiyama1", "Nishiyama2", "MasahiroWatanabe2", "MasahiroWatanabe1", "MasahiroWatanabe3",
-                       "YusukeKimura", "IppeiTakahira1", "IppeiTakahira2", "IkuTadame", "SatoshiIkeuchi", "Nishiyama3"]
-
-    path_tttt = "/Users/syao/desktop/res/TeaSys_Dev_new_action48_10/"
-    ccc=0
-    numbb =8#最长的pt数
-    line_list =[]
-    line_list.append("Name,Label,Score"+str(numbb)+",Score_del"+str(numbb)+",Correct score,Correct score_del\n")  # 添加表头
-    for person in teacher_dics:
-        ccc+=1
-        newpro = "why" # 用于判断是否是新人，如果是新人就是new,老手就是pro基本不可能出现都不是的情况
-        ifright = 2 # 用于判断是否正确，要是不正确就是2
-        ifright_2 = 2 # 用于判断是否正确，要是不正确就是2
-        t = TestTeacher(person, teacher_dics[person])# one test teacher
-        for newteacher in newteacher_list:#只要不是当前作为test老师的data
-            if newteacher != person:
-                t.jsonReader_pf_onetime(path_tttt, newteacher, 0)
-        for proteacher in proteacher_list:
-            if proteacher != person:
-                t.jsonReader_pf_onetime(path_tttt, proteacher, 1)
-        t.dicCommonDeleteOnetime()  # 删除新人和老手共通的部分
-        t.compressList_id_t(t.ac_list_ori, 4, 8)#压缩test老师的动作数据
-        t.patternCheeker(numbb)  # 开始cheek ，这里的最长pattern为6，
-        t.patterncleanerfortesttea(1)#删除匹配次数为1的pattern
-        print("No"+str(ccc)+" "+person+"score:")#这里从零开始
-        print("score:ave:")
-        score_1 =t.scorecalculater_ave()
-        print(score_1)
-        print("longer:")
-        t.shortptdeleter()  # 删除包括的部分，他直接删除了成员函数里面的数据
-        print("score:ave:")
-        score_2 =t.scorecalculater_ave()
-        print(score_2)
-        #用来判断他自己是老手还是新手
-        if person in newteacher_list:
-            newpro ="new"
-            if score_1 >= 50:
-                ifright = 0
-            elif score_1 < 50:
-                ifright = 1
-            if score_2 >= 50:
-                ifright_2 = 0
-            elif score_2 < 50:
-                ifright_2= 1
-        elif person in proteacher_list:
-            newpro = "pro"
-            if score_1 >= 50:
-                ifright = 1
-            elif score_1 < 50:
-                ifright = 0
-            if score_2 >= 50:
-                ifright_2 = 1
-            elif score_2 < 50:
-                ifright_2= 0
-
-        linettt = person +","+newpro+","+str(score_1)+","+str(score_2)+","+str(ifright)+","+str(ifright_2)+"\n"
-        line_list.append(linettt)
-
-    with open("/Users/syao/desktop/res/score_result/result_"+str(numbb)+".csv","w+") as fff:#写入到一个csv的里面
-        fff.writelines(line_list)
-    print(str(numbb)+"Done!!!")
+    # teacher_dics = {"AkiOkubo": "/Users/syao/desktop/res/csvdata/01_Rookie_AkiOkubo_English_all.csv",  # new
+    #                 "KotaroHosoi": "/Users/syao/desktop/res/csvdata/02_Rookie_KotaroHosoi_Mathematics_all.csv",
+    #                 "ShioriMasuko": "/Users/syao/desktop/res/csvdata/03_Rookie_ShioriMasuko_English_all.csv",
+    #                 "YukinaHachisu": "/Users/syao/desktop/res/csvdata/04_Rookie_YukinaHachisu_English_all.csv",
+    #                 "YusukeHachisu": "/Users/syao/desktop/res/csvdata/05_Rookie_YusukeHachisu_Japanese_all.csv",
+    #                 "Kojima1": "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Kojima_01_all.csv",
+    #                 "Kojima2": "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Kojima_02_all.csv",
+    #                 "Kojima3": "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Kojima_03_all.csv",
+    #                 "Kojima4": "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Kojima_04_all.csv",
+    #                 "Kojima5": "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Kojima_05_all.csv",
+    #                 "Kojima6": "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Kojima_06_all.csv",
+    #                 "Kojima7": "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Kojima_07_all.csv",
+    #                 "KiyoshiMori": "/Users/syao/desktop/res/csv_teaching_cont_2/01_Pf_KiyoshiMori_Mathematics_all.csv",
+    #                 "RyotaTakahashi": "/Users/syao/desktop/res/csv_teaching_cont_2/03_Pre_RyotaTakahashi_Mathematics_all.csv",
+    #                 "KenjiShiraishi": "/Users/syao/desktop/res/csv_teaching_cont_2/05_Pre_KenjiShiraishi_Mathematics_all.csv",
+    #                 "HiroyukiKama": "/Users/syao/desktop/res/csv_teaching_cont_2/06_Pre_HiroyukiKama_Mathematics_all.csv",
+    #                 "SatoshiNomuri": "/Users/syao/desktop/res/csv_teaching_cont_2/07_Pf_SatoshiNomuri_Mathematics_all.csv",
+    #                 "ShioriMashiko": "/Users/syao/desktop/res/csv_teaching_cont_2/23_Pf_ShioriMashiko_English_all.csv",
+    #                 "YoshimitauHamada": "/Users/syao/desktop/res/csvdata/06_Expert_YoshimitauHamada_Mathematics_all.csv",
+    #                 # pro
+    #                 "ShotaYoshida": "/Users/syao/desktop/res/csvdata/07_Expert_ShotaYoshida_Mathematics_NOFULL_all.csv",
+    #                 "TakashiMajima": "/Users/syao/desktop/res/csvdata/08_Expert_TakashiMajima_Mathematics_NOFULL_all.csv",
+    #                 "KunihiroSato": "/Users/syao/desktop/res/csvdata/09_Expert_KunihiroSato_Mathematics_all.csv",
+    #                 "AyakoYamamoto": "/Users/syao/desktop/res/csvdata/10_Expert_AyakoYamamoto_Japanese_all.csv",
+    #                 "Nishiyama1": "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Nishiyama_01_all.csv",
+    #                 "Nishiyama2": "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Nishiyama_02_all.csv",
+    #                 "MasahiroWatanabe2": "/Users/syao/desktop/res/csv_teaching_cont_2/08_Pf_MasahiroWatanabe_Mathematics_all.csv",
+    #                 "MasahiroWatanabe1": "/Users/syao/desktop/res/csv_teaching_cont_2/04_Pre_MasahiroWatanabe_Mathematics_all.csv",
+    #                 "MasahiroWatanabe3": "/Users/syao/desktop/res/csv_teaching_cont_2/18_Fin_MasahiroWatanabe_Mathematics_all.csv",
+    #                 "YusukeKimura": "/Users/syao/desktop/res/csv_teaching_cont_2/09_Fin_YusukeKimura_Science_all.csv",
+    #                 "IppeiTakahira1": "/Users/syao/desktop/res/csv_teaching_cont_2/17_Pf_IppeiTakahira_English_all.csv",
+    #                 "IppeiTakahira2": "/Users/syao/desktop/res/csv_teaching_cont_2/20_Fin_IppeiTakahira_English_all.csv",
+    #                 "IkuTadame": "/Users/syao/desktop/res/csv_teaching_cont_2/19_Fin_IkuTadame_Japanese_all.csv",
+    #                 "SatoshiIkeuchi": "/Users/syao/desktop/res/csv_teaching_cont_2/21_Fin_SatoshiIkeuchi_Society_all.csv",
+    #                 "Nishiyama3": "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Nishiyama_03_all.csv"
+    #                 }
+    #
+    # newteacher_list = ["AkiOkubo", "KotaroHosoi", "ShioriMasuko", "YukinaHachisu", "YusukeHachisu", "Kojima1",
+    #                    "Kojima2", "Kojima3", "Kojima4", "Kojima5", "Kojima6", "Kojima7", "KiyoshiMori",
+    #                    "RyotaTakahashi", "KenjiShiraishi", "HiroyukiKama", "SatoshiNomuri", "ShioriMashiko"]
+    # proteacher_list = ["YoshimitauHamada", "ShotaYoshida", "TakashiMajima", "KunihiroSato", "AyakoYamamoto",
+    #                    "Nishiyama1", "Nishiyama2", "MasahiroWatanabe2", "MasahiroWatanabe1", "MasahiroWatanabe3",
+    #                    "YusukeKimura", "IppeiTakahira1", "IppeiTakahira2", "IkuTadame", "SatoshiIkeuchi", "Nishiyama3"]
+    #
+    # path_tttt = "/Users/syao/desktop/res/TeaSys_Dev_new_action48_10/"
+    # ccc=0
+    # numbb =7#最长的pt数
+    # line_list =[]
+    # line_list.append("Name,Label,Score"+str(numbb)+",Score_del"+str(numbb)+",Correct score,Correct score_del\n")  # 添加表头
+    # for person in teacher_dics:
+    #     ccc+=1
+    #     newpro = "why" # 用于判断是否是新人，如果是新人就是new,老手就是pro基本不可能出现都不是的情况
+    #     ifright = 2 # 用于判断是否正确，要是不正确就是2
+    #     ifright_2 = 2 # 用于判断是否正确，要是不正确就是2
+    #     t = TestTeacher(person, teacher_dics[person])# one test teacher
+    #     for newteacher in newteacher_list:#只要不是当前作为test老师的data
+    #         if newteacher != person:
+    #             t.jsonReader_pf_onetime(path_tttt, newteacher, 0)
+    #     for proteacher in proteacher_list:
+    #         if proteacher != person:
+    #             t.jsonReader_pf_onetime(path_tttt, proteacher, 1)
+    #     # t.dicCommenShowerOnetime_v2()  #展示共通的部分
+    #     t.dicCommonDeleteOnetime()  # 删除新人和老手共通的部分
+    #     t.compressList_id_t(t.ac_list_ori, 4, 8)#压缩test老师的动作数据
+    #     t.patternCheeker(numbb)  # 开始cheek ，这里的最长pattern为6，
+    #     t.patterncleanerfortesttea(1)#删除匹配次数为1的pattern
+    #     print("No"+str(ccc)+" "+person+"score:")#这里从零开始
+    #     print("score:ave:")
+    #     score_1 =t.scorecalculater_ave()
+    #     print(score_1)
+    #     print("longer:")
+    #     t.shortptdeleter()  # 删除包括的部分，他直接删除了成员函数里面的数据
+    #     print("score:ave:")
+    #     score_2 =t.scorecalculater_ave()
+    #     print(score_2)
+    #     #用来判断他自己是老手还是新手
+    #     if person in newteacher_list:
+    #         newpro ="new"
+    #         if score_1 >= 50:
+    #             ifright = 0
+    #         elif score_1 < 50:
+    #             ifright = 1
+    #         if score_2 >= 50:
+    #             ifright_2 = 0
+    #         elif score_2 < 50:
+    #             ifright_2= 1
+    #     elif person in proteacher_list:
+    #         newpro = "pro"
+    #         if score_1 >= 50:
+    #             ifright = 1
+    #         elif score_1 < 50:
+    #             ifright = 0
+    #         if score_2 >= 50:
+    #             ifright_2 = 1
+    #         elif score_2 < 50:
+    #             ifright_2= 0
+    #
+    #     linettt = person +","+newpro+","+str(score_1)+","+str(score_2)+","+str(ifright)+","+str(ifright_2)+"\n"
+    #     line_list.append(linettt)
+    #
+    # with open("/Users/syao/desktop/res/score_result/result_"+str(numbb)+".csv","w+") as fff:#写入到一个csv的里面
+    #     fff.writelines(line_list)
+    # print(str(numbb)+"Done!!!")
 
