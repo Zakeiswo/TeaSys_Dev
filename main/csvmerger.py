@@ -45,6 +45,6 @@ for f in files:
 		i+=1
 		lines = w1.readline()
 	w1.close()
-with open("/Users/syao/desktop/res/all_result"+".csv","w+") as fff:#写入到一个csv的里面
+with open("/Users/syao/desktop/res/all_result_kojima"+".csv","w+") as fff:#写入到一个csv的里面
 	fff.writelines(line_list)
 print("Done!!!")

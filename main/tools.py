@@ -227,3 +227,29 @@ def order_dic_val(dic_t):
 def cross_validation_onetime(pos_path,neg_path):
     pass
 
+# use to rewrite the original action sequence, use the method of Kojima
+# ckeek the method in https://www.oit.ac.jp/is/~sano/server/data/master/2018/kojima_presen.pdf
+# page 9
+def actionrewriter(list_t):
+    cheek_seq =["", "", ""]  # the initial is 3 none
+    list_n = []  # the new list
+    for item in list_t:
+        if item :
+            cheek_seq.append(item)
+            # cheek it with 4 elements in it
+            if "" in cheek_seq:
+                cheek_seq.pop(0)
+                continue  # jump to the next step
+            else:
+                # choose the most one
+                counter_seq = 0
+                act_t =""  # if the counter is the same the first one will be outputed
+                for x in cheek_seq:  # count each action in the seq
+                    counter_t = cheek_seq.count(x)
+                    if counter_t > counter_seq:
+                        act_t = x
+                        counter_seq = counter_t
+                list_n.append(act_t)  # add the most one or the first one with the same counter
+            # pop the fist one
+            cheek_seq.pop(0)
+    return  list_n

@@ -842,14 +842,17 @@ class TestTeacher(object):
 
 
 if __name__ == '__main__':
-    path_tttt2 = "/Users/syao/desktop/res/TeaSys_Dev_new_action48_10/"
-    # 为了提高速度 可以 之前就通过老手和新手库的程序获取老手和新手的数据并对比
-    # prot = ProTeacher("Tom", "/Users/syao/desktop/res/test_ori_1.csv", "/Users/syao/desktop/res/TeaSys_Dev")
-    # prot.pfdicSaver()
-    # newt = NewTeacher("Mike", "/Users/syao/desktop/res/test_ori_2.csv", "/Users/syao/desktop/res/TeaSys_Dev")
-    # newt.pfdicSaver()
-    # t = TestTeacher("Jimy", "/Users/syao/desktop/res/test_ori_4.csv")
-    # 如何处理同名的情况
+    # path_tttt2 = "/Users/syao/desktop/res/TeaSys_Dev_new_action48_10/"
+    # path_tttt2 = "/Users/syao/desktop/res/TeaSys_Dev_new_action48_10_ver2/"
+    # if not os.path.exists(path_tttt2):
+    #     os.makedirs(path_tttt2)
+    # # 为了提高速度 可以 之前就通过老手和新手库的程序获取老手和新手的数据并对比
+    # # prot = ProTeacher("Tom", "/Users/syao/desktop/res/test_ori_1.csv", "/Users/syao/desktop/res/TeaSys_Dev")
+    # # prot.pfdicSaver()
+    # # newt = NewTeacher("Mike", "/Users/syao/desktop/res/test_ori_2.csv", "/Users/syao/desktop/res/TeaSys_Dev")
+    # # newt.pfdicSaver()
+    # # t = TestTeacher("Jimy", "/Users/syao/desktop/res/test_ori_4.csv")
+    # # 如何处理同名的情况
     # newt_1 = NewTeacher("AkiOkubo", "/Users/syao/desktop/res/csvdata/01_Rookie_AkiOkubo_English_all.csv", path_tttt2)
     # newt_1.pfdicSaver()
     # newt_2 = NewTeacher("KotaroHosoi", "/Users/syao/desktop/res/csvdata/02_Rookie_KotaroHosoi_Mathematics_all.csv", path_tttt2)
@@ -1010,12 +1013,13 @@ if __name__ == '__main__':
     # t = TestTeacher("IppeiTakahira2", "/Users/syao/desktop/res/csv_teaching_cont_2/20_Fin_IppeiTakahira_English_all.csv") #31
     # t = TestTeacher("IkuTadame", "/Users/syao/desktop/res/csv_teaching_cont_2/19_Fin_IkuTadame_Japanese_all.csv") #32
     # t = TestTeacher("SatoshiIkeuchi", "/Users/syao/desktop/res/csv_teaching_cont_2/21_Fin_SatoshiIkeuchi_Society_all.csv") #33
-    # t = TestTeacher("Nishiyama3", "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Nishiyama_03_all.csv") #34
+    t = TestTeacher("Nishiyama3", "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Nishiyama_03_all.csv") #34
 
 
 
-    path_tttt="/Users/syao/desktop/res/TeaSys_Dev_new_action48_10/"
-    # # new
+    path_tttt="/Users/syao/desktop/res/TeaSys_Dev_new_action48_10_ver2/" # 用了kojima方法的数据
+    # # path_tttt="/Users/syao/desktop/res/TeaSys_Dev_new_action48_10/" #  没用kojima的数据
+    # # # new
     t.jsonReader_pf_onetime(path_tttt,"AkiOkubo",0)
     t.jsonReader_pf_onetime(path_tttt,"KotaroHosoi",0)#需要命名来识别
     t.jsonReader_pf_onetime(path_tttt,"ShioriMasuko",0)
@@ -1034,9 +1038,9 @@ if __name__ == '__main__':
     t.jsonReader_pf_onetime(path_tttt,"HiroyukiKama",0)
     t.jsonReader_pf_onetime(path_tttt,"SatoshiNomuri",0)
     t.jsonReader_pf_onetime(path_tttt,"ShioriMashiko",0)
-    #
-    #
-    # # pro
+    # #
+    # #
+    # # # pro
     t.jsonReader_pf_onetime(path_tttt, "YoshimitauHamada", 1) # 1 = pro
     t.jsonReader_pf_onetime(path_tttt, "ShotaYoshida", 1)
     t.jsonReader_pf_onetime(path_tttt, "TakashiMajima", 1)
@@ -1092,20 +1096,24 @@ if __name__ == '__main__':
     # print("New time")
     # print(main.tools.order_dic((main.tools.timecounter(t.dicMergerforNew(1)))))
     #
-    # print(t.dicCommenShowerOnetime_v2() ) # 展示共通的set
-    # print(t.dicCommenShowerOnetime_v3() ) # 展示共通的set
+    print(t.dicCommenShowerOnetime_v2() ) # 展示共通的set
+    # print(t.dicCommenShowerOnetime_v3() ) # 展示共通的set 这个是递归删除包含的部分，时间比较久不建议用
 
     #
-    t.dicCommonDeleteOnetime()  # 删除共通的部分
-    print("pro time")
-    print(main.tools.order_dic_val(t.dicMergerforPro(1)))  # 这个是没删除共通的部分
-    print("New time")
-    print(main.tools.order_dic_val(t.dicMergerforNew(1)))
-
-    t.compressList_id_t(t.ac_list_ori, 4, 8) # 这一步是压缩 原始数据，但是为什么写在外面 # TODO（Zake Yao）:把他写到程序里面去封装起来
-    # # print(len(t.ac_list_ori))  # 1001
+    # t.dicCommonDeleteOnetime()  # 删除共通的部分
+    # print("pro time")
+    # print(main.tools.order_dic_val(t.dicMergerforPro(1)))  # 这个是没删除共通的部分
+    # print("New time")
+    # print(main.tools.order_dic_val(t.dicMergerforNew(1)))
     #
-    t.patternCheeker(7)  # 这个是主要步骤的用sliping window 来cheek，和直接用pf解析不同的是，只能获取统计已有的pattern出现了多少
+    # # here to use the actionrewriter to rewriter the action list
+    # # test teacher 不用抽出pattern 但是还是需要压缩动作
+    # t.compressList_id_t(main.tools.actionrewriter(t.ac_list_ori), 4, 8) # 这一步是压缩 原始数据，但是为什么写在外面 # TODO（Zake Yao）:把他写到程序里面去封装起来
+    # # # print(len(t.ac_list_ori))  # 1001
+    # t.patternCheeker(7)  # 这个是主要步骤的用sliping window 来cheek，和直接用pf解析不同的是，只能获取统计已有的pattern出现了多少
+
+
+
     # print("new size")
     # print(len(t.pf_temp_saver_new_2))
     # print(len(t.pf_temp_saver_new_3))
@@ -1125,7 +1133,9 @@ if __name__ == '__main__':
     # print("New:")
     # print(t.class_keeper_new)
     # print(t.score_keeper_new)  # 为啥这么少
-    t.patterncleanerfortesttea(1)  # use to delete the pattern which only show one time ，这个是用来删除只出现1次的情况，而且class和score都会更新
+
+    # t.patterncleanerfortesttea(1)  # use to delete the pattern which only show one time ，这个是用来删除只出现1次的情况，而且class和score都会更新
+
     # print("After delete the one time action:")
     # print("pro:")
     # print(t.class_keeper_pro)
@@ -1151,11 +1161,11 @@ if __name__ == '__main__':
     # print("score:ave:")
     # print(t.scorecalculater_ave())
     # print("longer:")
-    t.shortptdeleter()# 删除包括的部分，他直接删除了成员函数里面的数据
-    #
-    #
-    print("score:ave:")
-    print(t.scorecalculater_ave())
+    # t.shortptdeleter()# 删除包括的部分，他直接删除了成员函数里面的数据
+    # #
+    # #
+    # print("score:ave:")
+    # print(t.scorecalculater_ave())
     # # print("pro:")
     # print(t.class_keeper_pro)
     # print(t.score_keeper_pro)
@@ -1207,7 +1217,7 @@ if __name__ == '__main__':
     #                 "MasahiroWatanabe2": "/Users/syao/desktop/res/csv_teaching_cont_2/08_Pf_MasahiroWatanabe_Mathematics_all.csv",
     #                 "MasahiroWatanabe1": "/Users/syao/desktop/res/csv_teaching_cont_2/04_Pre_MasahiroWatanabe_Mathematics_all.csv",
     #                 "MasahiroWatanabe3": "/Users/syao/desktop/res/csv_teaching_cont_2/18_Fin_MasahiroWatanabe_Mathematics_all.csv",
-    #                 "YusukeKimura": "/Users/syao/desktop/res/csv_teaching_cont_2/09_Fin_YusukeKimura_Science_all.csv",
+    #                "YusukeKimura": "/Users/syao/desktop/res/csv_teaching_cont_2/09_Fin_YusukeKimura_Science_all.csv",
     #                 "IppeiTakahira1": "/Users/syao/desktop/res/csv_teaching_cont_2/17_Pf_IppeiTakahira_English_all.csv",
     #                 "IppeiTakahira2": "/Users/syao/desktop/res/csv_teaching_cont_2/20_Fin_IppeiTakahira_English_all.csv",
     #                 "IkuTadame": "/Users/syao/desktop/res/csv_teaching_cont_2/19_Fin_IkuTadame_Japanese_all.csv",
@@ -1222,9 +1232,9 @@ if __name__ == '__main__':
     #                    "Nishiyama1", "Nishiyama2", "MasahiroWatanabe2", "MasahiroWatanabe1", "MasahiroWatanabe3",
     #                    "YusukeKimura", "IppeiTakahira1", "IppeiTakahira2", "IkuTadame", "SatoshiIkeuchi", "Nishiyama3"]
     #
-    # path_tttt = "/Users/syao/desktop/res/TeaSys_Dev_new_action48_10/"
+    # path_tttt = "/Users/syao/desktop/res/TeaSys_Dev_new_action48_10_ver2/"
     # ccc=0
-    # numbb =7#最长的pt数
+    # numbb =8#最长的pt数
     # line_list =[]
     # line_list.append("Name,Label,Score"+str(numbb)+",Score_del"+str(numbb)+",Correct score,Correct score_del\n")  # 添加表头
     # for person in teacher_dics:
@@ -1281,4 +1291,4 @@ if __name__ == '__main__':
     # with open("/Users/syao/desktop/res/score_result/result_"+str(numbb)+".csv","w+") as fff:#写入到一个csv的里面
     #     fff.writelines(line_list)
     # print(str(numbb)+"Done!!!")
-
+    #

@@ -14,6 +14,7 @@ import os
 import csv
 # import pysnooper
 import json
+import main.tools
 
 
 # arg[1]:times_span，this argument is the span of the repeat times
@@ -31,7 +32,8 @@ class PatternFinder(object):
 
         # auto init
         self.all_action_list = self.csvReader_pf()
-        self.com_action_list = self.compressList(self.all_action_list, 4, 8)
+        # use the action writer to rewrite the list
+        self.com_action_list = self.compressList(main.tools.actionrewriter(self.all_action_list), 4, 8)
         self.dicMaker(self.com_action_list)
 
     #  read csv and use list to save it
@@ -54,14 +56,14 @@ class PatternFinder(object):
             if temp_ac == "":  # to evaluate the initial value
                 temp_ac = x
                 counter_ac = 1
-                continue
+                continue # will jump to the next step
             if temp_ac != x:  # see the next is different
-                if counter_ac < a:
-                    temp_ac = x  #
+                if counter_ac < a:  # if the counter is less than a
+                    temp_ac = x  # it will dispear for the reason that we do not save it
                     continue
-                if counter_ac <= b:
+                if counter_ac <= b: # if it bigger than a and less than b
                     temp_ac_list.append(temp_ac)  # add the last one
-                if counter_ac > b:
+                if counter_ac > b: # if it is bigger than not one time
                     temp_conter_acs = counter_ac // b  # conclute how many times
                     for item in range(temp_conter_acs):
                         temp_ac_list.append(temp_ac)
@@ -80,6 +82,9 @@ class PatternFinder(object):
 
         return temp_ac_list
 
+
+
+        pass
     # use to change the action list into ID
     # return the ID of the action list for pattern
     def IDgeter(self, list_ac_k):
@@ -183,10 +188,11 @@ if __name__ == '__main__':
     # 先建立对象
     # 再压缩
     # 再做字典
-    # pf = PatternFinder(3, "/Users/syao/desktop/res/kj.csv")  # build the object with the span of 4 times
+    pf = PatternFinder(3, "/Users/syao/desktop/res/kj.csv")  # build the object with the span of 4 times
     # listofaction = []
-    # listofaction = pf.csvReader_pf()  # read the csv
+    listofaction = pf.csvReader_pf()  # read the csv
     # com_list = []
+    main.tools.actionrewriter(listofaction)
     # com_list = pf.compressList(listofaction, 2, 4)  # 4rame~16frame,compress the csv list
     # print(com_list)
     # print(len(com_list))
