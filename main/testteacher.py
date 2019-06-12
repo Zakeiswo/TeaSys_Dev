@@ -19,6 +19,7 @@ import json
 import string
 from main.pattern_fineder import PatternFinder
 import main.tools
+from fuzzywuzzy import fuzz
 from main.teacher import Teacher
 from main.teacher import NewTeacher
 from main.teacher import ProTeacher
@@ -31,7 +32,7 @@ class TestTeacher(object):
     def __init__(self, name, test_csvpath):
         super(TestTeacher, self).__init__()
         self.name = name
-        self.dic_com_ori = {}  # 压缩后下标：占了几个frame，注意补上被省略的,由于还原真正错的地方是哪一个帧数
+        self.dic_com_ori = {}  # 压缩后下标：占了几个frame，注意补上被省略的,由于还原真正错的地方是哪一个帧数 #每个动作占了几帧可以发现
         self.test_csvpath = test_csvpath
         # for proteacher data to calculate the score 分别是test做出老手老师的各个pattern的次数，和每种长度pattern的数量，下面是新手的
         self.score_keeper_pro = {}
@@ -183,8 +184,10 @@ class TestTeacher(object):
     def dicCommonDeleteOnetime(self):
         self.pf_temp_saver_pro_2, self.pf_temp_saver_new_2 = self.dicCommonDeleter(self.pf_temp_saver_pro_2,
                                                                                    self.pf_temp_saver_new_2)
+
         self.pf_temp_saver_pro_3, self.pf_temp_saver_new_3 = self.dicCommonDeleter(self.pf_temp_saver_pro_3,
                                                                                    self.pf_temp_saver_new_3)
+
         self.pf_temp_saver_pro_4, self.pf_temp_saver_new_4 = self.dicCommonDeleter(self.pf_temp_saver_pro_4,
                                                                                    self.pf_temp_saver_new_4)
         self.pf_temp_saver_pro_5, self.pf_temp_saver_new_5 = self.dicCommonDeleter(self.pf_temp_saver_pro_5,
@@ -207,22 +210,22 @@ class TestTeacher(object):
         return set_common
 
     def dicCommenShowerOnetime(self):
-        print(self.dicCommonShower(self.pf_temp_saver_pro_2, self.pf_temp_saver_new_2))
-        print(self.dicCommonShower(self.pf_temp_saver_pro_3, self.pf_temp_saver_new_3))
-        print(self.dicCommonShower(self.pf_temp_saver_pro_4, self.pf_temp_saver_new_4))
-        print(self.dicCommonShower(self.pf_temp_saver_pro_5, self.pf_temp_saver_new_5))
-        print(self.dicCommonShower(self.pf_temp_saver_pro_6, self.pf_temp_saver_new_6))
-        print(self.dicCommonShower(self.pf_temp_saver_pro_6, self.pf_temp_saver_new_7))
-        print(self.dicCommonShower(self.pf_temp_saver_pro_6, self.pf_temp_saver_new_8))
+        print(self.dicCommonShower(self.pf_temp_saver_pro_2.copy(), self.pf_temp_saver_new_2.copy()))
+        print(self.dicCommonShower(self.pf_temp_saver_pro_3.copy(), self.pf_temp_saver_new_3.copy()))
+        print(self.dicCommonShower(self.pf_temp_saver_pro_4.copy(), self.pf_temp_saver_new_4.copy()))
+        print(self.dicCommonShower(self.pf_temp_saver_pro_5.copy(), self.pf_temp_saver_new_5.copy()))
+        print(self.dicCommonShower(self.pf_temp_saver_pro_6.copy(), self.pf_temp_saver_new_6.copy()))
+        print(self.dicCommonShower(self.pf_temp_saver_pro_7.copy(), self.pf_temp_saver_new_7.copy()))
+        print(self.dicCommonShower(self.pf_temp_saver_pro_8.copy(), self.pf_temp_saver_new_8.copy()))
         #v2 use to show the times
     def dicCommenShowerOnetime_v2(self):
-        temp2 = self.dicMerger(self.pf_temp_saver_pro_2, self.pf_temp_saver_new_2)
-        temp3 = self.dicMerger(self.pf_temp_saver_pro_3, self.pf_temp_saver_new_3)
-        temp4 = self.dicMerger(self.pf_temp_saver_pro_4, self.pf_temp_saver_new_4)
-        temp5 = self.dicMerger(self.pf_temp_saver_pro_5, self.pf_temp_saver_new_5)
-        temp6 = self.dicMerger(self.pf_temp_saver_pro_6, self.pf_temp_saver_new_6)
-        temp7 = self.dicMerger(self.pf_temp_saver_pro_7, self.pf_temp_saver_new_7)
-        temp8 = self.dicMerger(self.pf_temp_saver_pro_8, self.pf_temp_saver_new_8)
+        temp2 = self.dicMerger(self.pf_temp_saver_pro_2.copy(), self.pf_temp_saver_new_2.copy())
+        temp3 = self.dicMerger(self.pf_temp_saver_pro_3.copy(), self.pf_temp_saver_new_3.copy())
+        temp4 = self.dicMerger(self.pf_temp_saver_pro_4.copy(), self.pf_temp_saver_new_4.copy())
+        temp5 = self.dicMerger(self.pf_temp_saver_pro_5.copy(), self.pf_temp_saver_new_5.copy())
+        temp6 = self.dicMerger(self.pf_temp_saver_pro_6.copy(), self.pf_temp_saver_new_6.copy())
+        temp7 = self.dicMerger(self.pf_temp_saver_pro_7.copy(), self.pf_temp_saver_new_7.copy())
+        temp8 = self.dicMerger(self.pf_temp_saver_pro_8.copy(), self.pf_temp_saver_new_8.copy())
         temp2 = self.dicMerger(temp2, temp3)
         temp4 = self.dicMerger(temp4, temp5)
         temp6 = self.dicMerger(temp6, temp7)
@@ -533,9 +536,9 @@ class TestTeacher(object):
     # input the pattern of now and return the best next action
     # if no next patern in the dic return ""
     # 用于预测是否有更好的下一个动作的预测系统，现在只是通过对不同的长度的pt库里面看有没有刚好可以修改的
-    def patternForecaster(self, pattern_temp):  # TODO(Zake Yao):需不需要添加一个flag用来判断有没有清楚共通的部分
-        if len(pattern_temp) > 5:
-            print("Error! The length of the pattern can't longer than 5.")
+    def patternForecaster(self, pattern_temp, maxlen):  # TODO(Zake Yao):需不需要添加一个flag用来判断有没有清楚共通的部分
+        if len(pattern_temp) > maxlen:
+            print("Error! The length of the pattern can't longer than "+str(maxlen-1)+".")
             sys.exit(1)
         if len(pattern_temp) < 1:
             print("Error! The length of the pattern can't shorter than 1.")
@@ -585,20 +588,40 @@ class TestTeacher(object):
                         max_temp_num = self.pf_temp_saver_pro_6[item]
                         max_temp_item = item
             return max_temp_item
+        elif len(pattern_temp) == 6:
+            max_temp_num = 0
+            max_temp_item = ""
+            for item in self.pf_temp_saver_pro_7:
+                if item[0:6] == pattern_temp:
+                    if self.pf_temp_saver_pro_7[item] > max_temp_num:  # 但是这样只会变成一样的频度显示第一个
+                        max_temp_num = self.pf_temp_saver_pro_7[item]
+                        max_temp_item = item
+            return max_temp_item
+        elif len(pattern_temp) == 7:
+            max_temp_num = 0
+            max_temp_item = ""
+            for item in self.pf_temp_saver_pro_8:
+                if item[0:7] == pattern_temp:
+                    if self.pf_temp_saver_pro_8[item] > max_temp_num:  # 但是这样只会变成一样的频度显示第一个
+                        max_temp_num = self.pf_temp_saver_pro_8[item]
+                        max_temp_item = item
+            return max_temp_item
+
 
     # use to change the wrong pattern to the right pattern
     # by cheek the first some action of the pattern to use the function patternForecaster to get the right action
     # 这个是用来吧错的list里面的动作进行修改，如果老手的数据里面有对应的就可以输出到right的数组里
-    def dicPatternReviser(self):  # 如果是这个动作老手里面没有对应的修改怎么办
+    # maxlen will change with the patterncheeker function parameter
+    def dicPatternReviser(self,maxlen):  # 如果是这个动作老手里面没有对应的修改怎么办
         for item in self.dic_action_wrong:
             if len(self.dic_action_wrong[item][0:-1]) < 1:
                 print("Error!It must be longer than 1 in the wrong action list")
                 sys.exit(1)
-            if len(self.dic_action_wrong[item][0:-1]) > 5:
-                print("Error!It must be shorter than 5 in the wrong action list")
+            if len(self.dic_action_wrong[item][0:-1]) > (maxlen-1):
+                print("Error!It must be shorter than "+str(maxlen-1)+"in the wrong action list")
                 sys.exit(1)
             # It will cheek the length auto automatically
-            self.dic_action_right[item] = self.patternForecaster(str(self.dic_action_wrong[item])[0:-1])
+            self.dic_action_right[item] = self.patternForecaster(str(self.dic_action_wrong[item])[0:-1],maxlen)
 
     # use to get frame instead of action number in the dic
     # to rewrite the dic，return a new dic with frame
@@ -642,9 +665,9 @@ class TestTeacher(object):
     # use to compress the list to the ID
     # and build the dic to contact the 2 list
     # return the list of the action list
-    def compressList_id_t(self, list_ac, a, b):  # 不看被省略的,应该是2~7 4+8+1 = 14???
+    def compressList_id_t(self, list_ac, a, b):  #
         counter_ac = 0
-        counter_recover = 0 # 这个是用来干嘛的#
+        counter_recover = 0 # 记住被删除的大小
         temp_ac = ""
         temp_ac_list = []
         for x in list_ac:  # 没有加上最后一次
@@ -653,23 +676,24 @@ class TestTeacher(object):
                 counter_ac = 1  # first time
                 counter_recover = 0
                 continue
+            # 如果不是初始值
             elif temp_ac != x:  # see the next is different
                 if counter_ac < a:  # 结算当前的
-                    counter_recover += (a - 1)  # 这个补上了1次的
+                    counter_recover += counter_ac  # 这个补上了count了几次的
                     temp_ac = x
                     # if (counter_recover > 9):
                     #     print("Attention:Maybe error.It's hard for counter_recover to be over than 9!")TODO(Zake Yao):这个是干嘛的我忘了，你等会记得看看
                     #     print(counter_recover)
-                    continue
-                elif counter_ac <= b:
+                    continue  # 因为使用了continue所以跳过了后面对counter的清空
+                elif counter_ac <= b:#如果在a到b的范围内的话
                     temp_ac_list.append(self.IDgeterforsingel_t(temp_ac))  # add the last one
                     self.dic_com_ori[len(temp_ac_list) - 1] = counter_ac + counter_recover
-                elif counter_ac > b:  # 要是大于4的时候
+                elif counter_ac > b:  # 要是大于b的时候
                     temp_conter_acs = counter_ac // b  # conclute how many times
                     for item in range(temp_conter_acs):
                         temp_ac_list.append(self.IDgeterforsingel_t(temp_ac))
-                        self.dic_com_ori[len(temp_ac_list) - 1] = b
-                    self.dic_com_ori[len(temp_ac_list) - 1] = b + counter_ac % b + (counter_recover)
+                        self.dic_com_ori[len(temp_ac_list) - 1] = b  ##
+                    self.dic_com_ori[len(temp_ac_list) - 1] = counter_ac % b + counter_recover  ##
                 # 这个是每个下标和和原本对于的frame数
                 # 基础的4个加上多于被省略，是4个是因为b是4
                 # 包括取余省略的和小于2省略的
@@ -687,8 +711,7 @@ class TestTeacher(object):
                 for item in range(temp_conter_acs):
                     temp_ac_list.append(self.IDgeterforsingel_t(temp_ac))
                     self.dic_com_ori[len(temp_ac_list) - 1] = b
-                self.dic_com_ori[len(temp_ac_list) - 1] = b + counter_ac % b + (counter_recover)
-
+                self.dic_com_ori[len(temp_ac_list) - 1] = b + counter_ac % b + counter_recover
         if (len(self.dic_com_ori) - len(self.ac_list_ori)) < a:  # when the last one is 1
             self.dic_com_ori[len(temp_ac_list) - 1] += a - 1
 
@@ -979,7 +1002,7 @@ if __name__ == '__main__':
 
 
 
-    t = TestTeacher("AkiOkubo", "/Users/syao/desktop/res/csvdata/01_Rookie_AkiOkubo_English_all.csv") #1
+    # t = TestTeacher("AkiOkubo", "/Users/syao/desktop/res/csvdata/01_Rookie_AkiOkubo_English_all.csv") #1
     # t = TestTeacher("KotaroHosoi", "/Users/syao/desktop/res/csvdata/02_Rookie_KotaroHosoi_Mathematics_all.csv") #2
     # t = TestTeacher("ShioriMasuko", "/Users/syao/desktop/res/csvdata/03_Rookie_ShioriMasuko_English_all.csv") #3
     # t = TestTeacher("YukinaHachisu", "/Users/syao/desktop/res/csvdata/04_Rookie_YukinaHachisu_English_all.csv") #4
@@ -1007,13 +1030,13 @@ if __name__ == '__main__':
     # t = TestTeacher("Nishiyama2", "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Nishiyama_02_all.csv") #25
     # t = TestTeacher("MasahiroWatanabe2", "/Users/syao/desktop/res/csv_teaching_cont_2/08_Pf_MasahiroWatanabe_Mathematics_all.csv") #26
     # t = TestTeacher("MasahiroWatanabe1", "/Users/syao/desktop/res/csv_teaching_cont_2/04_Pre_MasahiroWatanabe_Mathematics_all.csv") #27
-    # t = TestTeacher("MasahiroWatanabe3", "/Users/syao/desktop/res/csv_teaching_cont_2/18_Fin_MasahiroWatanabe_Mathematics_all.csv") #28
+    t = TestTeacher("MasahiroWatanabe3", "/Users/syao/desktop/res/csv_teaching_cont_2/18_Fin_MasahiroWatanabe_Mathematics_all.csv") #28
     # t = TestTeacher("YusukeKimura", "/Users/syao/desktop/res/csv_teaching_cont_2/09_Fin_YusukeKimura_Science_all.csv") #29
     # t = TestTeacher("IppeiTakahira1", "/Users/syao/desktop/res/csv_teaching_cont_2/17_Pf_IppeiTakahira_English_all.csv") #30
     # t = TestTeacher("IppeiTakahira2", "/Users/syao/desktop/res/csv_teaching_cont_2/20_Fin_IppeiTakahira_English_all.csv") #31
     # t = TestTeacher("IkuTadame", "/Users/syao/desktop/res/csv_teaching_cont_2/19_Fin_IkuTadame_Japanese_all.csv") #32
     # t = TestTeacher("SatoshiIkeuchi", "/Users/syao/desktop/res/csv_teaching_cont_2/21_Fin_SatoshiIkeuchi_Society_all.csv") #33
-    t = TestTeacher("Nishiyama3", "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Nishiyama_03_all.csv") #34
+    # t = TestTeacher("Nishiyama3", "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Nishiyama_03_all.csv") #34
 
 
 
@@ -1050,7 +1073,7 @@ if __name__ == '__main__':
     t.jsonReader_pf_onetime(path_tttt, "Nishiyama2", 1)
     t.jsonReader_pf_onetime(path_tttt, "MasahiroWatanabe2", 1)
     t.jsonReader_pf_onetime(path_tttt, "MasahiroWatanabe1", 1)
-    t.jsonReader_pf_onetime(path_tttt, "MasahiroWatanabe3", 1)
+    # t.jsonReader_pf_onetime(path_tttt, "MasahiroWatanabe3", 1)
     t.jsonReader_pf_onetime(path_tttt, "YusukeKimura", 1)
     t.jsonReader_pf_onetime(path_tttt, "IppeiTakahira1", 1)
     t.jsonReader_pf_onetime(path_tttt, "IppeiTakahira2", 1)
@@ -1096,11 +1119,11 @@ if __name__ == '__main__':
     # print("New time")
     # print(main.tools.order_dic((main.tools.timecounter(t.dicMergerforNew(1)))))
     #
-    print(t.dicCommenShowerOnetime_v2() ) # 展示共通的set
+    # print(t.dicCommenShowerOnetime_v2() ) # 展示共通的set
     # print(t.dicCommenShowerOnetime_v3() ) # 展示共通的set 这个是递归删除包含的部分，时间比较久不建议用
 
     #
-    # t.dicCommonDeleteOnetime()  # 删除共通的部分
+    t.dicCommonDeleteOnetime()  # 删除共通的部分
     # print("pro time")
     # print(main.tools.order_dic_val(t.dicMergerforPro(1)))  # 这个是没删除共通的部分
     # print("New time")
@@ -1108,9 +1131,11 @@ if __name__ == '__main__':
     #
     # # here to use the actionrewriter to rewriter the action list
     # # test teacher 不用抽出pattern 但是还是需要压缩动作
-    # t.compressList_id_t(main.tools.actionrewriter(t.ac_list_ori), 4, 8) # 这一步是压缩 原始数据，但是为什么写在外面 # TODO（Zake Yao）:把他写到程序里面去封装起来
+    t.compressList_id_t(main.tools.actionrewriter(t.ac_list_ori), 4, 8) # 这一步是压缩 原始数据，但是为什么写在外面 # TODO（Zake Yao）:把他写到程序里面去封装起来
     # # # print(len(t.ac_list_ori))  # 1001
-    # t.patternCheeker(7)  # 这个是主要步骤的用sliping window 来cheek，和直接用pf解析不同的是，只能获取统计已有的pattern出现了多少
+    #patternCheeker的参数数字表示是从2到几的进行统计
+    maxlen = 8 # use this to change the maxlen
+    t.patternCheeker(maxlen)  # 这个是主要步骤的用sliping window 来cheek，和直接用pf解析不同的是，只能获取统计已有的pattern出现了多少
 
 
 
@@ -1127,14 +1152,14 @@ if __name__ == '__main__':
     # print(len(t.pf_temp_saver_pro_5))
     # print(len(t.pf_temp_saver_pro_6))
     # print("Ori:")
-    # print("pro:")
-    # print(t.class_keeper_pro)  # 为啥这个的4最大，也没有压缩啊 这个是老手老师的刚刚cheek过得各种动作的对应的pattern是啥，然后其出现次数
-    # print(t.score_keeper_pro)  # 为啥这个这么少，这个是每种长度的出现次数的总和
-    # print("New:")
-    # print(t.class_keeper_new)
-    # print(t.score_keeper_new)  # 为啥这么少
+    print("pro:")
+    print(t.class_keeper_pro)
+    print(t.score_keeper_pro)
+    print("New:")
+    print(t.class_keeper_new)
+    print(t.score_keeper_new)
 
-    # t.patterncleanerfortesttea(1)  # use to delete the pattern which only show one time ，这个是用来删除只出现1次的情况，而且class和score都会更新
+    t.patterncleanerfortesttea(1)  # use to delete the pattern which only show one time ，这个是用来删除只出现1次的情况，而且class和score都会更新
 
     # print("After delete the one time action:")
     # print("pro:")
@@ -1144,15 +1169,15 @@ if __name__ == '__main__':
     # print(t.class_keeper_new)
     # print(t.score_keeper_new)
     # 查错系列
-    # print("wrong:")
-    # print(t.dic_action_wrong)   # 动作数：错的是啥
-    # t.dicPatternReviser()
-    # print("right:")
-    # print(t.dic_action_right)  # 没有对应的修改就是一个空的字符串
-    # print("Done!")
-    # print(t.dic_com_ori)
-    # print(len(t.ac_list_com))
-    # print(t.dicFramegeter(t.dic_action_wrong))
+    print("wrong:")
+    print(t.dic_action_wrong)   # 动作数：错的是啥
+    t.dicPatternReviser(maxlen)
+    print("right:")
+    print(t.dic_action_right)  # 没有对应的修改就是一个空的字符串
+    print("Done!")
+    print(t.dic_com_ori)
+    print(len(t.ac_list_com))
+    print(main.tools.order_dic(t.dicFramegeter(t.dic_action_wrong)))
     # 算分系列
     # print("Score:") # tfidf和cheeker无关
     # print(main.tools.TF_IDF_Compute(t.teacherlist("/Users/syao/desktop/res/TeaSys_Dev/all_pattern/"), t.testpfFinder(1)))
