@@ -253,3 +253,9 @@ def actionrewriter(list_t):
             # pop the fist one
             cheek_seq.pop(0)
     return  list_n
+
+def sumup(dit):
+    sum_t = 0
+    for c in dit:
+        sum_t+=dit[c]
+    return  sum_t
