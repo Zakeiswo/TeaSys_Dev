@@ -17,6 +17,7 @@ import collections
 from functools import reduce
 
 
+
 # eg.{name1:{pt1:sum_num,pt2:sum_num,...}, name2:{...}...}
 def TF_IDF_Compute(input_sets,words,if_weight = True): # 这个word是用来判断是不是关键字的
 
@@ -189,8 +190,6 @@ def timecounter_v2(dic_t):
             else:
                 dic_count[10] +=1
     return dic_count
-
-
 # use to delete the include shorter pattern
 # it's for the normal dic instead of another eachsmallpt
 def shortptdeleter_rel(dic_t):
@@ -210,16 +209,53 @@ def eachsmallpt_rel(key_t,dic_t):
         dic_temp.pop(key_t)
     return dic_temp.copy()
 
-# use to sort the dic
+# use to sort the dic#这个只能按照可以的排序
 def order_dic(dic_t):
     dic_temp = dic_t.copy()
     dic_sort = {}
     dic_sort = collections.OrderedDict(sorted(dic_temp.items(), key=lambda t: t[0]))
     return dic_sort
-
+# use to sort the dic use value#这个只能按照可以的排序,从大到小
+def order_dic_val(dic_t):
+    dic_temp = dic_t.copy()
+    dic_sort = {}
+    dic_sort = collections.OrderedDict(sorted(dic_temp.items(), key=lambda t: t[1],reverse = True))
+    return dic_sort
 
 # use to do the cross validation in
 # 感觉可以设定成，两个文件夹里，分别打开进行赋值然后和测试的结果对比
 def cross_validation_onetime(pos_path,neg_path):
     pass
 
+# use to rewrite the original action sequence, use the method of Kojima
+# ckeek the method in https://www.oit.ac.jp/is/~sano/server/data/master/2018/kojima_presen.pdf
+# page 9
+def actionrewriter(list_t):
+    cheek_seq =["", "", ""]  # the initial is 3 none
+    list_n = []  # the new list
+    for item in list_t:
+        if item :
+            cheek_seq.append(item)
+            # cheek it with 4 elements in it
+            if "" in cheek_seq:
+                cheek_seq.pop(0)
+                continue  # jump to the next step
+            else:
+                # choose the most one
+                counter_seq = 0
+                act_t =""  # if the counter is the same the first one will be outputed
+                for x in cheek_seq:  # count each action in the seq
+                    counter_t = cheek_seq.count(x)
+                    if counter_t > counter_seq:
+                        act_t = x
+                        counter_seq = counter_t
+                list_n.append(act_t)  # add the most one or the first one with the same counter
+            # pop the fist one
+            cheek_seq.pop(0)
+    return  list_n
+
+def sumup(dit):
+    sum_t = 0
+    for c in dit:
+        sum_t+=dit[c]
+    return  sum_t
