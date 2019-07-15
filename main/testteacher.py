@@ -19,6 +19,7 @@ import json
 import string
 from main.pattern_fineder import PatternFinder
 import main.tools
+from fuzzywuzzy import fuzz
 from main.teacher import Teacher
 from main.teacher import NewTeacher
 from main.teacher import ProTeacher
@@ -31,7 +32,7 @@ class TestTeacher(object):
     def __init__(self, name, test_csvpath):
         super(TestTeacher, self).__init__()
         self.name = name
-        self.dic_com_ori = {}  # 压缩后下标：占了几个frame，注意补上被省略的,由于还原真正错的地方是哪一个帧数
+        self.dic_com_ori = {}  # 压缩后下标：占了几个frame，注意补上被省略的,由于还原真正错的地方是哪一个帧数 #每个动作占了几帧可以发现
         self.test_csvpath = test_csvpath
         # for proteacher data to calculate the score 分别是test做出老手老师的各个pattern的次数，和每种长度pattern的数量，下面是新手的
         self.score_keeper_pro = {}
@@ -43,9 +44,8 @@ class TestTeacher(object):
         self.ac_list_ori = []  # 原始的list
 
         self.dic_action_wrong = {}  # 这里记录的只是 动作数：错的是啥，但是可以和dic_com_ori一起还原出哪里错了
-        self.dic_action_wrong_fra = {}  # 记录帧数:错的是啥
-        self.dic_action_right = {} # TODO(Zake Yao)这里好像没用，把没用的成员变量删了
-        self.dic_action_right_fra = {}
+        self.dic_action_right = {} # TODO(Zake Yao)这里好像没用，把没用的成员变量删了;
+        self.dic_action_change = {}   #we want to change to wrong pt to the right pt ,this dic is to change the wrong dic
 
         # use to keep the json data
         # first is the pro patterns
@@ -54,12 +54,20 @@ class TestTeacher(object):
         self.pf_temp_saver_pro_4 = {}
         self.pf_temp_saver_pro_5 = {}
         self.pf_temp_saver_pro_6 = {}
+        self.pf_temp_saver_pro_7 = {}
+        self.pf_temp_saver_pro_8 = {}
+        self.pf_temp_saver_pro_9 = {}
+        self.pf_temp_saver_pro_10 = {}
         # second is the new patterns
         self.pf_temp_saver_new_2 = {}
         self.pf_temp_saver_new_3 = {}
         self.pf_temp_saver_new_4 = {}
         self.pf_temp_saver_new_5 = {}
         self.pf_temp_saver_new_6 = {}
+        self.pf_temp_saver_new_7 = {}
+        self.pf_temp_saver_new_8 = {}
+        self.pf_temp_saver_new_9 = {}
+        self.pf_temp_saver_new_10 = {}
 
         csv_file = csv.reader(open(test_csvpath))  # use to read the test date
         for item in csv_file:
@@ -93,6 +101,21 @@ class TestTeacher(object):
                 break
         f.close()
         return temp_str
+    # use to get the real action name of the action form the ID
+    # it is the reverse function  to the IDgerter_t
+    def actiongeter_t(self, list_ac_k):
+        temp_list = []
+        for index in range(len(list_ac_k)):
+            temp_1 = list_ac_k[index]
+            f = open("/Users/syao/desktop/res/label_name.txt", "r")
+            for temp_item in f.readlines():
+                temp_item = temp_item.strip('\n')
+                sp_temp_item = temp_item.split(",")
+                if (temp_1 == sp_temp_item[2]):
+                    temp_list.append(sp_temp_item[0])
+                # print(sp_temp_item[2])
+            f.close()
+        return temp_list
 
 
     # use to read the data that save the pattern in json
@@ -113,7 +136,15 @@ class TestTeacher(object):
             elif span == 5:
                 self.pf_temp_saver_pro_5 = self.dicMerger(self.pf_temp_saver_pro_5.copy(), json_file.copy())
             elif span == 6:
-                self.pf_temp_saver_pro_6 = self.dicMerger(self.pf_temp_saver_pro_6.copy(), json_file.copy())
+                self.pf_temp_saver_pro_6 = self.dicMerger(self.pf_temp_saver_pro_6.copy(), json_file.copy())# GAI
+            elif span == 7:
+                self.pf_temp_saver_pro_7 = self.dicMerger(self.pf_temp_saver_pro_7.copy(), json_file.copy())
+            elif span == 8:
+                self.pf_temp_saver_pro_8 = self.dicMerger(self.pf_temp_saver_pro_8.copy(), json_file.copy())
+            elif span == 9:
+                self.pf_temp_saver_pro_9 = self.dicMerger(self.pf_temp_saver_pro_9.copy(), json_file.copy())
+            elif span == 10:
+                self.pf_temp_saver_pro_10 = self.dicMerger(self.pf_temp_saver_pro_10.copy(), json_file.copy())
 
         elif which_teacher == 0:
             if span == 2:
@@ -125,10 +156,18 @@ class TestTeacher(object):
             elif span == 5:
                 self.pf_temp_saver_new_5 = self.dicMerger(self.pf_temp_saver_new_5.copy(), json_file.copy())
             elif span == 6:
-                self.pf_temp_saver_new_6 = self.dicMerger(self.pf_temp_saver_new_6.copy(), json_file.copy())
+                self.pf_temp_saver_new_6 = self.dicMerger(self.pf_temp_saver_new_6.copy(), json_file.copy())# GA
+            elif span == 7:
+                self.pf_temp_saver_new_7 = self.dicMerger(self.pf_temp_saver_new_7.copy(), json_file.copy())
+            elif span == 8:
+                self.pf_temp_saver_new_8 = self.dicMerger(self.pf_temp_saver_new_8.copy(), json_file.copy())
+            elif span == 9:
+                self.pf_temp_saver_new_9 = self.dicMerger(self.pf_temp_saver_new_9.copy(), json_file.copy())
+            elif span == 10:
+                self.pf_temp_saver_new_10 = self.dicMerger(self.pf_temp_saver_new_10.copy(), json_file.copy())
     # use read the pf in one time
     def jsonReader_pf_onetime(self, json_path, name, which_teacher):
-        for x in range(2,7):
+        for x in range(2,11):
             path_final = os.path.join(json_path,name,str(x)+".json")
             self.jsonReader_pf(path_final, x, which_teacher)
 
@@ -159,14 +198,24 @@ class TestTeacher(object):
     def dicCommonDeleteOnetime(self):
         self.pf_temp_saver_pro_2, self.pf_temp_saver_new_2 = self.dicCommonDeleter(self.pf_temp_saver_pro_2,
                                                                                    self.pf_temp_saver_new_2)
+
         self.pf_temp_saver_pro_3, self.pf_temp_saver_new_3 = self.dicCommonDeleter(self.pf_temp_saver_pro_3,
                                                                                    self.pf_temp_saver_new_3)
+
         self.pf_temp_saver_pro_4, self.pf_temp_saver_new_4 = self.dicCommonDeleter(self.pf_temp_saver_pro_4,
                                                                                    self.pf_temp_saver_new_4)
         self.pf_temp_saver_pro_5, self.pf_temp_saver_new_5 = self.dicCommonDeleter(self.pf_temp_saver_pro_5,
                                                                                    self.pf_temp_saver_new_5)
         self.pf_temp_saver_pro_6, self.pf_temp_saver_new_6 = self.dicCommonDeleter(self.pf_temp_saver_pro_6,
                                                                                    self.pf_temp_saver_new_6)
+        self.pf_temp_saver_pro_7, self.pf_temp_saver_new_7 = self.dicCommonDeleter(self.pf_temp_saver_pro_7,
+                                                                                   self.pf_temp_saver_new_7)
+        self.pf_temp_saver_pro_8, self.pf_temp_saver_new_8 = self.dicCommonDeleter(self.pf_temp_saver_pro_8,
+                                                                                   self.pf_temp_saver_new_8)
+        self.pf_temp_saver_pro_9, self.pf_temp_saver_new_9 = self.dicCommonDeleter(self.pf_temp_saver_pro_9,
+                                                                                   self.pf_temp_saver_new_9)
+        self.pf_temp_saver_pro_10, self.pf_temp_saver_new_10 = self.dicCommonDeleter(self.pf_temp_saver_pro_10,
+                                                                                   self.pf_temp_saver_new_10)
 
     # use to show the common pattern in the dic
     # return the same keys in a list
@@ -175,11 +224,46 @@ class TestTeacher(object):
         return set_common
 
     def dicCommenShowerOnetime(self):
-        print(self.dicCommonShower(self.pf_temp_saver_pro_2, self.pf_temp_saver_new_2))
-        print(self.dicCommonShower(self.pf_temp_saver_pro_3, self.pf_temp_saver_new_3))
-        print(self.dicCommonShower(self.pf_temp_saver_pro_4, self.pf_temp_saver_new_4))
-        print(self.dicCommonShower(self.pf_temp_saver_pro_5, self.pf_temp_saver_new_5))
-        print(self.dicCommonShower(self.pf_temp_saver_pro_6, self.pf_temp_saver_new_6))
+        print(self.dicCommonShower(self.pf_temp_saver_pro_2.copy(), self.pf_temp_saver_new_2.copy()))
+        print(self.dicCommonShower(self.pf_temp_saver_pro_3.copy(), self.pf_temp_saver_new_3.copy()))
+        print(self.dicCommonShower(self.pf_temp_saver_pro_4.copy(), self.pf_temp_saver_new_4.copy()))
+        print(self.dicCommonShower(self.pf_temp_saver_pro_5.copy(), self.pf_temp_saver_new_5.copy()))
+        print(self.dicCommonShower(self.pf_temp_saver_pro_6.copy(), self.pf_temp_saver_new_6.copy()))
+        print(self.dicCommonShower(self.pf_temp_saver_pro_7.copy(), self.pf_temp_saver_new_7.copy()))
+        print(self.dicCommonShower(self.pf_temp_saver_pro_8.copy(), self.pf_temp_saver_new_8.copy()))
+        #v2 use to show the times
+    def dicCommenShowerOnetime_v2(self):
+        temp2 = self.dicMerger(self.pf_temp_saver_pro_2.copy(), self.pf_temp_saver_new_2.copy())
+        temp3 = self.dicMerger(self.pf_temp_saver_pro_3.copy(), self.pf_temp_saver_new_3.copy())
+        temp4 = self.dicMerger(self.pf_temp_saver_pro_4.copy(), self.pf_temp_saver_new_4.copy())
+        temp5 = self.dicMerger(self.pf_temp_saver_pro_5.copy(), self.pf_temp_saver_new_5.copy())
+        temp6 = self.dicMerger(self.pf_temp_saver_pro_6.copy(), self.pf_temp_saver_new_6.copy())
+        temp7 = self.dicMerger(self.pf_temp_saver_pro_7.copy(), self.pf_temp_saver_new_7.copy())
+        temp8 = self.dicMerger(self.pf_temp_saver_pro_8.copy(), self.pf_temp_saver_new_8.copy())
+        temp2 = self.dicMerger(temp2, temp3)
+        temp4 = self.dicMerger(temp4, temp5)
+        temp6 = self.dicMerger(temp6, temp7)
+        temp8 = self.dicMerger(temp8, temp2)
+        temp4 = self.dicMerger(temp4, temp6)
+        temp8 = self.dicMerger(temp8,temp4)
+        return main.tools.order_dic_val(temp8)
+        # v3 use to show the times，and del the include situation
+    def dicCommenShowerOnetime_v3(self):
+        temp2 = self.dicMerger(self.pf_temp_saver_pro_2, self.pf_temp_saver_new_2)
+        temp3 = self.dicMerger(self.pf_temp_saver_pro_3, self.pf_temp_saver_new_3)
+        temp4 = self.dicMerger(self.pf_temp_saver_pro_4, self.pf_temp_saver_new_4)
+        temp5 = self.dicMerger(self.pf_temp_saver_pro_5, self.pf_temp_saver_new_5)
+        temp6 = self.dicMerger(self.pf_temp_saver_pro_6, self.pf_temp_saver_new_6)
+        temp7 = self.dicMerger(self.pf_temp_saver_pro_7, self.pf_temp_saver_new_7)
+        temp8 = self.dicMerger(self.pf_temp_saver_pro_8, self.pf_temp_saver_new_8)
+        temp2 = self.dicMerger(temp2, temp3)
+        temp4 = self.dicMerger(temp4, temp5)
+        temp6 = self.dicMerger(temp6, temp7)
+        temp8 = self.dicMerger(temp8, temp2)
+        temp4 = self.dicMerger(temp4, temp6)
+        temp8 = self.dicMerger(temp8,temp4)
+        return main.tools.order_dic_val(main.tools.shortptdeleter_rel(temp8))
+
 
     # read csv and use list to save it
     # reflesh the list to the new csv
@@ -238,21 +322,22 @@ class TestTeacher(object):
     # save the pattern and which frame, another function will deal with it to find the better choice
     # @pysnooper.snoop()
 
-    def patternCheeker(self):  # 只运行一次，再运行会刷新dict的
-        # TODO(Zake Yao): add a function to find where is wrong
+    def patternCheeker(self,flagofptlength):  # 只运行一次，再运行会刷新dict的，flagofptlength用来定义最长的pattern数
         # 统计每种出现了多少次
+        flagconunt = 0
         pattern_temp = []
         temp_score_keeper_pro = {}
         temp_class_keeper_pro = {}
         temp_score_keeper_new = {}
         temp_class_keeper_new = {}
-        for item in range(len(self.ac_list_com)):
-            for x in range(6):
+        for item in range(len(self.ac_list_com)): # 查看list里面全部的元素
+            for x in range(flagofptlength):
                 if item + x < len(self.ac_list_com):
-                    pattern_temp.append(self.ac_list_com[item + x])
+                    pattern_temp.append(self.ac_list_com[item + x])  # 这里把一个个的字符分开了，所以下面的len对于一个list来说就是这个pattern的长度
                     if len(pattern_temp) == 2:  # 这里还需要更大的判断来判别是符合加分还是减分的字典了
-                        pattern_str = (''.join(pattern_temp))
+                        pattern_str = (''.join(pattern_temp))#把分开的合在一起了
                         if pattern_str in self.pf_temp_saver_pro_2:
+                            self.dic_action_right[item] = pattern_str  # the dic is to save the right pattern
                             if pattern_str in temp_class_keeper_pro:  # if the new one is already in
                                 temp_class_keeper_pro[pattern_str] += 1  # 添加一个字典用来记录每个种类的出现了几次
                             else:
@@ -277,6 +362,7 @@ class TestTeacher(object):
                     elif len(pattern_temp) == 3:
                         pattern_str = (''.join(pattern_temp))
                         if pattern_str in self.pf_temp_saver_pro_3:
+                            self.dic_action_right[item] = pattern_str  # the dic is to save the right pattern
                             if pattern_str in temp_class_keeper_pro:
                                 temp_class_keeper_pro[pattern_str] += 1  # 添加一个字典用来记录每个种类的出现了几次
                             else:
@@ -300,6 +386,7 @@ class TestTeacher(object):
                     elif len(pattern_temp) == 4:
                         pattern_str = (''.join(pattern_temp))
                         if pattern_str in self.pf_temp_saver_pro_4:
+                            self.dic_action_right[item] = pattern_str  # the dic is to save the right pattern
                             if pattern_str in temp_class_keeper_pro:
                                 temp_class_keeper_pro[pattern_str] += 1  # 添加一个字典用来记录每个种类的出现了几次
                             else:
@@ -322,6 +409,7 @@ class TestTeacher(object):
                     elif len(pattern_temp) == 5:
                         pattern_str = (''.join(pattern_temp))
                         if pattern_str in self.pf_temp_saver_pro_5:
+                            self.dic_action_right[item] = pattern_str  # the dic is to save the right pattern
                             if pattern_str in temp_class_keeper_pro:
                                 temp_class_keeper_pro[pattern_str] += 1  # 添加一个字典用来记录每个种类的出现了几次
                             else:
@@ -344,6 +432,7 @@ class TestTeacher(object):
                     elif len(pattern_temp) == 6:
                         pattern_str = (''.join(pattern_temp))
                         if pattern_str in self.pf_temp_saver_pro_6:
+                            self.dic_action_right[item] = pattern_str  # the dic is to save the right pattern
                             if pattern_str in temp_class_keeper_pro:
                                 temp_class_keeper_pro[pattern_str] += 1  # 添加一个字典用来记录每个种类的出现了几次
                             else:
@@ -363,6 +452,103 @@ class TestTeacher(object):
                                 temp_score_keeper_new[6] += 1
                             else:
                                 temp_score_keeper_new[6] = 1
+                    elif len(pattern_temp) == 7:
+                        pattern_str = (''.join(pattern_temp))
+                        if pattern_str in self.pf_temp_saver_pro_7:
+                            self.dic_action_right[item] = pattern_str  # the dic is to save the right pattern
+                            if pattern_str in temp_class_keeper_pro:
+                                temp_class_keeper_pro[pattern_str] += 1  # 添加一个字典用来记录每个种类的出现了几次
+                            else:
+                                temp_class_keeper_pro[pattern_str] = 1
+                            if 7 in temp_score_keeper_pro:
+                                temp_score_keeper_pro[7] += 1
+                            else:
+                                temp_score_keeper_pro[7] = 1
+                        elif pattern_str in self.pf_temp_saver_new_7:
+                            # Here to know the pattern is in the new group
+                            self.dic_action_wrong[item] = pattern_str
+                            if pattern_str in temp_class_keeper_new:
+                                temp_class_keeper_new[pattern_str] += 1  # 添加一个字典用来记录每个种类的出现了几次
+                            else:
+                                temp_class_keeper_new[pattern_str] = 1
+                            if 7 in temp_score_keeper_new:
+                                temp_score_keeper_new[7] += 1
+                            else:
+                                temp_score_keeper_new[7] = 1
+                    elif len(pattern_temp) == 8:
+                        pattern_str = (''.join(pattern_temp))
+                        if pattern_str in self.pf_temp_saver_pro_8:
+                            self.dic_action_right[item] = pattern_str  # the dic is to save the right pattern
+                            if pattern_str in temp_class_keeper_pro:
+                                temp_class_keeper_pro[pattern_str] += 1  # 添加一个字典用来记录每个种类的出现了几次
+                            else:
+                                temp_class_keeper_pro[pattern_str] = 1
+                            if 8 in temp_score_keeper_pro:
+                                temp_score_keeper_pro[8] += 1
+                            else:
+                                temp_score_keeper_pro[8] = 1
+                        elif pattern_str in self.pf_temp_saver_new_8:
+                            # Here to know the pattern is in the new group
+                            self.dic_action_wrong[item] = pattern_str
+                            if pattern_str in temp_class_keeper_new:
+                                temp_class_keeper_new[pattern_str] += 1  # 添加一个字典用来记录每个种类的出现了几次
+                            else:
+                                temp_class_keeper_new[pattern_str] = 1
+                            if 8 in temp_score_keeper_new:
+                                temp_score_keeper_new[8] += 1
+                            else:
+                                temp_score_keeper_new[8] = 1
+
+
+
+                    # #---------------------------------可能用不到下面的了---------------------------------
+                    elif len(pattern_temp) == 9:
+                        pattern_str = (''.join(pattern_temp))
+                        if pattern_str in self.pf_temp_saver_pro_9:
+                            self.dic_action_right[item] = pattern_str  # the dic is to save the right pattern
+                            if pattern_str in temp_class_keeper_pro:
+                                temp_class_keeper_pro[pattern_str] += 1  # 添加一个字典用来记录每个种类的出现了几次
+                            else:
+                                temp_class_keeper_pro[pattern_str] = 1
+                            if 9 in temp_score_keeper_pro:
+                                temp_score_keeper_pro[9] += 1
+                            else:
+                                temp_score_keeper_pro[9] = 1
+                        elif pattern_str in self.pf_temp_saver_new_9:
+                            # Here to know the pattern is in the new group
+                            self.dic_action_wrong[item] = pattern_str
+                            if pattern_str in temp_class_keeper_new:
+                                temp_class_keeper_new[pattern_str] += 1  # 添加一个字典用来记录每个种类的出现了几次
+                            else:
+                                temp_class_keeper_new[pattern_str] = 1
+                            if 9 in temp_score_keeper_new:
+                                temp_score_keeper_new[9] += 1
+                            else:
+                                temp_score_keeper_new[9] = 1
+                    elif len(pattern_temp) == 10:
+                        pattern_str = (''.join(pattern_temp))
+                        if pattern_str in self.pf_temp_saver_pro_10:
+                            self.dic_action_right[item] = pattern_str  # the dic is to save the right pattern
+                            if pattern_str in temp_class_keeper_pro:
+                                temp_class_keeper_pro[pattern_str] += 1  # 添加一个字典用来记录每个种类的出现了几次
+                            else:
+                                temp_class_keeper_pro[pattern_str] = 1
+                            if 10 in temp_score_keeper_pro:
+                                temp_score_keeper_pro[10] += 1
+                            else:
+                                temp_score_keeper_pro[10] = 1
+                        elif pattern_str in self.pf_temp_saver_new_10:
+                            # Here to know the pattern is in the new group
+                            self.dic_action_wrong[item] = pattern_str
+                            if pattern_str in temp_class_keeper_new:
+                                temp_class_keeper_new[pattern_str] += 1  # 添加一个字典用来记录每个种类的出现了几次
+                            else:
+                                temp_class_keeper_new[pattern_str] = 1
+                            if 10 in temp_score_keeper_new:
+                                temp_score_keeper_new[10] += 1
+                            else:
+                                temp_score_keeper_new[10] = 1
+
             pattern_temp.clear()  # clear the list for new pattern to cheek
         self.score_keeper_pro = temp_score_keeper_pro.copy()
         self.class_keeper_pro = temp_class_keeper_pro.copy()
@@ -373,72 +559,92 @@ class TestTeacher(object):
     # input the pattern of now and return the best next action
     # if no next patern in the dic return ""
     # 用于预测是否有更好的下一个动作的预测系统，现在只是通过对不同的长度的pt库里面看有没有刚好可以修改的
-    def patternForecaster(self, pattern_temp):  # TODO(Zake Yao):需不需要添加一个flag用来判断有没有清楚共通的部分
-        if len(pattern_temp) > 5:
-            print("Error! The length of the pattern can't longer than 5.")
+    def patternForecaster(self, pattern_temp, maxlen):  # TODO(Zake Yao):需不需要添加一个flag用来判断有没有清楚共通的部分
+        if len(pattern_temp) > maxlen:
+            print("Error! The length of the pattern can't longer than "+str(maxlen)+".")
             sys.exit(1)
         if len(pattern_temp) < 1:
             print("Error! The length of the pattern can't shorter than 1.")
             sys.exit(1)
-        if len(pattern_temp) == 1:  # cheek the length and return the frequency of the max one
+        if len(pattern_temp) == 2:  # cheek the length and return the frequency of the max one
             max_temp_num = 0
             max_temp_item = ""
             for item in self.pf_temp_saver_pro_2:
-                if item[0] == pattern_temp:
+                if (fuzz.ratio(item, pattern_temp)/100.0) > (1/2.0):#都看只差一个的时候
                     if self.pf_temp_saver_pro_2[item] > max_temp_num:  # 但是这样只会变成一样的频度显示第一个
                         max_temp_num = self.pf_temp_saver_pro_2[item]
-                        max_temp_item = item
-            return max_temp_item
-        elif len(pattern_temp) == 2:
-            max_temp_num = 0
-            max_temp_item = ""
-            for item in self.pf_temp_saver_pro_3:
-                if item[0:2] == pattern_temp:
-                    if self.pf_temp_saver_pro_3[item] > max_temp_num:  # 但是这样只会变成一样的频度显示第一个
-                        max_temp_num = self.pf_temp_saver_pro_3[item]
                         max_temp_item = item
             return max_temp_item
         elif len(pattern_temp) == 3:
             max_temp_num = 0
             max_temp_item = ""
-            for item in self.pf_temp_saver_pro_4:
-                if item[0:3] == pattern_temp:
-                    if self.pf_temp_saver_pro_4[item] > max_temp_num:  # 但是这样只会变成一样的频度显示第一个
-                        max_temp_num = self.pf_temp_saver_pro_4[item]
+            for item in self.pf_temp_saver_pro_3:
+                if (fuzz.ratio(item, pattern_temp)/100.0) > (2/3.0):
+                    if self.pf_temp_saver_pro_3[item] > max_temp_num:  # 但是这样只会变成一样的频度显示第一个
+                        max_temp_num = self.pf_temp_saver_pro_3[item]
                         max_temp_item = item
             return max_temp_item
         elif len(pattern_temp) == 4:
             max_temp_num = 0
             max_temp_item = ""
-            for item in self.pf_temp_saver_pro_5:
-                if item[0:4] == pattern_temp:
-                    if self.pf_temp_saver_pro_5[item] > max_temp_num:  # 但是这样只会变成一样的频度显示第一个
-                        max_temp_num = self.pf_temp_saver_pro_5[item]
+            for item in self.pf_temp_saver_pro_4:
+                if (fuzz.ratio(item, pattern_temp)/100.0) > (3/4.0):
+                    if self.pf_temp_saver_pro_4[item] > max_temp_num:  # 但是这样只会变成一样的频度显示第一个
+                        max_temp_num = self.pf_temp_saver_pro_4[item]
                         max_temp_item = item
             return max_temp_item
         elif len(pattern_temp) == 5:
             max_temp_num = 0
             max_temp_item = ""
+            for item in self.pf_temp_saver_pro_5:
+                if (fuzz.ratio(item, pattern_temp)/100.0) > (4/5.0):
+                    if self.pf_temp_saver_pro_5[item] > max_temp_num:  # 但是这样只会变成一样的频度显示第一个
+                        max_temp_num = self.pf_temp_saver_pro_5[item]
+                        max_temp_item = item
+            return max_temp_item
+        elif len(pattern_temp) == 6:
+            max_temp_num = 0
+            max_temp_item = ""
             for item in self.pf_temp_saver_pro_6:
-                if item[0:5] == pattern_temp:
+                if (fuzz.ratio(item, pattern_temp)/100.0) > (5/6.0):
                     if self.pf_temp_saver_pro_6[item] > max_temp_num:  # 但是这样只会变成一样的频度显示第一个
                         max_temp_num = self.pf_temp_saver_pro_6[item]
                         max_temp_item = item
             return max_temp_item
+        elif len(pattern_temp) == 7:
+            max_temp_num = 0
+            max_temp_item = ""
+            for item in self.pf_temp_saver_pro_7:
+                if (fuzz.ratio(item, pattern_temp)/100.0) > (6/7.0):
+                    if self.pf_temp_saver_pro_7[item] > max_temp_num:  # 但是这样只会变成一样的频度显示第一个
+                        max_temp_num = self.pf_temp_saver_pro_7[item]
+                        max_temp_item = item
+            return max_temp_item
+        elif len(pattern_temp) == 8:
+            max_temp_num = 0
+            max_temp_item = ""
+            for item in self.pf_temp_saver_pro_8:
+                if (fuzz.ratio(item, pattern_temp)/100.0) > (7/8.0):
+                    if self.pf_temp_saver_pro_8[item] > max_temp_num:  # 但是这样只会变成一样的频度显示第一个
+                        max_temp_num = self.pf_temp_saver_pro_8[item]
+                        max_temp_item = item
+            return max_temp_item
+
 
     # use to change the wrong pattern to the right pattern
     # by cheek the first some action of the pattern to use the function patternForecaster to get the right action
     # 这个是用来吧错的list里面的动作进行修改，如果老手的数据里面有对应的就可以输出到right的数组里
-    def dicPatternReviser(self):  # 如果是这个动作老手里面没有对应的修改怎么办
+    # maxlen will change with the patterncheeker function parameter
+    def dicPatternReviser(self,maxlen):  # 如果是这个动作老手里面没有对应的修改怎么办
         for item in self.dic_action_wrong:
-            if len(self.dic_action_wrong[item][0:-1]) < 1:
+            if len(self.dic_action_wrong[item]) < 1:
                 print("Error!It must be longer than 1 in the wrong action list")
                 sys.exit(1)
-            if len(self.dic_action_wrong[item][0:-1]) > 5:
-                print("Error!It must be shorter than 5 in the wrong action list")
+            if len(self.dic_action_wrong[item]) > maxlen:
+                print("Error!It must be shorter than "+str(maxlen)+"in the wrong action list")
                 sys.exit(1)
             # It will cheek the length auto automatically
-            self.dic_action_right[item] = self.patternForecaster(str(self.dic_action_wrong[item])[0:-1])
+            self.dic_action_change[item] = self.patternForecaster(str(self.dic_action_wrong[item]),maxlen)
 
     # use to get frame instead of action number in the dic
     # to rewrite the dic，return a new dic with frame
@@ -449,12 +655,29 @@ class TestTeacher(object):
             sum_temp = 0
             for x in self.dic_com_ori:
                 # cheek
+                #sum_temp += self.dic_com_ori[x]  # 这个是在之后显示
                 if (item == x):
                     new_dic[sum_temp] = dic_temp[item]
                     break
                 # then add
-                sum_temp += self.dic_com_ori[x]
-        self.dic_action_wrong_fra = new_dic.copy()
+                sum_temp += self.dic_com_ori[x]#
+        # self.dic_action_wrong_fra = new_dic.copy()
+        return new_dic
+    # change the last function to deal with list
+    def dicFramegeter4list(self, list_temp):
+        new_dic = {}
+        for item in range(len(list_temp)):
+            sum_temp = 0
+            for x in self.dic_com_ori:
+                # cheek
+                #这个是在之后显示
+                #sum_temp += self.dic_com_ori[x]  # 这个的位置将会决定，是做完这个pattern再显示，还是做这个pt前显示
+                if (item == x):
+                    new_dic[sum_temp] = list_temp[item]
+                    break
+                # then add
+                sum_temp += self.dic_com_ori[x] #这个的位置将会决定，是做完这个pattern再显示，还是做这个pt前显示
+        # self.dic_action_wrong_fra = new_dic.copy()
         return new_dic
 
     # use to find the patterns that have displayed in the test teacher
@@ -482,41 +705,44 @@ class TestTeacher(object):
     # use to compress the list to the ID
     # and build the dic to contact the 2 list
     # return the list of the action list
-    def compressList_id_t(self, list_ac, a, b):  # 不看被省略的,应该是2~7
+    def compressList_id_t(self, list_ac, a, b):  #
         counter_ac = 0
-        counter_recover = 0
+        counter_recover = 0 # 记住被删除的多少个结果的大小
         temp_ac = ""
         temp_ac_list = []
         for x in list_ac:  # 没有加上最后一次
             if temp_ac == "":  # to evaluate the initial value
-                temp_ac = x
+                temp_ac = x.encode('utf-8').decode('utf-8-sig').strip()
                 counter_ac = 1  # first time
-                counter_recover = 0
                 continue
-            elif temp_ac != x:  # see the next is different
-                if counter_ac < a:  # 结算当前的
-                    counter_recover += (a - 1)  # 这个补上了1次的
-                    temp_ac = x
-                    if (counter_recover > 9):
-                        print("Attention:Maybe error.It's hard for counter_recover to be over than 9!")
-                    continue
-                elif counter_ac <= b:
+            # 如果不是初始值
+            elif temp_ac!= x.encode('utf-8').decode('utf-8-sig').strip():  # see the next is different 如果不同的话，结算当前的
+                if counter_ac < a:  # 如果结算的时候少于a
+                    counter_recover += counter_ac  # 这个补上了count了几次的
+                    temp_ac = x.encode('utf-8').decode('utf-8-sig').strip()#切换当前动作到x
+                    counter_ac =1
+                    # if (counter_recover > 9):
+                    #     print("Attention:Maybe error.It's hard for counter_recover to be over than 9!")TODO(Zake Yao):这个是干嘛的我忘了，你等会记得看看
+                    #     print(counter_recover)
+                    continue  # 因为使用了continue所以跳过了后面对counter的清空
+                elif counter_ac <= b:#如果在a到b的范围内的话
                     temp_ac_list.append(self.IDgeterforsingel_t(temp_ac))  # add the last one
                     self.dic_com_ori[len(temp_ac_list) - 1] = counter_ac + counter_recover
-                elif counter_ac > b:  # 要是大于4的时候
+                elif counter_ac > b:  # 要是大于b的时候
                     temp_conter_acs = counter_ac // b  # conclute how many times
                     for item in range(temp_conter_acs):
                         temp_ac_list.append(self.IDgeterforsingel_t(temp_ac))
-                        self.dic_com_ori[len(temp_ac_list) - 1] = b
-                    self.dic_com_ori[len(temp_ac_list) - 1] = b + counter_ac % b + (counter_recover)
+                        self.dic_com_ori[len(temp_ac_list) - 1] = b  ##
+                    self.dic_com_ori[len(temp_ac_list) -1] += counter_ac % b + counter_recover  ##
                 # 这个是每个下标和和原本对于的frame数
                 # 基础的4个加上多于被省略，是4个是因为b是4
                 # 包括取余省略的和小于2省略的
-                temp_ac = x
+                temp_ac = x.encode('utf-8').decode('utf-8-sig').strip()
                 counter_ac = 1
                 counter_recover = 0  # reflash
-            else:
+            else:#还是一样的话只是加一，给计数器
                 counter_ac += 1
+        # 这个是对最后剩余的处理
         if counter_ac >= a:  # use to add the last element# 最后一个元素如果是1的时候，给最后一个元素加一
             if counter_ac <= b:
                 temp_ac_list.append(self.IDgeterforsingel_t(temp_ac))
@@ -526,10 +752,12 @@ class TestTeacher(object):
                 for item in range(temp_conter_acs):
                     temp_ac_list.append(self.IDgeterforsingel_t(temp_ac))
                     self.dic_com_ori[len(temp_ac_list) - 1] = b
-                self.dic_com_ori[len(temp_ac_list) - 1] = b + counter_ac % b + (counter_recover)
-
-        if (len(self.dic_com_ori) - len(self.ac_list_ori)) < a:  # when the last one is 1
-            self.dic_com_ori[len(temp_ac_list) - 1] += a - 1
+                self.dic_com_ori[len(temp_ac_list) - 1] = b + counter_ac % b + counter_recover
+        else:
+            temp_ac_list.append(self.IDgeterforsingel_t(temp_ac))
+            self.dic_com_ori[len(temp_ac_list) - 1]=  counter_recover +1
+        # if (len(self.dic_com_ori) - len(self.ac_list_ori)) < a:  # when the last one is 1
+        #     self.dic_com_ori[len(temp_ac_list) - 1] += a - 1
 
         self.ac_list_com.clear()
         self.ac_list_com += temp_ac_list
@@ -543,6 +771,11 @@ class TestTeacher(object):
         temp_dic = self.dicMerger(temp_dic, self.pf_temp_saver_pro_4)
         temp_dic = self.dicMerger(temp_dic, self.pf_temp_saver_pro_5)
         temp_dic = self.dicMerger(temp_dic, self.pf_temp_saver_pro_6)
+        temp_dic = self.dicMerger(temp_dic, self.pf_temp_saver_pro_7)
+        temp_dic = self.dicMerger(temp_dic, self.pf_temp_saver_pro_8)
+        # temp_dic = self.dicMerger(temp_dic, self.pf_temp_saver_pro_9)
+        # temp_dic = self.dicMerger(temp_dic, self.pf_temp_saver_pro_10)
+
         if show_times != 0:
             temp_dic = main.tools.patterncleaner(temp_dic, show_times)
         return temp_dic
@@ -555,6 +788,10 @@ class TestTeacher(object):
         temp_dic = self.dicMerger(temp_dic, self.pf_temp_saver_new_4)
         temp_dic = self.dicMerger(temp_dic, self.pf_temp_saver_new_5)
         temp_dic = self.dicMerger(temp_dic, self.pf_temp_saver_new_6)
+        temp_dic = self.dicMerger(temp_dic, self.pf_temp_saver_new_7)
+        temp_dic = self.dicMerger(temp_dic, self.pf_temp_saver_new_8)
+        # temp_dic = self.dicMerger(temp_dic, self.pf_temp_saver_new_9)
+        # temp_dic = self.dicMerger(temp_dic, self.pf_temp_saver_new_10)
         if show_times != 0:
             temp_dic = main.tools.patterncleaner(temp_dic, show_times)
         return temp_dic
@@ -607,11 +844,11 @@ class TestTeacher(object):
         # 先看在不在，有没有数据
         sum_new = 0
         sum_pro = 0
-        for x in range(2, 7):
+        for x in range(2, 11):
             if x in self.score_keeper_new:
                 sum_new += self.score_keeper_new[x]
 
-        for x in range(2, 7):
+        for x in range(2, 11):
             if x in self.score_keeper_pro:
                 sum_pro += self.score_keeper_pro[x]
 
@@ -619,8 +856,9 @@ class TestTeacher(object):
         score = 0
         if sum_new!=0 or sum_pro!=0:
             score = (sum_pro/(sum_pro+sum_new)-sum_new/(sum_pro+sum_new))*50+50  # 如果两个都不为0
-            print(score)
-
+            # print(score)
+        else:
+            score = 50 #两个都为空的时候，会变成50分
         return score
 
     # jaccard distance
@@ -668,32 +906,76 @@ class TestTeacher(object):
                 dic_score_t[len(key_t)] -=1
         return (dic_class_t.copy(), dic_score_t.copy())
 
+    # use get the data for visualization
+    def visualization(self,path_t,name):#
+        if len(self.score_keeper_new) == 0 and len(self.score_keeper_pro)==0:  # cheek the if the patterncheer function is run
+            print("You have to run patterncheeker function first")
+            return 0
+        dicjsonsaver={} # use to save the data for saving the json
+        path_f = ""
+        score_t =""
+        wrong_dic = {}
+        right_dic = {}
+        change_dic = {}
+        now_action_dic =[]
+
+        self.shortptdeleter()
+        score_t = str(self.scorecalculater_ave())
+        wrong_dic = self.dicFramegeter(self.dic_action_wrong)
+        right_dic = self.dicFramegeter(self.dic_action_right)
+        change_dic = self.dicFramegeter(self.dic_action_change)
+        # only the action dic have the name of action , the rest of the dic only have the symbol of the actin
+        now_action_dic = self.dicFramegeter4list(self.actiongeter_t(self.ac_list_com)) #需要对list格式做一个复原frame的
+        now_action_dic_char = self.dicFramegeter4list(self.ac_list_com)
+        print(now_action_dic)
+        # write the data
+        dicjsonsaver["score"]=score_t
+        dicjsonsaver["wrongdic"] = wrong_dic
+        dicjsonsaver["rightdic"] = right_dic
+        dicjsonsaver["changedic"] = change_dic
+        dicjsonsaver["nowaction"] = now_action_dic
+        dicjsonsaver["nowaction_c"] = now_action_dic_char
+
+        path_f = path_t+str(name)+".json"
+        with open(path_f,"w+") as f:
+            json.dump(dicjsonsaver,f)
 
 
 if __name__ == '__main__':
-    path_tttt2 ="/Users/syao/desktop/res/TeaSys_Dev6"
-    # 为了提高速度 可以 之前就通过老手和新手库的程序获取老手和新手的数据并对比
-    # prot = ProTeacher("Tom", "/Users/syao/desktop/res/test_ori_1.csv", "/Users/syao/desktop/res/TeaSys_Dev")
-    # prot.pfdicSaver()
-    # newt = NewTeacher("Mike", "/Users/syao/desktop/res/test_ori_2.csv", "/Users/syao/desktop/res/TeaSys_Dev")
-    # newt.pfdicSaver()
-    # t = TestTeacher("Jimy", "/Users/syao/desktop/res/test_ori_4.csv")
-    # 如何处理同名的情况
-    # newt_1 = NewTeacher("AkiOkubo", "/Users/syao/desktop/res/csvdata/01_Rookie_AkiOkubo_English_all.csv", path_tttt2)
+    # path_tttt2 = "/Users/syao/desktop/res/TeaSys_Dev_new_action48_10/"
+    path_tttt2 = "/Users/syao/desktop/res/TeaSys_Dev_new_action48_10_ver3/"
+    if not os.path.exists(path_tttt2):
+        os.makedirs(path_tttt2)
+    # # 为了提高速度 可以 之前就通过老手和新手库的程序获取老手和新手的数据并对比
+    # # prot = ProTeacher("Tom", "/Users/syao/desktop/res/test_ori_1.csv", "/Users/syao/desktop/res/TeaSys_Dev")
+    # # prot.pfdicSaver()
+    # # newt = NewTeacher("Mike", "/Users/syao/desktop/res/test_ori_2.csv", "/Users/syao/desktop/res/TeaSys_Dev")
+    # # newt.pfdicSaver()
+    # # t = TestTeacher("Jimy", "/Users/syao/desktop/res/test_ori_4.csv")
+    # # 如何处理同名的情况
+
+    #contest_1 5
+    # newt_1 = NewTeacher("AkiOkubo", "/Users/syao/desktop/res/csvdata/01_Rookie_AkiOkubo_English_all.csv", path_tttt2)#1
     # newt_1.pfdicSaver()
-    # newt_2 = NewTeacher("KotaroHosoi", "/Users/syao/desktop/res/csvdata/02_Rookie_KotaroHosoi_Mathematics_all.csv", path_tttt2)
+    #
+    # newt_2 = NewTeacher("KotaroHosoi", "/Users/syao/desktop/res/csvdata/02_Rookie_KotaroHosoi_Mathematics_all.csv", path_tttt2)#2
     # newt_2.pfdicSaver()
-    # newt_3 = NewTeacher("ShioriMasuko", "/Users/syao/desktop/res/csvdata/03_Rookie_ShioriMasuko_English_all.csv", path_tttt2)
+    #
+    # newt_3 = NewTeacher("ShioriMasuko", "/Users/syao/desktop/res/csvdata/03_Rookie_ShioriMasuko_English_all.csv", path_tttt2)#3
     # newt_3.pfdicSaver()
-    # newt_4 = NewTeacher("YukinaHachisu", "/Users/syao/desktop/res/csvdata/04_Rookie_YukinaHachisu_English_all.csv", path_tttt2)
+    #
+    # newt_4 = NewTeacher("YukinaHachisu", "/Users/syao/desktop/res/csvdata/04_Rookie_YukinaHachisu_English_all.csv", path_tttt2)#4
     # newt_4.pfdicSaver()
-    # newt_5 = NewTeacher("YusukeHachisu", "/Users/syao/desktop/res/csvdata/05_Rookie_YusukeHachisu_Japanese_all.csv", path_tttt2)
+    #
+    # newt_5 = NewTeacher("YusukeHachisu", "/Users/syao/desktop/res/csvdata/05_Rookie_YusukeHachisu_Japanese_all.csv", path_tttt2)#5
     # newt_5.pfdicSaver()
-    # newt_6 = NewTeacher("Kojima1", "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Kojima_01_all.csv", path_tttt2)
+    #
+    # #kojima and nishiyama 7
+    # newt_6 = NewTeacher("Kojima1", "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Kojima_01_all.csv", path_tttt2)#6
     # newt_6.pfdicSaver()
-    # newt_7 = NewTeacher("Kojima2", "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Kojima_02_all.csv", path_tttt2)
+    # newt_7 = NewTeacher("Kojima2", "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Kojima_02_all.csv", path_tttt2)#7
     # newt_7.pfdicSaver()
-    # newt_8 = NewTeacher("Kojima3", "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Kojima_03_all.csv", path_tttt2)
+    # newt_8 = NewTeacher("Kojima3", "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Kojima_03_all.csv", path_tttt2)#8
     # newt_8.pfdicSaver()
     # newt_9 = NewTeacher("Kojima4", "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Kojima_04_all.csv",
     #                     path_tttt2)
@@ -707,6 +989,8 @@ if __name__ == '__main__':
     # newt_12 = NewTeacher("Kojima7", "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Kojima_07_all.csv",
     #                     path_tttt2)
     # newt_12.pfdicSaver()
+    #
+    # #contest_2 6
     # newt_13 = NewTeacher("KiyoshiMori", "/Users/syao/desktop/res/csv_teaching_cont_2/01_Pf_KiyoshiMori_Mathematics_all.csv",
     #                     path_tttt2)
     # newt_13.pfdicSaver()
@@ -726,20 +1010,21 @@ if __name__ == '__main__':
     #                      "/Users/syao/desktop/res/csv_teaching_cont_2/07_Pf_SatoshiNomuri_Mathematics_all.csv",
     #                      path_tttt2)
     # newt_17.pfdicSaver()
-    # newt_17 = NewTeacher("ShioriMashiko",
+    # newt_18 = NewTeacher("ShioriMashiko",
     #                      "/Users/syao/desktop/res/csv_teaching_cont_2/23_Pf_ShioriMashiko_English_all.csv",
     #                      path_tttt2)
-    # newt_17.pfdicSaver()
-
-    #prot_1.pfdicSaver_all(1)  # save the whole data 在后面算tfidf的时候用了
-
+    # newt_18.pfdicSaver()
+    #
+    #
+    # #prot_1.pfdicSaver_all(1)  # save the whole data 在后面算tfidf的时候用了
+    # #contest_1 8
     # prot_1 = ProTeacher("YoshimitauHamada", "/Users/syao/desktop/res/csvdata/06_Expert_YoshimitauHamada_Mathematics_all.csv", path_tttt2)
     # prot_1.pfdicSaver()
     # prot_2 = ProTeacher("ShotaYoshida", "/Users/syao/desktop/res/csvdata/07_Expert_ShotaYoshida_Mathematics_NOFULL_all.csv", path_tttt2)
     # prot_2.pfdicSaver()
     # prot_3 = ProTeacher("TakashiMajima", "/Users/syao/desktop/res/csvdata/08_Expert_TakashiMajima_Mathematics_NOFULL_all.csv", path_tttt2)
     # prot_3.pfdicSaver()
-    # prot_4 = ProTeacher("KunihiroSato", "/Users/syao/desktop/res/csvdata/09_Expert_KunihiroSato_Mathematics_all.csv",path_tttt2)
+    # prot_4 = ProTeacher("KunihiroSato", "/Users/syao/desktop/res/csvdata/09_Expert_KunihiroSato_Mathematics_all.csv", path_tttt2)
     # prot_4.pfdicSaver()
     # prot_5 = ProTeacher("AyakoYamamoto", "/Users/syao/desktop/res/csvdata/10_Expert_AyakoYamamoto_Japanese_all.csv", path_tttt2)
     # prot_5.pfdicSaver()
@@ -749,15 +1034,9 @@ if __name__ == '__main__':
     # prot_7.pfdicSaver()
     # prot_8 = ProTeacher("NaokiSaiba", "/Users/syao/desktop/res/csvdata/13_Expert_NaokiSaiba_Science_all.csv", path_tttt2)
     # prot_8.pfdicSaver()
-    # prot_9 = ProTeacher("Nishiyama1", "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Nishiyama_01_all.csv",
-    #                     path_tttt2)
-    # prot_9.pfdicSaver()
-    # prot_7 = ProTeacher("Nishiyama2", "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Nishiyama_02_all.csv",
-    #                     path_tttt2)
-    # prot_7.pfdicSaver()
-    # prot_8 = ProTeacher("Nishiyama3", "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Nishiyama_03_all.csv",
-    #                     path_tttt2)
-    # prot_8.pfdicSaver()
+    #
+    #
+    # #contest_2 8
     # prot_9 = ProTeacher("MasahiroWatanabe2",
     #                      "/Users/syao/desktop/res/csv_teaching_cont_2/08_Pf_MasahiroWatanabe_Mathematics_all.csv",
     #                      path_tttt2)
@@ -790,30 +1069,79 @@ if __name__ == '__main__':
     #                      "/Users/syao/desktop/res/csv_teaching_cont_2/21_Fin_SatoshiIkeuchi_Society_all.csv",
     #                      path_tttt2)
     # prot_16.pfdicSaver()
-
-
+    #
+    # #kojima and nishiyama 3
+    # prot_17 = ProTeacher("Nishiyama1", "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Nishiyama_01_all.csv",
+    #                     path_tttt2)
+    # prot_17.pfdicSaver()
+    # prot_18 = ProTeacher("Nishiyama2", "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Nishiyama_02_all.csv",
+    #                     path_tttt2)
+    # prot_18.pfdicSaver()
+    # prot_19 = ProTeacher("Nishiyama3", "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Nishiyama_03_all.csv",
+    #                     path_tttt2)
+    # prot_19.pfdicSaver()
     # ----------------------------------------------------前处理分界线-------------------------------------------------------
 
     # 这个以后的数据一定会变成100 或者是0 表明还是记住了用户的特征的
     # 在ny和kj当中 他们的分数变化也正明了是会学习的，那么重要的地方就是数据量了
-    # t = TestTeacher("YusukeHachisu", "/Users/syao/desktop/res/csvdata/06_Expert_YoshimitauHamada_Mathematics_all.csv") #100
-    # t = TestTeacher("AyakoYamamoto", "/Users/syao/desktop/res/csvdata/10_Expert_AyakoYamamoto_Japanese_all.csv") # 100
-    # t = TestTeacher("YukinaHachisu", "/Users/syao/desktop/res/csvdata/04_Rookie_YukinaHachisu_English_all.csv") # 0
-    # t = TestTeacher("KunihiroSato", "/Users/syao/desktop/res/csvdata/09_Expert_KunihiroSato_Mathematics_all.csv") # 100
-    # t = TestTeacher("YoshimitauHamada", "/Users/syao/desktop/res/csvdata/09_Expert_KunihiroSato_Mathematics_all.csv") # 100 ?
-    # t = TestTeacher("AkiOkubo", "/Users/syao/desktop/res/csvdata/01_Rookie_AkiOkubo_English_all.csv") # 0 ?
-    # t = TestTeacher("NaokiSaiba", "/Users/syao/desktop/res/csvdata/13_Expert_NaokiSaiba_Science_all.csv") # 24
-    # t = TestTeacher("RinaAndo", "/Users/syao/desktop/res/csvdata/12_Expert_RinaAndo_Civics_all.csv") # 32
-    # t = TestTeacher("SakiWatanabe", "/Users/syao/desktop/res/csvdata/11_Expert_SakiWatanabe_English_Champion_all.csv") # 53
-    # t = TestTeacher("Kojima", "/Users/syao/desktop/res/kj_v2.csv") # 30
-    # t = TestTeacher("Nishiyama", "/Users/syao/desktop/res/ny_v2.csv") # 71
-    # t = TestTeacher("Kojima7", "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Kojima_07_all.csv") # 16
-    t = TestTeacher("AkiOkubo", "/Users/syao/desktop/res/csvdata/01_Rookie_AkiOkubo_English_all.csv") # 58
+    # t = TestTeacher("AyakoYamamoto", "/Users/syao/desktop/res/csvdata/10_Expert_AyakoYamamoto_Japanese_all.csv")
+    # t = TestTeacher("KunihiroSato", "/Users/syao/desktop/res/csvdata/09_Expert_KunihiroSato_Mathematics_all.csv")
+    # t = TestTeacher("NaokiSaiba", "/Users/syao/desktop/res/csvdata/13_Expert_NaokiSaiba_Science_all.csv")
+    # t = TestTeacher("RinaAndo", "/Users/syao/desktop/res/csvdata/12_Expert_RinaAndo_Civics_all.csv")
+    # t = TestTeacher("SakiWatanabe", "/Users/syao/desktop/res/csvdata/11_Expert_SakiWatanabe_English_Champion_all.csv")
+    # t = TestTeacher("Kojima", "/Users/syao/desktop/res/kj_v2.csv")
+    # t = TestTeacher("Nishiyama", "/Users/syao/desktop/res/ny_v2.csv")
 
 
-    path_tttt="/Users/syao/desktop/res/TeaSys_Dev6/"
-    # new
-    #t.jsonReader_pf_onetime(path_tttt,"AkiOkubo",0)
+
+    # t = TestTeacher("AkiOkubo", "/Users/syao/desktop/res/csvdata/01_Rookie_AkiOkubo_English_all.csv") #1
+    # t = TestTeacher("KotaroHosoi", "/Users/syao/desktop/res/csvdata/02_Rookie_KotaroHosoi_Mathematics_all.csv") #2
+    # t = TestTeacher("ShioriMasuko", "/Users/syao/desktop/res/csvdata/03_Rookie_ShioriMasuko_English_all.csv") #3
+    # t = TestTeacher("YukinaHachisu", "/Users/syao/desktop/res/csvdata/04_Rookie_YukinaHachisu_English_all.csv") #4
+    # t = TestTeacher("YusukeHachisu", "/Users/syao/desktop/res/csvdata/05_Rookie_YusukeHachisu_Japanese_all.csv") #5
+    # t = TestTeacher("Kojima1", "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Kojima_01_all.csv") #6
+    # t = TestTeacher("Kojima2", "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Kojima_02_all.csv") #7
+    # t = TestTeacher("Kojima3", "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Kojima_03_all.csv") #8
+    # t = TestTeacher("Kojima4", "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Kojima_04_all.csv") #9
+    # t = TestTeacher("Kojima5", "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Kojima_05_all.csv") #10
+    # t = TestTeacher("Kojima6", "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Kojima_06_all.csv") #11
+    # t = TestTeacher("Kojima7", "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Kojima_07_all.csv") #12
+    # t = TestTeacher("KiyoshiMori", "/Users/syao/desktop/res/csv_teaching_cont_2/01_Pf_KiyoshiMori_Mathematics_all.csv") #13
+    # t = TestTeacher("RyotaTakahashi", "/Users/syao/desktop/res/csv_teaching_cont_2/03_Pre_RyotaTakahashi_Mathematics_all.csv") #14
+    # t = TestTeacher("KenjiShiraishi", "/Users/syao/desktop/res/csv_teaching_cont_2/05_Pre_KenjiShiraishi_Mathematics_all.csv") #15
+    # t = TestTeacher("HiroyukiKama", "/Users/syao/desktop/res/csv_teaching_cont_2/06_Pre_HiroyukiKama_Mathematics_all.csv") #16
+    # t = TestTeacher("SatoshiNomuri", "/Users/syao/desktop/res/csv_teaching_cont_2/07_Pf_SatoshiNomuri_Mathematics_all.csv") #17
+    # t = TestTeacher("ShioriMashiko", "/Users/syao/desktop/res/csv_teaching_cont_2/23_Pf_ShioriMashiko_English_all.csv") #18
+
+    # t = TestTeacher("YoshimitauHamada", "/Users/syao/desktop/res/csvdata/06_Expert_YoshimitauHamada_Mathematics_all.csv") #19
+    # t = TestTeacher("ShotaYoshida", "/Users/syao/desktop/res/csvdata/07_Expert_ShotaYoshida_Mathematics_NOFULL_all.csv") #20
+    # t = TestTeacher("TakashiMajima", "/Users/syao/desktop/res/csvdata/08_Expert_TakashiMajima_Mathematics_NOFULL_all.csv") #21
+    # t = TestTeacher("KunihiroSato", "/Users/syao/desktop/res/csvdata/09_Expert_KunihiroSato_Mathematics_all.csv") #22
+    # t = TestTeacher("AyakoYamamoto", "/Users/syao/desktop/res/csvdata/10_Expert_AyakoYamamoto_Japanese_all.csv") #23
+    # t = TestTeacher("SakiWatanabe", "/Users/syao/desktop/res/csvdata/11_Expert_SakiWatanabe_English_Champion_all.csv") #24
+    # t = TestTeacher("RinaAndo", "/Users/syao/desktop/res/csvdata/12_Expert_RinaAndo_Civics_all.csv") #25
+    # t = TestTeacher("NaokiSaiba", "/Users/syao/desktop/res/csvdata/13_Expert_NaokiSaiba_Science_all.csv") #26
+    # t = TestTeacher("Nishiyama1", "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Nishiyama_01_all.csv") #27
+    # t = TestTeacher("Nishiyama2", "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Nishiyama_02_all.csv") #28
+    # t = TestTeacher("MasahiroWatanabe2", "/Users/syao/desktop/res/csv_teaching_cont_2/08_Pf_MasahiroWatanabe_Mathematics_all.csv") #29
+    # t = TestTeacher("MasahiroWatanabe1", "/Users/syao/desktop/res/csv_teaching_cont_2/04_Pre_MasahiroWatanabe_Mathematics_all.csv") #30
+    t = TestTeacher("MasahiroWatanabe3", "/Users/syao/desktop/res/csv_teaching_cont_2/18_Fin_MasahiroWatanabe_Mathematics_all.csv") #31
+    # t = TestTeacher("YusukeKimura", "/Users/syao/desktop/res/csv_teaching_cont_2/09_Fin_YusukeKimura_Science_all.csv") #32
+    # t = TestTeacher("IppeiTakahira1", "/Users/syao/desktop/res/csv_teaching_cont_2/17_Pf_IppeiTakahira_English_all.csv") #33
+    # t = TestTeacher("IppeiTakahira2", "/Users/syao/desktop/res/csv_teaching_cont_2/20_Fin_IppeiTakahira_English_all.csv") #34
+    # t = TestTeacher("IkuTadame", "/Users/syao/desktop/res/csv_teaching_cont_2/19_Fin_IkuTadame_Japanese_all.csv") #35
+    # t = TestTeacher("SatoshiIkeuchi", "/Users/syao/desktop/res/csv_teaching_cont_2/21_Fin_SatoshiIkeuchi_Society_all.csv") #36
+    # t = TestTeacher("Nishiyama3", "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Nishiyama_03_all.csv") #37
+
+    # t = TestTeacher("tester", "/Users/syao/desktop/res/testdata.csv") # test only
+
+
+
+    # path_tttt="/Users/syao/desktop/res/TeaSys_Dev_new_action48_10_ver2/" # 用了kojima方法的数据
+    path_tttt="/Users/syao/desktop/res/TeaSys_Dev_new_action48_10_ver3/" # 用了kojima方法的数据
+    # # path_tttt="/Users/syao/desktop/res/TeaSys_Dev_new_action48_10/" #  没用kojima的数据
+    # # # new
+    t.jsonReader_pf_onetime(path_tttt,"AkiOkubo",0)
     t.jsonReader_pf_onetime(path_tttt,"KotaroHosoi",0)#需要命名来识别
     t.jsonReader_pf_onetime(path_tttt,"ShioriMasuko",0)
     t.jsonReader_pf_onetime(path_tttt,"YukinaHachisu",0)
@@ -825,41 +1153,35 @@ if __name__ == '__main__':
     t.jsonReader_pf_onetime(path_tttt,"Kojima5",0)
     t.jsonReader_pf_onetime(path_tttt,"Kojima6",0)
     t.jsonReader_pf_onetime(path_tttt,"Kojima7",0)
-    t.jsonReader_pf_onetime(path_tttt, "KiyoshiMori", 0)
-    t.jsonReader_pf_onetime(path_tttt, "RyotaTakahashi", 0)
-    t.jsonReader_pf_onetime(path_tttt, "KenjiShiraishi", 0)
-    t.jsonReader_pf_onetime(path_tttt, "HiroyukiKama", 0)
-    t.jsonReader_pf_onetime(path_tttt, "SatoshiNomuri", 0)
-    t.jsonReader_pf_onetime(path_tttt, "ShioriMashiko", 0)
-    # pro
+    t.jsonReader_pf_onetime(path_tttt,"KiyoshiMori",0)
+    t.jsonReader_pf_onetime(path_tttt,"RyotaTakahashi",0)
+    t.jsonReader_pf_onetime(path_tttt,"KenjiShiraishi",0)
+    t.jsonReader_pf_onetime(path_tttt,"HiroyukiKama",0)
+    t.jsonReader_pf_onetime(path_tttt,"SatoshiNomuri",0)
+    t.jsonReader_pf_onetime(path_tttt,"ShioriMashiko",0)
+    # #
+    # #
+    # # # pro
     t.jsonReader_pf_onetime(path_tttt, "YoshimitauHamada", 1) # 1 = pro
     t.jsonReader_pf_onetime(path_tttt, "ShotaYoshida", 1)
     t.jsonReader_pf_onetime(path_tttt, "TakashiMajima", 1)
     t.jsonReader_pf_onetime(path_tttt, "KunihiroSato", 1)
     t.jsonReader_pf_onetime(path_tttt, "AyakoYamamoto", 1)
+    t.jsonReader_pf_onetime(path_tttt, "SakiWatanabe", 1)
+    t.jsonReader_pf_onetime(path_tttt, "RinaAndo", 1)
+    t.jsonReader_pf_onetime(path_tttt, "NaokiSaiba", 1)
     t.jsonReader_pf_onetime(path_tttt, "Nishiyama1", 1)
     t.jsonReader_pf_onetime(path_tttt, "Nishiyama2", 1)
     t.jsonReader_pf_onetime(path_tttt, "Nishiyama3", 1)
     t.jsonReader_pf_onetime(path_tttt, "MasahiroWatanabe2", 1)
     t.jsonReader_pf_onetime(path_tttt, "MasahiroWatanabe1", 1)
-    t.jsonReader_pf_onetime(path_tttt, "MasahiroWatanabe3", 1)
+    # t.jsonReader_pf_onetime(path_tttt, "MasahiroWatanabe3", 1)
     t.jsonReader_pf_onetime(path_tttt, "YusukeKimura", 1)
     t.jsonReader_pf_onetime(path_tttt, "IppeiTakahira1", 1)
     t.jsonReader_pf_onetime(path_tttt, "IppeiTakahira2", 1)
     t.jsonReader_pf_onetime(path_tttt, "IkuTadame", 1)
     t.jsonReader_pf_onetime(path_tttt, "SatoshiIkeuchi", 1)
 
-    # t.jsonReader_pf("/Users/syao/desktop/res/TeaSys_Dev/Tom/2.json", 2, 1)  # 1 for pro TODO(Zake Yao):这个能不能简化一下
-    # t.jsonReader_pf("/Users/syao/desktop/res/TeaSys_Dev/Tom/3.json", 3, 1)
-    # t.jsonReader_pf("/Users/syao/desktop/res/TeaSys_Dev/Tom/4.json", 4, 1)
-    # t.jsonReader_pf("/Users/syao/desktop/res/TeaSys_Dev/Tom/5.json", 5, 1)
-    # t.jsonReader_pf("/Users/syao/desktop/res/TeaSys_Dev/Tom/6.json", 6, 1)
-    #
-    # t.jsonReader_pf("/Users/syao/desktop/res/TeaSys_Dev/Mike/2.json", 2, 0)  # 0 for new
-    # t.jsonReader_pf("/Users/syao/desktop/res/TeaSys_Dev/Mike/3.json", 3, 0)
-    # t.jsonReader_pf("/Users/syao/desktop/res/TeaSys_Dev/Mike/4.json", 4, 0)
-    # t.jsonReader_pf("/Users/syao/desktop/res/TeaSys_Dev/Mike/5.json", 5, 0)
-    # t.jsonReader_pf("/Users/syao/desktop/res/TeaSys_Dev/Mike/6.json", 6, 0)
 
     # print("new size")
     # print(len(t.pf_temp_saver_new_2))
@@ -872,6 +1194,14 @@ if __name__ == '__main__':
     # print(t.pf_temp_saver_new_5)
     # print(len(t.pf_temp_saver_new_6))
     # print(t.pf_temp_saver_new_6)
+    # print(len(t.pf_temp_saver_new_7))
+    # print(t.pf_temp_saver_new_7)
+    # print(len(t.pf_temp_saver_new_8))
+    # print(t.pf_temp_saver_new_8)
+    # print(len(t.pf_temp_saver_new_9))
+    # print(t.pf_temp_saver_new_9)
+    # print(len(t.pf_temp_saver_new_10))
+    # print(t.pf_temp_saver_new_10)
     # print("pro size")
     # print(len(t.pf_temp_saver_pro_2))
     # print(t.pf_temp_saver_pro_2)
@@ -884,62 +1214,54 @@ if __name__ == '__main__':
     # print(len(t.pf_temp_saver_pro_6))
     # print(t.pf_temp_saver_pro_6)
     # print("**********************")
-    # t.dicCommenShowerOnetime()  # 展示共通的set
+    # 看次数呢
+    # print("pro time")
+    # print(main.tools.order_dic((main.tools.timecounter(t.dicMergerforPro(1))))) #这个是没删除共通的部分
+    # print("New time")
+    # print(main.tools.order_dic((main.tools.timecounter(t.dicMergerforNew(1)))))
+    #
+    # print(t.dicCommenShowerOnetime_v2() ) # 展示共通的set
+    # print(t.dicCommenShowerOnetime_v3() ) # 展示共通的set 这个是递归删除包含的部分，时间比较久不建议用
 
+    #
     t.dicCommonDeleteOnetime()  # 删除共通的部分
+    print("pro time")
+    print(main.tools.order_dic_val(t.dicMergerforPro(1)))  # 这个是没删除共通的部分
+    print("New time")
+    print(main.tools.order_dic_val(t.dicMergerforNew(1)))
+    #
+    # # here to use the actionrewriter to rewriter the action list
+    # # test teacher 不用抽出pattern 但是还是需要压缩动作
+    #这个被压缩的数据用来当做当前的动作，
+    t.compressList_id_t(main.tools.actionrewriter(t.ac_list_ori), 4, 8) # 这一步是压缩 原始数据，但是为什么写在外面 # TODO（Zake Yao）:把他写到程序里面去封装起来
+    print("summ")
+    # print(len(main.tools.actionrewriter(t.ac_list_ori)))
+    print(len(t.ac_list_ori))
+    # t.compressList_id_t(t.ac_list_ori, 4, 8) # 这一步是压缩 原始数据，但是为什么写在外面 # TODO（Zake Yao）:把他写到程序里面去封装起来
+    summmm=0
+    for x in t.dic_com_ori:
+        summmm += t.dic_com_ori[x]
+    print(summmm)
+    # # # print(len(t.ac_list_ori))  # 1001
+    #patternCheeker的参数数字表示是从2到几的进行统计
+    maxlen = 8 # use this to change the maxlen
+    t.patternCheeker(maxlen)  # 这个是主要步骤的用sliping window 来cheek，和直接用pf解析不同的是，只能获取统计已有的pattern出现了多少
 
-    t.compressList_id_t(t.ac_list_ori, 2, 4) # 这一步是压缩 原始数据，但是为什么写在外面 # TODO（Zake Yao）:把他写到程序里面去封装起来
-    # print(len(t.ac_list_ori))  # 1001
 
-    t.patternCheeker()  # 这个是主要步骤的用sliping window 来cheek，和直接用pf解析不同的是，只能获取统计已有的pattern出现了多少
-    print("new size")
-    print(len(t.pf_temp_saver_new_2))
-    print(len(t.pf_temp_saver_new_3))
-    print(len(t.pf_temp_saver_new_4))
-    print(len(t.pf_temp_saver_new_5))
-    print(len(t.pf_temp_saver_new_6))
-    print("pro size")
-    print(len(t.pf_temp_saver_pro_2))
-    print(len(t.pf_temp_saver_pro_3))
-    print(len(t.pf_temp_saver_pro_4))
-    print(len(t.pf_temp_saver_pro_5))
-    print(len(t.pf_temp_saver_pro_6))
-    print("Ori:")
-    print("pro:")
-    print(t.class_keeper_pro)  # 为啥这个的4最大，也没有压缩啊 这个是老手老师的刚刚cheek过得各种动作的对应的pattern是啥，然后其出现次数
-    print(t.score_keeper_pro)  # 为啥这个这么少，这个是每种长度的出现次数的总和
-    print("New:")
-    print(t.class_keeper_new)
-    print(t.score_keeper_new)  # 为啥这么少
-    t.patterncleanerfortesttea(1)  # use to delete the pattern which only show one time ，这个是用来删除只出现1次的情况，而且class和score都会更新
-    print("After delete the one time action:")
-    print("pro:")
-    print(t.class_keeper_pro)
-    print(t.score_keeper_pro)
-    print("New:")
-    print(t.class_keeper_new)
-    print(t.score_keeper_new)
-    # 查错系列
-    # print("wrong:")
-    # print(t.dic_action_wrong)   # 动作数：错的是啥
-    # t.dicPatternReviser()
-    # print("right:")
-    # print(t.dic_action_right)  # 没有对应的修改就是一个空的字符串
-    # print("Done!")
-    # print(t.dic_com_ori)
-    # print(len(t.ac_list_com))
-    # print(t.dicFramegeter(t.dic_action_wrong))
-    # 算分系列
-    print("Score:") # tfidf和cheeker无关
-    # print(main.tools.TF_IDF_Compute(t.teacherlist("/Users/syao/desktop/res/TeaSys_Dev/all_pattern/"), t.testpfFinder(1)))
-    # print()
-    # print(t.scorecalculater_jd(1))
-    print("score:ave:")
-    print(t.scorecalculater_ave())
-    print("longer:")
-    t.shortptdeleter()# 删除包括的部分
-    print("score:ave:")
-    print(t.scorecalculater_ave())
+
+    # print("new size")
+    # print(len(t.pf_temp_saver_new_2))
+    # print(len(t.pf_temp_saver_new_3))
+    # print(len(t.pf_temp_saver_new_4))
+    # print(len(t.pf_temp_saver_new_5))
+    # print(len(t.pf_temp_saver_new_6))
+    # print("pro size")
+    # print(len(t.pf_temp_saver_pro_2))
+    # print(len(t.pf_temp_saver_pro_3))
+    # print(len(t.pf_temp_saver_pro_4))
+    # print(len(t.pf_temp_saver_pro_5))
+    # print(len(t.pf_temp_saver_pro_6))
+    # print("Ori:")
     # print("pro:")
     # print(t.class_keeper_pro)
     # print(t.score_keeper_pro)
@@ -947,14 +1269,175 @@ if __name__ == '__main__':
     # print(t.class_keeper_new)
     # print(t.score_keeper_new)
 
-    # to find out how long for the pattern is best
-    print("pro time")  # 删了共通的部分
-    print(main.tools.order_dic(main.tools.timecounter_v2(t.dicMergerforPro(1))))
-    print("New time")
-    print(main.tools.order_dic(main.tools.timecounter_v2(t.dicMergerforNew(1))))
+    t.patterncleanerfortesttea(1)  # use to delete the pattern which only show one time ，这个是用来删除只出现1次的情况，而且class和score都会更新
 
-    # 删除包含的部分
-    print("pro time")
-    print(main.tools.order_dic(main.tools.timecounter_v2(main.tools.shortptdeleter_rel(t.dicMergerforPro(1)))))
-    print("New time")
-    print(main.tools.order_dic(main.tools.timecounter_v2(main.tools.shortptdeleter_rel(t.dicMergerforNew(1)))))
+    # print("After delete the one time action:")
+    # print("pro:")
+    # print(t.class_keeper_pro)
+    # print(t.score_keeper_pro)
+    # print("New:")
+    # print(t.class_keeper_new)
+    # print(t.score_keeper_new)
+    # 查错系列
+    print("wrong:")
+    print(t.dic_action_wrong)   # 动作数：错的是啥
+    t.dicPatternReviser(maxlen)
+    print("right:")
+    print(t.dic_action_right)
+    print("change")
+    print(t.dic_action_change)  # 没有对应的修改就是一个空的字符串
+    print("Done!")
+    print(t.dic_com_ori)
+    print(len(t.ac_list_com))
+    print("right:")
+    print(main.tools.order_dic(t.dicFramegeter(t.dic_action_right)))
+    print("Wrong")
+    print(main.tools.order_dic(t.dicFramegeter(t.dic_action_wrong))) # 这个是用来输出修正的
+    print("change")
+    print(main.tools.order_dic(t.dicFramegeter(t.dic_action_change))) # 这个是用来输出修正的
+
+    print("sum")
+    print(main.tools.sumup(t.dic_com_ori))
+    t.visualization("/Users/syao/desktop/res/visualizationdata/",t.name) #生成可视化的json文件
+
+    # 算分系列
+    # print("Score:") # tfidf和cheeker无关
+    # print(main.tools.TF_IDF_Compute(t.teacherlist("/Users/syao/desktop/res/TeaSys_Dev/all_pattern/"), t.testpfFinder(1)))
+    # print()
+    # print(t.scorecalculater_jd(1))
+    # print("score:ave:")
+    # print(t.scorecalculater_ave())
+    # print("longer:")
+    # t.shortptdeleter()# 删除包括的部分，他直接删除了成员函数里面的数据
+    # #
+    # #
+    # print("score:ave:")
+    # print(t.scorecalculater_ave())
+    # # print("pro:")
+    # print(t.class_keeper_pro)
+    # print(t.score_keeper_pro)
+    # print("New:")
+    # print(t.class_keeper_new)
+    # print(t.score_keeper_new)
+
+    # to find out how long for the pattern is best
+    # print("pro time")#删了共通的部分
+    # print(main.tools.order_dic(main.tools.timecounter_v2(t.dicMergerforPro(1))))
+    # print("New time")
+    # print(main.tools.order_dic(main.tools.timecounter_v2(t.dicMergerforNew(1))))
+    #
+    # #删除包含的部分
+    # print("pro time")
+    # print(main.tools.order_dic(main.tools.timecounter_v2(main.tools.shortptdeleter_rel(t.dicMergerforPro(1)))))
+    # print("New time")
+    # print(main.tools.order_dic(main.tools.timecounter_v2(main.tools.shortptdeleter_rel(t.dicMergerforNew(1)))))
+
+    #----------------------------------------------自动写入分数的部分--------------------------------------------------
+    # teacher_dics = {"AkiOkubo": "/Users/syao/desktop/res/csvdata/01_Rookie_AkiOkubo_English_all.csv",  # new
+    #                 "KotaroHosoi": "/Users/syao/desktop/res/csvdata/02_Rookie_KotaroHosoi_Mathematics_all.csv",
+    #                 "ShioriMasuko": "/Users/syao/desktop/res/csvdata/03_Rookie_ShioriMasuko_English_all.csv",
+    #                 "YukinaHachisu": "/Users/syao/desktop/res/csvdata/04_Rookie_YukinaHachisu_English_all.csv",
+    #                 "YusukeHachisu": "/Users/syao/desktop/res/csvdata/05_Rookie_YusukeHachisu_Japanese_all.csv",
+    #                 "Kojima1": "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Kojima_01_all.csv",
+    #                 "Kojima2": "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Kojima_02_all.csv",
+    #                 "Kojima3": "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Kojima_03_all.csv",
+    #                 "Kojima4": "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Kojima_04_all.csv",
+    #                 "Kojima5": "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Kojima_05_all.csv",
+    #                 "Kojima6": "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Kojima_06_all.csv",
+    #                 "Kojima7": "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Kojima_07_all.csv",
+    #                 "KiyoshiMori": "/Users/syao/desktop/res/csv_teaching_cont_2/01_Pf_KiyoshiMori_Mathematics_all.csv",
+    #                 "RyotaTakahashi": "/Users/syao/desktop/res/csv_teaching_cont_2/03_Pre_RyotaTakahashi_Mathematics_all.csv",
+    #                 "KenjiShiraishi": "/Users/syao/desktop/res/csv_teaching_cont_2/05_Pre_KenjiShiraishi_Mathematics_all.csv",
+    #                 "HiroyukiKama": "/Users/syao/desktop/res/csv_teaching_cont_2/06_Pre_HiroyukiKama_Mathematics_all.csv",
+    #                 "SatoshiNomuri": "/Users/syao/desktop/res/csv_teaching_cont_2/07_Pf_SatoshiNomuri_Mathematics_all.csv",
+    #                 "ShioriMashiko": "/Users/syao/desktop/res/csv_teaching_cont_2/23_Pf_ShioriMashiko_English_all.csv",
+    #                 "YoshimitauHamada": "/Users/syao/desktop/res/csvdata/06_Expert_YoshimitauHamada_Mathematics_all.csv",
+    #                 # pro
+    #                 "ShotaYoshida": "/Users/syao/desktop/res/csvdata/07_Expert_ShotaYoshida_Mathematics_NOFULL_all.csv",
+    #                 "TakashiMajima": "/Users/syao/desktop/res/csvdata/08_Expert_TakashiMajima_Mathematics_NOFULL_all.csv",
+    #                 "KunihiroSato": "/Users/syao/desktop/res/csvdata/09_Expert_KunihiroSato_Mathematics_all.csv",
+    #                 "AyakoYamamoto": "/Users/syao/desktop/res/csvdata/10_Expert_AyakoYamamoto_Japanese_all.csv",
+    #                 "RinaAndo":"/Users/syao/desktop/res/csvdata/12_Expert_RinaAndo_Civics_all.csv",
+    #                 "NaokiSaiba":"/Users/syao/desktop/res/csvdata/13_Expert_NaokiSaiba_Science_all.csv",
+    #                 "SakiWatanabe":"/Users/syao/desktop/res/csvdata/11_Expert_SakiWatanabe_English_Champion_all.csv",
+    #                 "Nishiyama1": "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Nishiyama_01_all.csv",
+    #                 "Nishiyama2": "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Nishiyama_02_all.csv",
+    #                 "MasahiroWatanabe2": "/Users/syao/desktop/res/csv_teaching_cont_2/08_Pf_MasahiroWatanabe_Mathematics_all.csv",
+    #                 "MasahiroWatanabe1": "/Users/syao/desktop/res/csv_teaching_cont_2/04_Pre_MasahiroWatanabe_Mathematics_all.csv",
+    #                 "MasahiroWatanabe3": "/Users/syao/desktop/res/csv_teaching_cont_2/18_Fin_MasahiroWatanabe_Mathematics_all.csv",
+    #                 "YusukeKimura": "/Users/syao/desktop/res/csv_teaching_cont_2/09_Fin_YusukeKimura_Science_all.csv",
+    #                 "IppeiTakahira1": "/Users/syao/desktop/res/csv_teaching_cont_2/17_Pf_IppeiTakahira_English_all.csv",
+    #                 "IppeiTakahira2": "/Users/syao/desktop/res/csv_teaching_cont_2/20_Fin_IppeiTakahira_English_all.csv",
+    #                 "IkuTadame": "/Users/syao/desktop/res/csv_teaching_cont_2/19_Fin_IkuTadame_Japanese_all.csv",
+    #                 "SatoshiIkeuchi": "/Users/syao/desktop/res/csv_teaching_cont_2/21_Fin_SatoshiIkeuchi_Society_all.csv",
+    #                 "Nishiyama3": "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Nishiyama_03_all.csv"
+    #                 }
+    #
+    # newteacher_list = ["AkiOkubo", "KotaroHosoi", "ShioriMasuko", "YukinaHachisu", "YusukeHachisu", "Kojima1",
+    #                    "Kojima2", "Kojima3", "Kojima4", "Kojima5", "Kojima6", "Kojima7", "KiyoshiMori",
+    #                    "RyotaTakahashi", "KenjiShiraishi", "HiroyukiKama", "SatoshiNomuri", "ShioriMashiko"]
+    # proteacher_list = ["YoshimitauHamada", "ShotaYoshida", "TakashiMajima", "KunihiroSato", "AyakoYamamoto","RinaAndo",
+    #                    "NaokiSaiba","SakiWatanabe","Nishiyama1", "Nishiyama2", "MasahiroWatanabe2", "MasahiroWatanabe1",
+    #                    "MasahiroWatanabe3",
+    #                    "YusukeKimura", "IppeiTakahira1", "IppeiTakahira2", "IkuTadame", "SatoshiIkeuchi", "Nishiyama3"]
+    #
+    # path_tttt = "/Users/syao/desktop/res/TeaSys_Dev_new_action48_10_ver3/"
+    # ccc=0
+    # numbb =7#最长的pt数
+    # line_list =[]
+    # line_list.append("Name,Label,Score"+str(numbb)+",Score_del"+str(numbb)+",Correct score,Correct score_del\n")  # 添加表头
+    # for person in teacher_dics:
+    #     ccc+=1
+    #     newpro = "why" # 用于判断是否是新人，如果是新人就是new,老手就是pro基本不可能出现都不是的情况
+    #     ifright = 2 # 用于判断是否正确，要是不正确就是2
+    #     ifright_2 = 2 # 用于判断是否正确，要是不正确就是2
+    #     t = TestTeacher(person, teacher_dics[person])# one test teacher
+    #     for newteacher in newteacher_list:#只要不是当前作为test老师的data
+    #         if newteacher != person:
+    #             t.jsonReader_pf_onetime(path_tttt, newteacher, 0)
+    #     for proteacher in proteacher_list:
+    #         if proteacher != person:
+    #             t.jsonReader_pf_onetime(path_tttt, proteacher, 1)
+    #     # t.dicCommenShowerOnetime_v2()  #展示共通的部分
+    #     t.dicCommonDeleteOnetime()  # 删除新人和老手共通的部分
+    #     t.compressList_id_t(main.tools.actionrewriter(t.ac_list_ori), 4, 8)#压缩test老师的动作数据
+    #     t.patternCheeker(numbb)  # 开始cheek ，这里的最长pattern为6，
+    #     t.patterncleanerfortesttea(1)#删除匹配次数为1的pattern
+    #     print("No"+str(ccc)+" "+person+"score:")#这里从零开始
+    #     print("score:ave:")
+    #     score_1 =t.scorecalculater_ave()
+    #     print(score_1)
+    #     print("longer:")
+    #     t.shortptdeleter()  # 删除包括的部分，他直接删除了成员函数里面的数据
+    #     print("score:ave:")
+    #     score_2 =t.scorecalculater_ave()
+    #     print(score_2)
+    #     #用来判断他自己是老手还是新手
+    #     if person in newteacher_list:
+    #         newpro ="new"
+    #         if score_1 >= 50:
+    #             ifright = 0
+    #         elif score_1 < 50:
+    #             ifright = 1
+    #         if score_2 >= 50:
+    #             ifright_2 = 0
+    #         elif score_2 < 50:
+    #             ifright_2= 1
+    #     elif person in proteacher_list:
+    #         newpro = "pro"
+    #         if score_1 >= 50:
+    #             ifright = 1
+    #         elif score_1 < 50:
+    #             ifright = 0
+    #         if score_2 >= 50:
+    #             ifright_2 = 1
+    #         elif score_2 < 50:
+    #             ifright_2= 0
+    #
+    #     linettt = person +","+newpro+","+str(score_1)+","+str(score_2)+","+str(ifright)+","+str(ifright_2)+"\n"
+    #     line_list.append(linettt)
+    #
+    # with open("/Users/syao/desktop/res/score_result/result_"+str(numbb)+"_new.csv","w+") as fff:#写入到一个csv的里面
+    #     fff.writelines(line_list)
+    # print(str(numbb)+"Done!!!")
+    #
