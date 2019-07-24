@@ -23,13 +23,16 @@ This project is used to compute the score of the a teacher action  in a class. Y
 
 ## Before start
 You have to use the St-gcn-tea which base on the [St-gcn](https://github.com/yysijie/st-gcn)  to get the action sequeues.<br/>
-You can download the St-gcn-tea in the page：<br/>
-The path of the video need to be changed<br/>
-
+You can download the St-gcn-tea in the page：[St-gcn-tea](https://drive.google.com/file/d/1dFLiBchhfdvJpKcDVh7KYeu4B6jVx8qm/view?usp=sharing)<br/>
+The path of the video need to be changed.<br/>
+In fact, the input of video can be too big to deal with. With the 8GB RAM and GTX1080，I can deal with around 4 minutes
+320x180 video one time. 
+I have write the a file to deal with this situation, which cut the video into 4 minutes clips and put them into the st-gcn-tea.<br/>
+However, you must **change the path of the code** to apply to your own computer environment.<br/>
 You can get the csv or json data from the St-gcn-tea when you use the video as the input.<br/>
 Run the St-gcn-tea by this command:
 ```sh
-python3 main.py 
+Python3 batch_stgcn_plus.py
 ```
 *The viewpoint of the video you used have to be the front of the blackboard.
 
@@ -104,11 +107,11 @@ python3 testteacher.py
 ```
 ## Visualization 
 If you want to get the result of video ,you can download the demo of my video maker:
-
+[st-gcn-video](https://drive.google.com/file/d/1BxsygKbjDBekqqZUlOC3nCP1Vtq0v_SD/view?usp=sharing)
 You need change the path of the JSON file in demo.py in this video maler and than run
 the code by this comment:<br/>
 *Attention the RAM of my computer is 16GB, the resolution of video I used is 320×180,
-time is around 20 minutes.
+time of the video is around 20 minutes.
 ```sh
 python3 testteacher.py
 ```
