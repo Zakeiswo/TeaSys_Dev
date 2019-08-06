@@ -8,6 +8,13 @@
 @file: testteacher
 @time: 2019-05-09 14:51
 @desc:
+この.pyの実行はpython3 testteacher.py　でいいです
+これがメインのプログラムで
+これだけ実行したらいいです
+delの結果を基準として見てください
+delがないのは、長いパターンは短いを含んでいる
+Correct score_del　は　１　の時は正解、０は間違い
+以上
 '''
 __author__ = 'Zake Yao'
 
@@ -957,7 +964,7 @@ if __name__ == '__main__':
 
     #contest_1 5
     # newt_1 = NewTeacher("AkiOkubo", "/Users/syao/desktop/res/csvdata/01_Rookie_AkiOkubo_English_all.csv", path_tttt2)#1
-    # newt_1.pfdicSaver()
+    # newt_1.pfdicSaver()#これが新人のデータcsv、名前、PATH、savepath,下のこの関数は保存する関数
     #
     # newt_2 = NewTeacher("KotaroHosoi", "/Users/syao/desktop/res/csvdata/02_Rookie_KotaroHosoi_Mathematics_all.csv", path_tttt2)#2
     # newt_2.pfdicSaver()
@@ -1044,10 +1051,9 @@ if __name__ == '__main__':
     # newt_25 = NewTeacher("iwamoto",
     #                      "/Users/syao/desktop/res/information_class_edited/009_iwamoto_all.csv",
     #                      path_tttt2)
-    # newt_25.pfdicSaver()
+    # newt_25.pfdicSaver()# 新任データ２５個
     #
-    # #prot_1.pfdicSaver_all(1)  # save the whole data 在后面算tfidf的时候用了
-    # #contest_1 8
+    # #contest_1 8　#同じく熟練データ
     # prot_1 = ProTeacher("YoshimitauHamada", "/Users/syao/desktop/res/csvdata/06_Expert_YoshimitauHamada_Mathematics_all.csv", path_tttt2)
     # prot_1.pfdicSaver()
     # prot_2 = ProTeacher("ShotaYoshida", "/Users/syao/desktop/res/csvdata/07_Expert_ShotaYoshida_Mathematics_NOFULL_all.csv", path_tttt2)
@@ -1109,7 +1115,9 @@ if __name__ == '__main__':
     # prot_18.pfdicSaver()
     # prot_19 = ProTeacher("Nishiyama3", "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Nishiyama_03_all.csv",
     #                     path_tttt2)
-    # prot_19.pfdicSaver()
+    # prot_19.pfdicSaver()#熟練データ19個、
+    #　#この前の部分は前处理で、新なデータを分析する時だけに使う必要がある
+    #分析したデータは全部path_tttt2に保存した
     # ----------------------------------------------------前处理分界线-------------------------------------------------------
 
     if (CHOOSE==0):
@@ -1163,16 +1171,18 @@ if __name__ == '__main__':
         # t = TestTeacher("IkuTadame", "/Users/syao/desktop/res/csv_teaching_cont_2/19_Fin_IkuTadame_Japanese_all.csv") #35
         # t = TestTeacher("SatoshiIkeuchi", "/Users/syao/desktop/res/csv_teaching_cont_2/21_Fin_SatoshiIkeuchi_Society_all.csv") #36
         t = TestTeacher("Nishiyama3", "/Users/syao/desktop/res/data_nishiyama_and_kojima_ver1/Nishiyama_03_all.csv") #37
-
+        #これがテストする、検証する教員のデータ
         # t = TestTeacher("tester", "/Users/syao/desktop/res/testdata.csv") # test only
 
 
 
         # path_tttt="/Users/syao/desktop/res/TeaSys_Dev_new_action48_10_ver2/" # 用了kojima方法的数据
-        path_tttt="/Users/syao/desktop/res/TeaSys_Dev_new_action48_10_ver3/" # 用了kojima方法的数据
+        path_tttt="/Users/syao/desktop/res/TeaSys_Dev_new_action48_10_ver3/" # 先のpath
+
         # # path_tttt="/Users/syao/desktop/res/TeaSys_Dev_new_action48_10/" #  没用kojima的数据
+
         # # # new
-        t.jsonReader_pf_onetime(path_tttt,"AkiOkubo",0)
+        t.jsonReader_pf_onetime(path_tttt,"AkiOkubo",0)#このpathからデータを読む　path、名前（ファイル名）、０は新任１は熟練
         t.jsonReader_pf_onetime(path_tttt,"KotaroHosoi",0)#需要命名来识别
         t.jsonReader_pf_onetime(path_tttt,"ShioriMasuko",0)
         t.jsonReader_pf_onetime(path_tttt,"YukinaHachisu",0)
@@ -1212,7 +1222,7 @@ if __name__ == '__main__':
         t.jsonReader_pf_onetime(path_tttt, "NaokiSaiba", 1)
         t.jsonReader_pf_onetime(path_tttt, "Nishiyama1", 1)
         t.jsonReader_pf_onetime(path_tttt, "Nishiyama2", 1)
-        # t.jsonReader_pf_onetime(path_tttt, "Nishiyama3", 1)
+        # t.jsonReader_pf_onetime(path_tttt, "Nishiyama3", 1)　#これがテストに使いましたので、
         t.jsonReader_pf_onetime(path_tttt, "MasahiroWatanabe2", 1)
         t.jsonReader_pf_onetime(path_tttt, "MasahiroWatanabe1", 1)
         t.jsonReader_pf_onetime(path_tttt, "MasahiroWatanabe3", 1)
@@ -1254,17 +1264,17 @@ if __name__ == '__main__':
         # print(len(t.pf_temp_saver_pro_6))
         # print(t.pf_temp_saver_pro_6)
         # print("**********************")
-        # 看次数呢
-        # print("pro time")
-        # print(main.tools.order_dic((main.tools.timecounter(t.dicMergerforPro(1))))) #这个是没删除共通的部分
-        # print("New time")
-        # print(main.tools.order_dic((main.tools.timecounter(t.dicMergerforNew(1)))))
+        #　cheek the times of the pattern in the dataset
+        print("pro time")
+        print(main.tools.order_dic((main.tools.timecounter(t.dicMergerforPro(1))))) #これがデータセットにtopのパータンです
+        print("New time")
+        print(main.tools.order_dic((main.tools.timecounter(t.dicMergerforNew(1)))))
         #
         # print(t.dicCommenShowerOnetime_v2() ) # 展示共通的set
         # print(t.dicCommenShowerOnetime_v3() ) # 展示共通的set 这个是递归删除包含的部分，时间比较久不建议用
 
         #
-        t.dicCommonDeleteOnetime()  # 删除共通的部分
+        t.dicCommonDeleteOnetime()  # 删除共通的部分、共通な部分を消す
         print("pro time")
         print(main.tools.order_dic_val(t.dicMergerforPro(1)))  # 这个是没删除共通的部分
         print("New time")
@@ -1274,6 +1284,7 @@ if __name__ == '__main__':
         # # test teacher 不用抽出pattern 但是还是需要压缩动作
         #这个被压缩的数据用来当做当前的动作，
         t.compressList_id_t(main.tools.actionrewriter(t.ac_list_ori), 4, 8) # 这一步是压缩 原始数据，但是为什么写在外面 # TODO（Zake Yao）:把他写到程序里面去封装起来
+        #これが動作抽出の操作、論文にある、4~8->1動作
         print("summ")
         # print(len(main.tools.actionrewriter(t.ac_list_ori)))
         print(len(t.ac_list_ori))
@@ -1285,8 +1296,9 @@ if __name__ == '__main__':
         # # # print(len(t.ac_list_ori))  # 1001
         #patternCheeker的参数数字表示是从2到几的进行统计
         maxlen = 8 # use this to change the maxlen
+        #これがパターン長さの最大値、いまは８
         t.patternCheeker(maxlen)  # 这个是主要步骤的用sliping window 来cheek，和直接用pf解析不同的是，只能获取统计已有的pattern出现了多少
-
+        # これがpattern 抽出、論文にある
 
 
         # print("new size")
@@ -1310,7 +1322,7 @@ if __name__ == '__main__':
         # print(t.score_keeper_new)
 
         t.patterncleanerfortesttea(1)  # use to delete the pattern which only show one time ，这个是用来删除只出现1次的情况，而且class和score都会更新
-
+        #これが出現回数が１のパターンを消す
         # print("After delete the one time action:")
         # print("pro:")
         # print(t.class_keeper_pro)
@@ -1321,7 +1333,7 @@ if __name__ == '__main__':
         # 查错系列
         print("wrong:")
         print(t.dic_action_wrong)   # 动作数：错的是啥
-        t.dicPatternReviser(maxlen)
+        t.dicPatternReviser(maxlen) # これが修正機能
         print("right:")
         print(t.dic_action_right)
         print("change")
@@ -1339,7 +1351,7 @@ if __name__ == '__main__':
         print("sum")
         print(main.tools.sumup(t.dic_com_ori))
         t.visualization("/Users/syao/desktop/res/visualizationdata/",t.name) #生成可视化的json文件
-
+        #これが可視化のjsonを生成、可視化のvideoに使います
         # 算分系列
         # print("Score:") # tfidf和cheeker无关
         # print(main.tools.TF_IDF_Compute(t.teacherlist("/Users/syao/desktop/res/TeaSys_Dev/all_pattern/"), t.testpfFinder(1)))
@@ -1352,7 +1364,7 @@ if __name__ == '__main__':
         # #
         # #
         print("score:ave:")
-        print(t.scorecalculater_ave())
+        print(t.scorecalculater_ave())#これがスコアを計算
         # # print("pro:")
         # print(t.class_keeper_pro)
         # print(t.score_keeper_pro)
@@ -1371,7 +1383,7 @@ if __name__ == '__main__':
         # print(main.tools.order_dic(main.tools.timecounter_v2(main.tools.shortptdeleter_rel(t.dicMergerforPro(1)))))
         # print("New time")
         # print(main.tools.order_dic(main.tools.timecounter_v2(main.tools.shortptdeleter_rel(t.dicMergerforNew(1)))))
-    elif(CHOOSE==1):
+    elif(CHOOSE==1):#CHOOSEが１の時は、以上の過程を交差検証法でやりました、かくデータに対して、スコアを計算、csvの表を作る
         #----------------------------------------------自动写入分数的部分--------------------------------------------------
         teacher_dics = {"AkiOkubo": "/Users/syao/desktop/res/csvdata/01_Rookie_AkiOkubo_English_all.csv",  # new
                         "KotaroHosoi": "/Users/syao/desktop/res/csvdata/02_Rookie_KotaroHosoi_Mathematics_all.csv",
@@ -1434,7 +1446,7 @@ if __name__ == '__main__':
 
         path_tttt = "/Users/syao/desktop/res/TeaSys_Dev_new_action48_10_ver3/"
         ccc=0
-        numbb =8#最长的pt数
+        numbb =8#最长的pt数、ここはパターン長さの最大値設置、今は８、毎回は１種類の長さ最大値を出力
         line_list =[]
         line_list.append("Name,Label,Score"+str(numbb)+",Score_del"+str(numbb)+",Correct score,Correct score_del\n")  # 添加表头
         for person in teacher_dics:
@@ -1489,6 +1501,6 @@ if __name__ == '__main__':
             line_list.append(linettt)
 
         with open("/Users/syao/desktop/res/score_result/result_"+str(numbb)+"_new.csv","w+") as fff:#写入到一个csv的里面
-            fff.writelines(line_list)
+            fff.writelines(line_list)#ここに保存しました
         print(str(numbb)+"Done!!!")
 
