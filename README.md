@@ -111,7 +111,7 @@ If you want to get the result of video ,you can download the demo of my video ma
 You need change the path of the JSON file in demo.py in this video maler and than run
 the code by this comment:<br/>
 ```sh
-python3 testteacher.py
+python3 demo.py
 ```
 *Attention the RAM of my computer is 16GB, the resolution of video I used is 320×180,
 time of the video is around 20 minutes.
